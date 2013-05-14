@@ -167,7 +167,7 @@ The normal force $F_N$ can be expressed as
 \begin{equation}
 F_N=mg(\cos \alpha )n
 \end{equation}
-The downhill force $F_S$ itself can be decomposed into the downhill force $F_P$, acting parallel to the current trajectory $e_{\dot{r}}$, and the lateral force $F_{lat}$ acting perpendicularly to the direction of travel (see. Fig\ref{downhill_force_pic}).
+The downhill force $F_S$ itself can be decomposed into the downhill force $F_P$, acting parallel to the current trajectory $e_{\dot{r}}$, and into the lateral force $F_{lat}$ acting perpendicularly to the direction of travel (see. Fig\ref{downhill_force_pic}).
 
 \begin{equation}
 F_S=F_P+F_{lat}
@@ -205,7 +205,7 @@ F_C=\frac{m}{R_{SC}} {\norm{\dot{r}}}^2 \frac{F_{lat}}{\norm{F_{lat}}} \times
 \end{equation}
 where $m$ is the mass of the skier and $R_{SC}$ the sidecut radius of the skis. $F_C$ is parallel to $F_{lat}$ before the skier crosses the fall line and antiparallel to $F_{lat}$ after having crossed the fall line.
 
-To define the kinetic friction of skis on snow, the effective force should be defined. The effective force is the force that has to be compensated by the snow. Its formulation depends on whether the skiers is performing a turn or is descending on a straight line. In the following, when the definition of a force changes depending on whether the skier is turning, the index is written lowercase in the case of a straight line and uppercase in the case of a turn. $F_{eff}$, the effective force acting on a skier that is descending on a straight line, is defined as
+Before defining the kinetic friction of skis on snow, the effective force should be defined. The effective force is the force that has to be compensated by the snow. Its formulation depends on whether the skier is performing a turn or is descending on a straight line. In the following, when the definition of a force changes depending on whether the skier is turning, the index is written lowercase in the case of a straight line and uppercase in the case of a turn. So $F_{eff}$ is the effective force acting on a skier that is descending on a straight line and is defined as
 
 \begin{equation}
 F_{eff}=F_{lat}-F_N
@@ -229,11 +229,12 @@ The kinetic friction force $F_{ground}$ can be expressed in terms of the skier's
 \begin{equation}
 F_{ground}=-\mu \norm{F_{eff}}e_{\dot{r}}
 \end{equation}
-when descending on a straight line. $mu$ is the kinetic friction coefficient of skis on snow. In the case of a turn
+when descending on a straight line. $\mu$ is the kinetic friction coefficient of skis on snow. In the case of a turn
 
 \begin{equation}
 F_{GROUND}=-\mu \norm{F_{EFF}}e_{\dot{r}}
 \end{equation}
+
 The air drag force $F_{air}$ is antiparallel to the direction of motion $e_{\dot{r}}$ and is defined as
 
 \begin{equation}
@@ -256,7 +257,7 @@ F_{NET}=-F_P + F_{AIR} + F_{GROUND} + F_C
 The model proposed describes the motion of an expert skier that is performing perfect carved turns. The turning radio has been taken constant and equals to the sidecut radius of the skis. Not experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not allow skiers to stop their descent.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
 
 \section{Differences from the original model}
-The physical model of the skiers motion has been keep equals to the one exposed in \cite{hol2012}. Between the social forces, the destination force $F_D$ (see. \ref{destination_force}) is of critical importance. His action depends on  the selection of the waypoints. In the original paper the waypoints were selected randomly every 50m, using a uniform distribution on the corresponding line from the left to the right edge of the slope (see Fig.\ref{waypoints_old_pic}).
+The physical model of the skiers motion has been keep equals to the one exposed in \cite{hol2012}. Between the social forces, the destination force $F_D$ (see. \ref{destination_force}) is of critical importance. Its action depends on the selection of the waypoints. In the original paper the waypoints were selected randomly every 50m, using a uniform distribution on the corresponding line from the left to the right edge of the slope (see Fig.\ref{waypoints_old_pic}).
 
 \begin{figure}[!ht]
   \begin{center}
@@ -267,7 +268,7 @@ The physical model of the skiers motion has been keep equals to the one exposed 
 
 A more dynamical approach in the selection of the waypoints has been considered to better model the choices that a skier takes descending a slope. The new strategy allow each skier to dynamically choose waypoints during the descent, basing on the position of the skier, on the shape of the trail, on the slope of the terrain and on the skier velocity.
 
-In the following new mechanism for the waypoints selection is explained. Let $a$ be a skier at position $r_a$, let $r_a^L$ be the location on the left slope edge closest to $r_a$ and $r_a^R$ the location on the right slope edge closest to $r$. Then the vectors given the direction toward the edges are $e_{aR}=\left(r_a^L-r_a\right)/\norm{r_a^L-r_a}$ and $e_{aL}=\left(r_a^R-r_a\right)/\norm{r_a^R-r_a}$. Let $\alpha$ be the angle between $e_{aR}$ and $e_{aL}$ defined as
+In the following the new mechanism for the waypoints selection is explained. Let $a$ be a skier at position $r_a$, let $r_a^L$ be the location on the left slope edge closest to $r_a$ and $r_a^R$ the location on the right slope edge closest to $r$. Then the vectors given the direction toward the edges are $e_{aR}=\left(r_a^L-r_a\right)/\norm{r_a^L-r_a}$ and $e_{aL}=\left(r_a^R-r_a\right)/\norm{r_a^R-r_a}$. Let $\alpha$ be the angle between $e_{aR}$ and $e_{aL}$ defined as
 
 \begin{equation}
 \alpha=\begin{cases}
@@ -275,7 +276,7 @@ In the following new mechanism for the waypoints selection is explained. Let $a$
   2\pi-\arccos(e_{aR} \cdot e_{aL}) & \text{if(($e_{aR} \times e_{aL})\cdot n < 0$)}
 \end{cases}
 \end{equation}
-where d is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $alpha$. More precisely, let $\delta$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
+where d is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $\alpha$. More precisely, let $\delta$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
 
 \begin{equation}\label{new_waypoint}
 w_a=r_a+\rho F\left(\frac{e_{aR}+e_{aL}}{\norm{e_{aR}+e_{aL}}},\mathcal{U}\left(-\frac{\alpha\delta}{2},\frac{\alpha\delta}{2}\right)\right)
@@ -289,18 +290,18 @@ where $\rho$ is the distance at which waypoint are chosen, $F\left(v,\beta\right
   \end{center}
 \end{figure}
 
-A new waypoint is selected when the old waypoint is no longer feasible, meaning that it is not in the interval that the skier would consider choosing a new waypoint,  or the skier has traveled more than $D$ meters after having chosen the last waypoint.
+A new waypoint is selected when the old waypoint is no longer feasible, meaning that it is not in the interval that the skier would consider choosing a new waypoint, or when the skier has traveled more than $D$ meters after having chosen the last waypoint.
 
-The choice of waypoints should satisfy some requirements:\begin{enumerate}
+Designing the new mechanism to the selection of waypoints some requirements it should satisfy has been individuated:\begin{enumerate}
 \item \label{depending_velocity} Speed should influence the choice of the new waypoint: when skiers are traveling fast they tend to perform more turns than when the speed is low.
 \item \label{depending_slope} The selection of the new waypoint should depend on the slope that the skier is going to encounter: before flat areas skiers tend to avoid turns to increase their velocity.
-\item \label{frequency} The frequency of the selection of new waypoints should depend on the skiers speed, the more skiers are traveling fast, the more frequently they choose new waypoints.
+\item \label{frequency} The frequency of the selection of new waypoints should depend on the skiers speed, the more skiers are traveling fast, the more frequently they will choose new waypoints.
 \item \label{avoid_impact} Skiers usually avoid to choose a direction that would make them pass the edge of the slope. Therefore, the new waypoint should be in a position that does not lead the skier to impact the edge of the slope.
 \end{enumerate}
 
 To fulfill this requirements it is possible to act on the parameter $\delta$ of the equation \ref{new_waypoint}. When $\delta$ is increasing, the width of the angle in which new waypoints can be chosen becomes larger. As a consequence the probability of performing turns becomes higher.
 
-Requirement \ref{depending_velocity} can be satisfied by making the parameter $\delta$ depend linear on the speed $v$ of the skier. Moreover it is required that when the speed $v$ is near $0$ then the width of the angle that should be considered is near to $0$ and when $v$ is near to a value of speed considered high $v_{max}$ the angle has maximum width. This gives
+Requirement \ref{depending_velocity} can be satisfied by making the parameter $\delta$ depend linear on the speed $v$ of the skier. Moreover it is required that when the speed $v$ is near $0$ then the width of the angle should be itself near to $0$ and when $v$ is near to a value of speed considered high $v_{max}$ the angle should have maximum width. Therefore, $\delta$ can be set to
 \begin{equation}\label{delta_vel}
 \delta= \frac{v}{v_{max}}
 \end{equation}
@@ -313,11 +314,11 @@ To fulfill the requirement \ref{depending_slope} an additional factor depending 
    \frac{v}{v_{max}} & \text{otherwise}
 \end{cases}
 \end{equation}
-If despite this the skiers come to a complete halt (maybe due to a counter slope), they will start walking at constant speed.
+If, despite this, the skiers will come to a complete halt (maybe due to a counter slope), they will start walking at constant speed.
 
-The requirement \ref{frequency} is already met. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
+The requirement \ref{frequency} is already met by the mechanism described above. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
 
-Finally, to satisfy the requirement \ref{avoid_impact} manipulating $\delta$ is not enough. The minimum turning radius of the skiers gives a bound to the capacity of avoiding a collision. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
+Finally, to satisfy the requirement \ref{avoid_impact} manipulating $\delta$ is not enough. The minimum turning radius of the skiers gives a bound to their capacity of avoiding a collision and of avoiding the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
 
 \bibliography{thesis}
 \end{document}
