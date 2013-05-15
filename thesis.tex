@@ -60,7 +60,7 @@ The social forces model the decisions made by a skier that is descending a slope
   \end{center}
 \end{figure}
 
-To describe the social force that attracts the skier towards the destination chosen the model assumes that each skier, during the descent, selects several waypoints as temporary destinations. Thus, at each time $t$ the skier $a$ wants to reach the waypoint $x_a$. The direction toward the current waypoint is expressed by
+To describe the social force that attracts the skier towards the destination chosen the model assumes that each skier, during the descent, selects several waypoints $x_a^1....x_a^n$ as temporary destinations. Thus, at each time $t$ the skier $a$ wants to reach a waypoint $x_a^k$. The direction toward the current waypoint is expressed by
 
 \begin{equation}\label{waypoint_direction}
 e_a(t)=\frac{x^k_a-r_a(t)}{\Vert x^k_a-r_a(t) \Vert}
@@ -87,7 +87,7 @@ The model takes into account also the natural behavior of avoiding collisions wi
 \begin{equation}\label{skier_force}
 F_S(r_{ab})=-\nabla_{r_{ab}}V(s(r_{ab}))
 \end{equation}
-where $r_{ab}=r_a-r_b$ is the distance between the two skiers, $V(s(r_{ab}))$ is a monotonically decreasing potential with equipotential lines shaped as ellipses directed into the direction of motion and $s$ represents the semiminor axis of this ellipse and is defined as
+where $r_{ab}=r_a-r_b$ is the distance vector between the two skiers, $V(s(r_{ab}))$ is a monotonically decreasing potential with equipotential lines shaped as ellipses directed into the direction of motion and $s$ represents the semiminor axis of this ellipse and is defined as
 
 \begin{equation}\label{skier_s}
 s(r_{ab})=\frac{\sqrt{(\Vert r_{ab} \Vert + \Vert r_{ab}-v_b \Delta t e_b \Vert )^2-(v_b \Delta t)^2}}{2}
@@ -101,7 +101,7 @@ In general, the repulsion social forces act on the skiers only if he or she is c
 
 \begin{equation}\label{visibility}
 w(u,v)=\begin{cases}
-  1 & \text{$if(u/\Vert u \Vert)\cdot (v/\Vert v \Vert) \geq cos \varphi$} \\
+  1 & \text{if $(u/\Vert u \Vert)\cdot (v/\Vert v \Vert) \geq cos \varphi$} \\
   0 & \text{otherwise }
   \end{cases}
 \end{equation}
@@ -276,7 +276,7 @@ In the following the new mechanism for the waypoints selection is explained. Let
   2\pi-\arccos(e_{aR} \cdot e_{aL}) & \text{if(($e_{aR} \times e_{aL})\cdot n < 0$)}
 \end{cases}
 \end{equation}
-where d is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $\alpha$. More precisely, let $\delta$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
+where $n$ is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $\alpha$. More precisely, let $\delta$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
 
 \begin{equation}\label{new_waypoint}
 w_a=r_a+\rho F\left(\frac{e_{aR}+e_{aL}}{\norm{e_{aR}+e_{aL}}},\mathcal{U}\left(-\frac{\alpha\delta}{2},\frac{\alpha\delta}{2}\right)\right)
