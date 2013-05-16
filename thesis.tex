@@ -5,7 +5,7 @@
 \usepackage[font=small,labelfont=bf]{caption}
 \newcommand{\norm}[1]{\lVert#1\rVert}
 
-\bibliographystyle{alpha}
+\bibliographystyle{abbrv}
 \begin{document}
 
 \begin{titlepage}
@@ -319,6 +319,51 @@ If, despite this, the skiers will come to a complete halt (maybe due to a counte
 The requirement \ref{frequency} is already met by the mechanism described above. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
 
 Finally, to satisfy the requirement \ref{avoid_impact} manipulating $\delta$ is not enough. The minimum turning radius of the skiers gives a bound to their capacity of avoiding a collision and of avoiding the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
+
+\chapter{Implementation}\label{implementation}
+The model was implemented using C++ and GRASS GIS. GRASS GIS is a Geographic Information System (GIS) open source software used for geospatial data management and analysis. It was chosen because it exposes its GIS engine in form of libraries that were used to perform the geospatial computation needed by the model.
+
+\section{Technology choice}
+Different technologies were explored to implement the GIS Backend needed by the model. The main technologies considered were PostGIS, QGIS, GDAL/OGR and GRASS GIS.
+
+PostGIS is an open source spatial database extender for PostgreSQL database. It gives support for geographic objects manipulation allowing spatial queries to be run in SQL. The problem with PostGIS is that it does not have dedicate API for any language. It requires to use a PostgreSQL adapter (such as psycopg for python) and to build dynamically the queries in the chosen language. Moreover the raster data support is still immature in PostGIS.
+
+Quantum GIS Desktop, also known as QGIS, is an open source GIS desktop application. QGIS supports both vector and raster formats. It have a module, PyQGIS, that supports scripting using the Python language. Unfortunately, the functionalities offered are more focused on spatial data visualization and do not give enough support for the analysis operations.
+
+GDAL, Geospatial Data Abstraction Library, is an open source library for geospatial data translation and processing. The related library OGR Simple Feature Library provides a similar capability for simple vector data processing. GDAL exposes API for C,C++ and Python while the more widely used API for OGR are those for C++. OGR provides also slightly less complete API for C and Python API, although they are not really well documented. The problem using GDAL/OGR is especially the lack of support for the analysis of vector data: OGR offers useful API to read and write vector data, but analysis such as point linestring distance calculation are not available.
+
+GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support System) is an open source GIS software that gives support for geospatial data management and analysis. To understand how GRASS API works it is necessary to look at the GRASS software structure (see Fig.\ref{grass_structure}. GRASS has a large GIS library, referred to as GRASS GIS Library, at the basis of the software stack. It is divided in two main library: the Raster File Processing library and the Vector File Processing library. It also contains many others library of less importance. The GRASS GIS Library is quite large and implements many basic GIS operation both for raster and vector format. The spatial data (both raster and vector) are stored in the GRASS map storage with the GRASS specific format. On the top of the GRASS GIS Library are built many modules for raster and vector processing. The modules perform analysis at a higher level, they are executables and they can be used from the GRASS GUI or from the command line.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/grass6_arch.eps}
+    \caption{(from http://grass.osgeo.org} GRASS software architecture\label{grass_structure}
+  \end{center}
+\end{figure}
+
+GRASS allows two basic levels of programming. The most simple approach is to use script programming to call the high-level GRASS modules. A more advanced approach is to access the low-level functionalities of the GRASS GIS library trough the C-API exposed. Since grass modules are executables, the first approach requires to spawn a new process each time a spatial computation is required. For the implementation of the model presented in \ref{model} this is not feasible. Even if the second approach forces the implementation to use GIS operations at a lower lever it has many advantages: it gives support for database routines (GRASS file management), projections, raster data management, area, line and point vector data management \cite{net2008} and it guarantees good performances.
+
+GRASS GIS was chosen to implement the GIS Backend. Since the API is written in ANSI C, writing the code in C or in C++ has the advantage of accessing the API in a very simple manner. Moreover both C and C++ guarantee good performances and are often choose to implement this kind of simulation. C++ was preferred to C because it is object oriented. An object oriented design allows to better represent the concepts presented in the model, reducing the complexity and making the code structure clearer, and to keep the code more modular and flexible.
+
+\section{Software structure}
+The software structure was designed to be the most flexible as possible. The main entities modeled inside the software are the slope, the skiers and the forces. In Figure \ref{class_diagram} the class diagram of the software is described. The class Slope models the ski slope
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/Class_diagram.eps}
+    \caption{Class diagram}\label{class_diagram}
+  \end{center}
+\end{figure}
+
+
+
+
+input data
+
+parameters selection
+
+
+
 
 \bibliography{thesis}
 \end{document}
