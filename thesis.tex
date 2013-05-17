@@ -346,7 +346,7 @@ GRASS allows two basic levels of programming. The most simple approach is to use
 GRASS GIS was chosen to implement the GIS Backend. Since the API is written in ANSI C, writing the code in C or in C++ has the advantage of accessing the API in a very simple manner. Moreover both C and C++ guarantee good performances and are often choose to implement this kind of simulation. C++ was preferred to C because it is object oriented. An object oriented design allows to better represent the concepts presented in the model, reducing the complexity and making the code structure clearer, and to keep the code more modular and flexible.
 
 \section{Software structure}
-The software structure was designed to be the most flexible as possible. The main entities modeled inside the software are the slope, the skiers and the forces. In Figure \ref{class_diagram} the class diagram of the software is described. The class Slope models the ski slope
+The software structure was designed to be the most flexible as possible. The main entities modeled inside the software are the slope, the skiers and the forces. In Figure \ref{class_diagram} the class diagram of the software is described. The class Slope models the ski slope. It has a set of skiers, the skiers that are descending the slope, a set of physical forces, the physical forces that act on the slope and a set of social forces, the social forces skiers are subjected to. The Skier class models a skier: it has a position, a velocity, an acceleration and a status describing if is turning. The forces have been modeled with two different classes: the SocialForce class and the PhysicalForce class are abstract classes that act as base class respectively for all the social forces and for all the physical forces. Although the interface declared by this two classes is the same, they were not merged together because the two type of forces, social and physical, are conceptually different and in future development it is possible that changes in the model will require to have separated interfaces.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -355,10 +355,46 @@ The software structure was designed to be the most flexible as possible. The mai
   \end{center}
 \end{figure}
 
+The simulation needs to perform some specific GIS computation. The implementation wanted to avoid dependency between the code related to the simulation and the code written to access the GRASS GIS library. In other words the implementation of the simulation should be independent by the technology chosen to implement the GIS Backend. For this reason, an abstract class called GisBackend was implemented. This class declares the interface that whatever GIS backend used to run the simulation should implement. This include methods to get elevation, slope and aspect for given coordinates, methods to get the distance of a point from the edges of the slope and the locations on the slope closer to the given point, methods to give random start points at the top of the ski slope and to determine if a given point is inside the ski slope and a method to reflect a line colliding on a slope edge.
 
+The class GrassBackend implements the interface GisBackend and is the class actually used in the code when spatial computation are needed. The class GrassBackend perform the operations needed using the GRASS GIS Library. It requires to have available a DEM (Digital Elevation Model) raster map for the elevation, the slope and the aspect computation, a vector map with the polygon of the ski slope to determine if a point is inside the slope, a vector map with the lines of the right and left edges of the slope to find the distances from them and finally a vector map with the polygon of the start area and stop area to decide where skiers should be started and stopped.
 
+\section{Input data}
+The input data required by the simulation to run are the data needed by the GrassBackend. As Digital Elevation Model was a Digital Terrain Model of Trentino at resolution of 1x1m and 2x2m obtained used Lidar technology. TODO:specify better Lidar and DTM
 
-input data
+The measurements for the DTM were done in seasons without snow. As a consequence the DTM on which real skiers move is different from the DTM obtained with the Lidar. Two strategy was thought to simulate the effect of the snow on the DTM.
+
+The first strategy uses a simple model to simulate the distribution of the snow. The model consider two limit cases to describe the profile of the snow. Given a surface $y(x)$ and a snowfall of $h$ meters. The first cases describes a new profile were the snow is supposed adhere perfectly to the terrain: $y_s(x)=y(x)+h$. The second cases consider the snow to behave like a liquid and create a new profile $y_L(x)$ where the new precipitation accumulates in the valleys making the profile constant and leaves $y_L(x)=y(x)$ on the ridges. Neither the first nor the second case can be considered realistic, but it can be thought that the real behavior of the snow can be described as an average between the two cases, so the actual profile after the precipitation can be described as
+\begin{equation}
+Y(x)=(1-l)y_s(x)+ly_L
+\end{equation}
+where $l$ is a parameter describing how much the snow has a behavior liquid-like. By the point of view of the implementation, the hard thing is to compute the profile $y_L$. For this purpose some GRASS modules was explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}. This module was used to compute the profile $y_L$.
+
+The second strategy does not aim at building a realistic model for the snow precipitation but starts from the consideration that on a ski slope there are three main factors that determine the distribution of the snow: the snow precipitation, the snow produced by the snow cannons and the actions of the snow groomings. All this factors tend to smooth the original surface. To emulate this action the surface of the DTM is approximated with a smoothed surface. Starting from the original DTM raster map a vector map was produced where each original value of elevation were represented by a point. Then the GRASS module v.surf.rst was used to interpolate a new elevation map using regularized spline with tension \cite{mit2005}.
+
+Figure \ref{profile_dtm} shows the profile of the original dtm, of the dtm obtained from the first strategy and of the dtm obtained from the second for a particularly critical point on a ski slope. The best result is given by the second strategy. The problem following the first strategy is the imprecision of the results from the module r.sim.water which does not returns a feasible profile for a liquid-like behavior. This can be due to a misconfiguration of the parameters of the module or maybe to a too demanding level of precision. Finally, the second strategy was chosen.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{images/profiles_dtm.eps}
+    \caption{Profiles of the dtm and of the simulated dtm after rain fall}\label{profile_dtm}
+  \end{center}
+\end{figure}
+
+Starting from the DTM slope raster map and aspect raster map are computed. The GRASS module r.slope.aspect was used. The slope raster map contains the slope, stated in degree of inclination from the horizontal. The slope of a cell is the maximum rate of change in value from that cell to its neighbors. Conceptually, computing the slope is equivalent to fits a plane to the z-value of a 3x3 neighborhood around the center cell. The slope value of this plane is computed using the average maximum technique(see. \cite{bur2009}). The direction the plan faces is the aspect.
+
+The simulation requires to have in input the vector map with the polygon of the ski slope for which the model should be run. The ski slope (see. Fig.\ref{uno_tognola_3d} for an example) is extracted from a vector map containing the polygons of slopes of the skiing resort in Trentino. This data are available inside the SicurSkiWeb and were derived starting from orthophotos and tuned with measurements done in place. From the polygon of the ski slope left and right edge, start and stop areas are derived.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/uno_tognola_3d.eps}
+    \caption{3d visualization of the ski slope ``Uno di Tognola'' polygon (in blue) in San Martino di Castrozza.}\label{uno_tognola_3d}
+  \end{center}
+\end{figure}
+
+\section{Output data}
+
+\section{Optimization}
 
 parameters selection
 
