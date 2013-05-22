@@ -360,7 +360,7 @@ The simulation needs to perform some specific GIS computation. The implementatio
 The class GrassBackend implements the interface GisBackend and is the class actually used in the code when spatial computation are needed. The class GrassBackend perform the operations needed using the GRASS GIS Library. It requires to have available a DEM (Digital Elevation Model) raster map for the elevation, the slope and the aspect computation, a vector map with the polygon of the ski slope to determine if a point is inside the slope, a vector map with the lines of the right and left edges of the slope to find the distances from them and finally a vector map with the polygon of the start area and stop area to decide where skiers should be started and stopped.
 
 \section{Input data}
-The input data required by the simulation to run are the data needed by the GrassBackend. As Digital Elevation Model was a Digital Terrain Model of Trentino at resolution of 1x1m and 2x2m obtained used Lidar technology. TODO:specify better Lidar and DTM
+The input data required by the simulation to run are the data needed by the GrassBackend. The Digital Elevation Model used was a Digital Terrain Model (DTM) of the area of Trentino. The DTM was obtained using the LIDAR technology, a remote sensing sensing technology that uses laser light to measures distances. The measurements were done in the years 2006 2007. It is at a resolution of 1x1m but for the area at high elevation the resolution is of 2x2m.
 
 The measurements for the DTM were done in seasons without snow. As a consequence the DTM on which real skiers move is different from the DTM obtained with the Lidar. Two strategy was thought to simulate the effect of the snow on the DTM.
 
@@ -393,6 +393,10 @@ The simulation requires to have in input the vector map with the polygon of the 
 \end{figure}
 
 \section{Output data}
+The output produced by the simulation is a CSV file that log the skiers status at each moment of the simulation. The information reported for a time $t$ and a skier $a$ are the position $r_a$ and the velocity $\dot{r}_a$.
+
+Starting from the csv two main analysis have been performed: speed average and average density of skiers computation. To analyze the speed of skiers along the ski slope a raster map of average speed has been produced. The map is obtained interpolating the value of speed produced by the simulation. The interpolation was done using the GRASS module v.surf.idw.
+
 
 \section{Optimization}
 
