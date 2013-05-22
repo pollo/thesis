@@ -46,12 +46,15 @@ Anno accademico 2012-2013
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{The model}\label{model}
-The model implemented was proposed by Holleczek and Troster \cite{hol2012}. It can be classified as a two-dimensional microscopic-driven many-particle system with the constraint that skiers are exposed to gravity and centripetal forces.
-
-The skiers are modeled as particles with a specific mass, $m$, that are exposed to forces. The model distinguishes between two kind of forces: the physical forces are those forces that regulate the skier motion determining the acceleration while the social forces determine the skiers behavior. In the following, the position of a particular skier at time $t$ is represented by the vector $r(t)$, $\dot{r}(t)=\frac{d}{dt}r(t)$ is his or her speed and $e_{\dot{r}}(t)=\ \dot{r}(t) / \Vert \dot{r}(t)\Vert$ the direction of motion.
+The model implemented describes a two-dimensional microscopic-driven many-particle system. Published by Holleczek and Troster \cite{hol2012} it is based on the constraint that skiers are exposed to gravity and centripetal forces.
+.
+Skiers are modeled as particles with a specific mass, $m$, that are exposed to two class of forces: 
+1)social forces that determine skiers behavior. 
+2)Physical forces, that regulate the skier motion determining the acceleration. 
+The position of a skier at time $t$ is represented by the following vector $r(t)$, $\dot{r}(t)=\frac{d}{dt}r(t)$ its speed, and $e_{\dot{r}}(t)=\ \dot{r}(t) / \Vert \dot{r}(t)\Vert$ that defines the direction of motion.
 
 \section{Social forces}
-The social forces model the decisions made by a skier that is descending a slope. They are used to determine whether the skier should perform a turn, however they do not act on the acceleration. The social forces are dimensionless, the superposition of all the forces, $F_{social}$, gives the desired direction of the skier $e_{social}(t)=F_{social} / \Vert F_{social} \Vert$. If the desired direction $e_{social}(t)$ diverges from the skier direction $e_{\dot{r}}(t)$ more than an angle ${\delta}$ the skier start turning to adjust his or her direction (see Fig.\ref{start_turn_pic}).The social forces are used to model the repulsion from the edges and the obstacles, the repulsion from other skiers and to attract the skiers towards the destination chosen.
+The social forces implemented in the model describe the decisions taken by a skier while descending a slope. Social forces are dimensionless and are used to determine whether the skier should take a turn or not, however they do not act on acceleration. The superposition of all social forces, $F_{social}$, gives skier's desired direction  $e_{social}(t)=F_{social} / \Vert F_{social} \Vert$. If the desired direction $e_{social}(t)$ diverges from the actual skier direction of motion $e_{\dot{r}}(t)$ more than an angle ${\delta}$, the skier starts to turn adjusting the direction (see Fig.\ref{start_turn_pic}). Social forces are used to model the repulsion of the skier from slope edges, potential obstacles and from other skiers on the other side these forces attract skiers towards the destination chosen.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -60,19 +63,19 @@ The social forces model the decisions made by a skier that is descending a slope
   \end{center}
 \end{figure}
 
-To describe the social force that attracts the skier towards the destination chosen the model assumes that each skier, during the descent, selects several waypoints $x_a^1....x_a^n$ as temporary destinations. Thus, at each time $t$ the skier $a$ wants to reach a waypoint $x_a^k$. The direction toward the current waypoint is expressed by
+To describe the social force that attracts the skier towards the chosen destination, the model assumes that each skier, while descending, selects several waypoints $x_a^1....x_a^n$ as temporary destinations. Thus, at each time $t$ the skier $a$ wants to reach a waypoint $x_a^k$. The direction toward the current waypoint is expressed by
 
 \begin{equation}\label{waypoint_direction}
 e_a(t)=\frac{x^k_a-r_a(t)}{\Vert x^k_a-r_a(t) \Vert}
 \end{equation}
-where, as defined above, $r_a(t)$ is the position of $a$ at time $t$. The social force that drives the skier toward the waypoint, the destination force, is
+where, as defined above, $r_a(t)$ is the position of $a$ at time $t$. The destination social force drives the skier toward the waypoint and is as follows
 
 \begin{equation}\label{destination_force}
 F_D(r_a)=A_0 e_a(t)
 \end{equation}
 where $A_0$ is a scaling constant that represents the strength of the destination force.
 
-The attitude of skiers to keep a minimum distance from the edges is modeled with repulsion forces that are more stronger when the skier is closer to the edge. At each position $r_a$ the skier $a$ is subjected to a repulsion force from the left edge and to a repulsion force from the right edge. Let $r_a^L$ be the closest location to $r_a$ on the left edge, then the distance between the skier and the edge can be expressed as $r_{aL}=r_a-r_A^L$. The repulsion force from the left edge is defined as
+The attitude of skiers to keep a minimum distance from the edges is modeled with repulsion forces that are stronger when the skier gets closer to the edge of the slope. At each position $r_a$ the skier $a$ is subjected to a repulsion force from the left edge of the slope and to a repulsion force from the right edge of the slope. Let $r_a^L$ be the closest location to $r_a$ on the left edge, then the distance between the skier and the edge can be expressed as $r_{aL}=r_a-r_A^L$. The repulsion force from the left edge is defined as
 
 \begin{equation}\label{left_force}
 F_L(r_{aL})=-\nabla_{r_{aL}}U(\Vert r_{aL} \Vert )
@@ -82,7 +85,7 @@ where $U(\Vert r_{aL} \Vert )$ is a monotonically decreasing potential. In a sym
 \begin{equation}\label{right_force}
 F_R(r_{aR})=-\nabla_{r_{aR}}U(\Vert r_{aR} \Vert )
 \end{equation}
-The model takes into account also the natural behavior of avoiding collisions with other skiers. This is described by a repulsion force, referred as skier repulsion force, that each skier imposes on the other skiers. The skier repulsion force that a skier $b$ imposes on the skier $a$ can be expressed as
+The model takes into account also the natural human behavior of avoiding collisions with other skiers. This is described by a repulsion force, referred as skier repulsion force, that each skier imposes on the other skiers. The repulsion force that skier $b$ imposes on the skier $a$ can be expressed as
 
 \begin{equation}\label{skier_force}
 F_S(r_{ab})=-\nabla_{r_{ab}}V(s(r_{ab}))
@@ -97,7 +100,7 @@ Finally a repulsion force from the obstacles on the slope is considered. The for
 \begin{equation}\label{obstacle_force}
 F_O(r_{ao})=-\nabla_{r_{ao}}W(\Vert r_{ao} \Vert )
 \end{equation}
-In general, the repulsion social forces act on the skiers only if he or she is capable of perceiving what triggers the force. The model assumes that objects are perceived only within a certain range $\varphi$ of the skier direction. $2\varphi$ can be considered as the angle of view. This is modeled by the weight
+In general, repulsion social forces act on skiers only if he or she is capable of perceiving what triggers the force. The model assumes that objects are perceived only within a certain range $\varphi$ of the skier direction. $2\varphi$ can be considered as the angle of view. This is modeled by the weight
 
 \begin{equation}\label{visibility}
 w(u,v)=\begin{cases}
@@ -105,7 +108,7 @@ w(u,v)=\begin{cases}
   0 & \text{otherwise }
   \end{cases}
 \end{equation}
-To summarize, the social forces that applies on a skier $a$ are
+To summarize, social forces modeled for every skier $a$ are
 \begin{align}\label{social_forces_tb}
 F_D(r_a)&=A_0 e_a(t),\\
 F_L(\dot{r_a},r_{aL})&=w(\dot{r_a},-r_{aL})F_L(r_{aL}),\\
@@ -114,7 +117,7 @@ F_A(\dot{r_a},r_{ab})&=w(\dot{r_a},-r_{ab})F_A(r_{ab}),\\
 F_O(\dot{r_a},r_{ao})&=w(\dot{r_a},-r_{ao})F_O(r_{ao})
 \end{align}
 
-The resultant social force $F^a_{social}$ for a skier $a$ is the superposition of all the social forces that apply on the skier:
+The resultant social force $F^a_{social}$ is the superposition of all social forces that apply on skier $a$:
 
 \begin{equation}
 F^a_{social}=F_D(r_a)+F_L(\dot{r_a},r_{aL})+F_R(\dot{r_a},r_{aR})+\sum_b F_A(\dot{r_a},r_{ab})+\sum_o F_O(\dot{r_a},r_{ao})\nonumber
@@ -130,9 +133,9 @@ Figure \ref{social_forces_diagram} shows a diagram of the social forces describe
 
 
 \section{Physical forces}
-As described in \cite{hol2012}, there are two major techniques of performing turns: \textit{skidding} and \textit{carving}. During carving turns the direction of motion is exclusively parallel to the skis while in skidded turns there is an additional slippage to the side. Carved turns are usually performed by expert skiers, while beginners and not experienced skiers tend to perform skidded turns.
+As described in \cite{hol2012}, there are two major techniques used to curve while skiing: \textit{skidding} and \textit{carving}. When carving, the direction of motion is exclusively parallel to the skis while in skidding there is an additional slippage to the side. Carved turns are usually performed by expert skiers, while beginners and not experienced skiers tend to perform skidded turns.
 
-In \cite{hol2012} skiers are supposed to perform turns with a radius corresponding to the \textit{sidecut radius} of their skis. Although some studies \cite{jen2004} \cite{fe2010} have proposed a more realistic model of carving turns, investigating more deeply the effects of the penetration of the skis in the snow and of the skier tilt angle, for a first version of the model the approximation of the turning radius to the sidecut radius has been considered acceptable. Figure \ref{sidecut_radius} shows the relation between sidecut radius and turning radius.
+In \cite{hol2012} skiers are supposed to perform turns with a radius corresponding to the \textit{sidecut radius} of their skis. Although some studies \cite{jen2004} \cite{fe2010} have proposed a more realistic model of carving turns,deeply investigating the effects of ski penetration  in the snow and of the skier tilt angle, as a first version of the model the approximation of the turning radius to the sidecut radius has been considered acceptable. Figure \ref{sidecut_radius} shows the relation between sidecut radius and turning radius.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -153,12 +156,12 @@ and the inclination angle $\gamma$ of the current trajectory $e_{\dot{r}}$ is
 \end{equation}
 where $\beta$ is the angle between $e_{\dot{r}}$ and the horizontal of the slope.
 
-To compute the force accelerating the skier the gravitational force, the friction forces and the centripetal forces should be investigated. First the gravitational force $F_G$ is considered: it can be expressed as
+To compute the force accelerating the skier the gravitational force, the friction forces and the centripetal forces should be investigated. As first the gravitational force $F_G$ is considered. It can be expressed as
 
 \begin{equation}
 F_G=mg\left[\begin{matrix}0\\0\\-1\end{matrix}\right]
 \end{equation}
-where $g$ is the gravitational acceleration and $m$ the mass of the skier. The gravitational force can be decomposed in the normal force $F_N$, acting parallel to the surface normal $n$, and in the downhill force $F_S$, acting parallel to the fall line.
+where $g$ is the gravitational acceleration and $m$ the mass of the skier. The gravitational force can be subdivided into normal force $F_N$, acting parallel to the surface normal $n$, and into downhill force $F_S$, acting parallel to the fall line.
 
 \begin{equation}\label{downhill_force}
 F_G=F_S-F_N
@@ -167,7 +170,7 @@ The normal force $F_N$ can be expressed as
 \begin{equation}
 F_N=mg(\cos \alpha )n
 \end{equation}
-The downhill force $F_S$ itself can be decomposed into the downhill force $F_P$, acting parallel to the current trajectory $e_{\dot{r}}$, and into the lateral force $F_{lat}$ acting perpendicularly to the direction of travel (see. Fig\ref{downhill_force_pic}).
+The  downhill force $F_S$ itself can be subdivided into $F_P$ which is acting parallel to the current trajectory $e_{\dot{r}}$ and into the lateral force $F_{lat}$ acting perpendicularly to the current trajectory (see. Fig\ref{downhill_force_pic}).
 
 \begin{equation}
 F_S=F_P+F_{lat}
@@ -194,7 +197,7 @@ The lateral force $F_{lat}$ can therefore be computed as
 \begin{equation}
 F_{lat}=F_S-F_P
 \end{equation}
-The centripetal force $F_C$ a skier is exposed to during turns can be written as
+The centripetal force $F_C$ a skier is exposed while turning can be written as
 
 \begin{equation}
 F_C=\frac{m}{R_{SC}} {\norm{\dot{r}}}^2 \frac{F_{lat}}{\norm{F_{lat}}} \times
@@ -205,7 +208,7 @@ F_C=\frac{m}{R_{SC}} {\norm{\dot{r}}}^2 \frac{F_{lat}}{\norm{F_{lat}}} \times
 \end{equation}
 where $m$ is the mass of the skier and $R_{SC}$ the sidecut radius of the skis. $F_C$ is parallel to $F_{lat}$ before the skier crosses the fall line and antiparallel to $F_{lat}$ after having crossed the fall line.
 
-Before defining the kinetic friction of skis on snow, the effective force should be defined. The effective force is the force that has to be compensated by the snow. Its formulation depends on whether the skier is performing a turn or is descending on a straight line. In the following, when the definition of a force changes depending on whether the skier is turning, the index is written lowercase in the case of a straight line and uppercase in the case of a turn. So $F_{eff}$ is the effective force acting on a skier that is descending on a straight line and is defined as
+Before defining the kinetic friction of skis on snow, a definition of effective force should be given. The effective force is the force that needs to be compensated by the snow. Its formulation depends on whether the skier is performing a turn or is descending on a straight line. In the following, when the definition of a force changes depending on whether the skier is turning, the index is written lowercase in the case of a straight line and uppercase in the case of a turn. So $F_{eff}$ is the effective force acting on a skier that is descending on a straight line and is defined as
 
 \begin{equation}
 F_{eff}=F_{lat}-F_N
@@ -229,7 +232,7 @@ The kinetic friction force $F_{ground}$ can be expressed in terms of the skier's
 \begin{equation}
 F_{ground}=-\mu \norm{F_{eff}}e_{\dot{r}}
 \end{equation}
-when descending on a straight line. $\mu$ is the kinetic friction coefficient of skis on snow. In the case of a turn
+when descending on a straight line. $\mu$ is the kinetic friction coefficient of the skis on the snow. In case of a turn
 
 \begin{equation}
 F_{GROUND}=-\mu \norm{F_{EFF}}e_{\dot{r}}
@@ -254,10 +257,10 @@ F_{NET}=-F_P + F_{AIR} + F_{GROUND} + F_C
 \end{equation}
 
 \section{Limitations}
-The model proposed describes the motion of an expert skier that is performing perfect carved turns. The turning radio has been taken constant and equals to the sidecut radius of the skis. Not experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not allow skiers to stop their descent.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
+The model proposed describes the motion of an expert skier that skies performing perfect carved turns and the turning radio is taken constant and equals to the sidecut radius of the skis. Not experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not consider that skiers could stop while descending a slope.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
 
-\section{Differences from the original model}
-The physical model of the skiers motion has been keep equals to the one exposed in \cite{hol2012}. Between the social forces, the destination force $F_D$ (see. \ref{destination_force}) is of critical importance. Its action depends on the selection of the waypoints. In the original paper the waypoints were selected randomly every 50m, using a uniform distribution on the corresponding line from the left to the right edge of the slope (see Fig.\ref{waypoints_old_pic}).
+\section{New features implemented and differences from the original model}
+The physical model of the skiers motion has been keep equals to the one exposed in \cite{hol2012}. Within the social forces, the destination force $F_D$ (see. \ref{destination_force}) is of critical importance. The effectivness of this destination force is strongly related to the waypoints selection. In the original paper the waypoints were selected randomly every 50m, using a uniform distribution on the corresponding line from the left to the right edge of the slope (see Fig.\ref{waypoints_old_pic}).
 
 \begin{figure}[!ht]
   \begin{center}
@@ -266,9 +269,9 @@ The physical model of the skiers motion has been keep equals to the one exposed 
   \end{center}
 \end{figure}
 
-A more dynamical approach in the selection of the waypoints has been considered to better model the choices that a skier takes descending a slope. The new strategy allow each skier to dynamically choose waypoints during the descent, basing on the position of the skier, on the shape of the trail, on the slope of the terrain and on the skier velocity.
+A more dynamic approach in the waypoints selection has been considered to better model the decisions taken from a skier while descending a slope. The new strategy allow each skier to dynamically choose waypoints during the descent, based on the position of the skier, on the shape of the trail, on the slope of the terrain and on the skier speed.
 
-In the following the new mechanism for the waypoints selection is explained. Let $a$ be a skier at position $r_a$, let $r_a^L$ be the location on the left slope edge closest to $r_a$ and $r_a^R$ the location on the right slope edge closest to $r$. Then the vectors given the direction toward the edges are $e_{aR}=\left(r_a^L-r_a\right)/\norm{r_a^L-r_a}$ and $e_{aL}=\left(r_a^R-r_a\right)/\norm{r_a^R-r_a}$. Let $\alpha$ be the angle between $e_{aR}$ and $e_{aL}$ defined as
+Hereafter the new mechanism for the waypoints selection is explained. Let $a$ be a skier at position $r_a$, let $r_a^L$ be the location on the left slope edge closest to $r_a$ and $r_a^R$ the location on the right slope edge closest to $r$. The vectors given the direction toward the edges are $e_{aR}=\left(r_a^L-r_a\right)/\norm{r_a^L-r_a}$ and $e_{aL}=\left(r_a^R-r_a\right)/\norm{r_a^R-r_a}$. Let $\alpha$ be the angle between $e_{aR}$ and $e_{aL}$ defined as
 
 \begin{equation}
 \alpha=\begin{cases}
@@ -290,23 +293,28 @@ where $\rho$ is the distance at which waypoint are chosen, $F\left(v,\beta\right
   \end{center}
 \end{figure}
 
-A new waypoint is selected when the old waypoint is no longer feasible, meaning that it is not in the interval that the skier would consider choosing a new waypoint, or when the skier has traveled more than $D$ meters after having chosen the last waypoint.
+A new waypoint is selected when the old waypoint is no longer feasible, meaning that it is not in the interval that the skier would consider when choosing a new waypoint, or when the skier has traveled more than $D$ meters after having chosen the last waypoint.
 
-Designing the new mechanism to the selection of waypoints some requirements it should satisfy has been individuated:\begin{enumerate}
-\item \label{depending_velocity} Speed should influence the choice of the new waypoint: when skiers are traveling fast they tend to perform more turns than when the speed is low.
-\item \label{depending_slope} The selection of the new waypoint should depend on the slope that the skier is going to encounter: before flat areas skiers tend to avoid turns to increase their velocity.
-\item \label{frequency} The frequency of the selection of new waypoints should depend on the skiers speed, the more skiers are traveling fast, the more frequently they will choose new waypoints.
-\item \label{avoid_impact} Skiers usually avoid to choose a direction that would make them pass the edge of the slope. Therefore, the new waypoint should be in a position that does not lead the skier to impact the edge of the slope.
+The new approach for waypoints selection considers closely skier speed and the effect of the slope shape on skier's action:\begin{enumerate}
+\item \label{depending_velocity} Speed influences in two ways. 
+\begin{itemize}
+\item First, when skiers are faster they tend to turn more often, 
+\item secondly, higher speed means higher frequency of waypoints selection.  
+\end{itemize}
+\item \label{frequency} of the selection of new waypoints should depend on the skiers speed, the more skiers are traveling fast, the more frequently they will choose new waypoints.
+\item \label{depending_slope} The selection of a new waypoint should depend on the slope that the skier will face in his range of action: before flat areas skiers tend to go straight to increase velocity.
+
+\item \label{avoid_impact} Skiers usually avoid to choose a direction that would make them turn right on the edge of the slope. Therefore, the new waypoint should be in a position that does not lead the skier to impact the edge of the slope.
 \end{enumerate}
 
-To fulfill this requirements it is possible to act on the parameter $\delta$ of the equation \ref{new_waypoint}. When $\delta$ is increasing, the width of the angle in which new waypoints can be chosen becomes larger. As a consequence the probability of performing turns becomes higher.
+To fulfill the influences of skier's speed and shape of the slope it is possible to act on the parameter $\delta$ of the equation \ref{new_waypoint}. When $\delta$ is increasing, the width of the angle in which new waypoints can be chosen becomes larger. As a consequence the probability of performing turns becomes higher.
 
-Requirement \ref{depending_velocity} can be satisfied by making the parameter $\delta$ depend linear on the speed $v$ of the skier. Moreover it is required that when the speed $v$ is near $0$ then the width of the angle should be itself near to $0$ and when $v$ is near to a value of speed considered high $v_{max}$ the angle should have maximum width. Therefore, $\delta$ can be set to
+Point 1a \ref{depending_velocity} can be satisfied by making the parameter $\delta$ linearly depend on skier's speed $v$. Moreover it is required that when the speed $v$ is close to $0$ the width of the angle should be also close to $0$ and when $v$ is close to a high value of speed $v_{max}$ the angle should have maximum width. Therefore, $\delta$ can be set to
 \begin{equation}\label{delta_vel}
 \delta= \frac{v}{v_{max}}
 \end{equation}
 
-To fulfill the requirement \ref{depending_slope} an additional factor depending on the slope should be considered. Let $s$ be the slope that the skier is going to encounter and let $s_{lim}$ a value of slope that is considered small enough to require an additional acceleration by the skier. Then if $s<s_{lim}$ the width of the angle in which to choose the new waypoint should be narrowed again. Taking into account \ref{delta_vel} then we can write $\delta$ as
+To fulfill the second requirement \ref{depending_slope} an additional factor depending on the slope should be considered. Let $s$ be the slope that the skier is going to encounter and let $s_{lim}$ a value of slope that is considered small enough to require an additional acceleration by the skier. Then if $s<s_{lim}$ the width of the angle in which to choose the new waypoint should be narrowed again. Taking into account \ref{delta_vel} then we can write $\delta$ as
 
 \begin{equation}
 \delta=\begin{cases}
@@ -314,11 +322,11 @@ To fulfill the requirement \ref{depending_slope} an additional factor depending 
    \frac{v}{v_{max}} & \text{otherwise}
 \end{cases}
 \end{equation}
-If, despite this, the skiers will come to a complete halt (maybe due to a counter slope), they will start walking at constant speed.
+If, despite this, skiers will come to a complete stop (maybe due to a counter slope), they will have to move at constant speed.
 
-The requirement \ref{frequency} is already met by the mechanism described above. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
+The requirement \ref{frequency} is already met by the two  described above. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
 
-Finally, to satisfy the requirement \ref{avoid_impact} manipulating $\delta$ is not enough. The minimum turning radius of the skiers gives a bound to their capacity of avoiding a collision and of avoiding the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
+Finally, to satisfy point \ref{avoid_impact} manipulating $\delta$ will  not be  enough. The minimum turning radius of skiers gives a bound to their ability of avoiding a collision or to hit the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
 
 \chapter{Implementation}\label{implementation}
 The model was implemented using C++ and GRASS GIS. GRASS GIS is a Geographic Information System (GIS) open source software used for geospatial data management and analysis. It was chosen because it exposes its GIS engine in form of libraries that were used to perform the geospatial computation needed by the model.
