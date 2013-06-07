@@ -76,7 +76,7 @@ F_D(r_a)=A_0 e_a(t)
 \end{equation}
 where $A_0$ is a scaling constant that represents the strength of the destination force.
 
-The attitude of skiers to keep a minimum distance from the edges is modeled with repulsion forces that are stronger when the skier gets closer to the edge of the slope. At each position $r_a$ the skier $a$ is subjected to a repulsion force from the left edge of the slope and to a repulsion force from the right edge of the slope. Let $r_a^L$ be the closest location to $r_a$ on the left edge, then the distance between the skier and the edge can be expressed as $r_{aL}=r_a-r_A^L$. The repulsion force from the left edge is defined as
+The attitude of skiers to keep a minimum distance from the edges is modeled with repulsion forces that are stronger when the skier gets closer to the edge of the slope. At each position $r_a$ the skier $a$ is subjected to repulsion forces from the left and right edges of the slope. Let $r_a^L$ be the closest location to $r_a$ on the left edge, then the distance between the skier and the edge can be expressed as $r_{aL}=r_a-r_A^L$. The repulsion force from the left edge is defined as
 
 \begin{equation}\label{left_force}
 F_L(r_{aL})=-\nabla_{r_{aL}}U(\Vert r_{aL} \Vert )
@@ -138,7 +138,7 @@ Figure \ref{social_forces_diagram} shows a diagram of the social forces describe
 
 
 \section{Physical forces}
-As described in \cite{hol2012}, there are two major techniques used to curve while skiing: \textit{skidding} and \textit{carving}. When carving, the direction of motion is exclusively parallel to the skis while in skidding there is an additional slippage to the side. Carved turns are usually performed by expert skiers, while beginners and not experienced skiers tend to perform skidded turns.
+As described in \cite{hol2012}, there are two major techniques used to curve while skiing: \textit{skidding} and \textit{carving}. When carving, the direction of motion is exclusively parallel to the skis while in skidding there is an additional slippage to the side. Carved turns are usually performed by expert skiers, while beginners and non-experienced skiers tend to perform skidded turns.
 
 In \cite{hol2012} skiers are supposed to perform turns with a radius corresponding to the \textit{sidecut radius} of their skis. Although some studies \cite{jen2004} \cite{fe2010} have proposed a more realistic model of carving turns,deeply investigating the effects of ski penetration in the snow and of the skier tilt angle, as a first version of the model the approximation of the turning radius to the sidecut radius has been considered acceptable. Figure \ref{sidecut_radius} shows the relation between sidecut radius and turning radius.
 
@@ -266,7 +266,7 @@ F_{NET}=-F_P + F_{AIR} + F_{GROUND} + F_C
 The model proposed describes the motion of an expert skier that skies performing perfect carved turns and the turning radio is taken constant and equals to the sidecut radius of the skis. Not experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not consider that skiers could stop while descending a slope.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
 
 \section{Differences from the original model}
-The physical model of the skiers motion has been keep equals to the one exposed in \cite{hol2012}. Within the social forces, the destination force $F_D$ (see. \ref{destination_force}) is of critical importance. The effectivness of this destination force is strongly related to the waypoints selection. In the original paper the waypoints were selected randomly every 50m, using a uniform distribution on the corresponding line from the left to the right edge of the slope (see Fig.\ref{waypoints_old_pic}).
+The physical model of the skiers motion is identical to the one exposed in \cite{hol2012}. Within the social forces, the destination force $F_D$ (see. \ref{destination_force}) is of critical importance. The effectivness of this destination force is strongly related to the waypoints selection. In the original paper the waypoints were selected randomly every 50m, using a uniform distribution on the corresponding line from the left to the right edge of the slope (see Fig.\ref{waypoints_old_pic}).
 
 \begin{figure}[!ht]
   \begin{center}
@@ -486,6 +486,23 @@ An analysis of the performances of the software was performed in order to improv
     \caption{Computation time comparison between simulations with cache and simulation without it}\label{speed-up_cache}
   \end{center}
 \end{figure}
+
+\chapter{Steps to validate the model}\label{implementation}
+\section{Collecting data}
+The mobile application SkiLogger was used to collect real data describing the skiers trajectories. SkiLogger is an Android application developed inside the MPBA unit of the Bruno Kessler Foundation. It allows the skiers to track their position using GPS technology while skiing.
+
+SkiLogger was released for beta testing starting from February 2013. At this moment the application does not offer any additional functionality, but for the next seasons it is planned to implement new features such as real time information report about ski slope conditions and traffic, routing trough the ski slope network and friends position tracking. The goal is to incentive more users to use the application and collect a large dataset of real data.
+
+The data collected by the application needs to be filtered: the gps does not always give an accurate position, the application logs every moment including when using the ski lifts. Automated procedures has been developed to individuate and filter the single downhill tracks. As a first elaboration the speed of each point recorded has been computed. In order to minimize the effects of oscillation in the gps measurements, for the recorded position $x_i$ at the time $t_i$, the speed is computed considering the previous and following position as follow
+\begin{equation}
+v_i=\frac{\norm{x_i-x_{i-1}}+\norm{x_{i+1}-x_i}}{t_{i+1}-t_{i-1}}
+\end{equation}
+
+The second step in the processing of data is to filter the track of the skiers on the ski lifts. A sliding window considering sequences of ten points at a time was used. A sequence is valid if the slope between the first and the last point is downhill and greater than a minimum threshold or the skier keeps a minimum value of speed. This is done to exclude sequences tracking movement in flat areas or moving uphill but avoiding to eliminate the sequences tracking movement in area of the ski slope that are counter slope and where skiers should keep a minimum speed to avoid stopping.
+
+Finally, the last step in the cleaning of the data is to isolate the single downhill track. The start of a track is defined as a sequence of at least forty points of the same skier that are within a temporal range and that cover more than a minimum distance. This is useful to eliminate the noise data produced by the gps when skiers stop. In fact, when a skier does not move, if the gps does not have a good precision it tends to jump from different position generating false movement. Once the start of a track is found all the following points, all the following sequences of forty points that are within a time range and that represent a downhill movement are considered to be part of the start track. This last step individuates the single tracks and eliminates the points that are noise related to the inaccuracy of the gps.
+
+For the season 2012/2013 a total of 178501 meters of descent has been tracked. 
 
 
 
