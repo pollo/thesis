@@ -1,8 +1,10 @@
 \documentclass[12pt,a4paper,twoside]{book}
 \usepackage[english]{babel}
 \usepackage{graphicx}
-\usepackage{amsmath}
 \usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+
 \newcommand{\norm}[1]{\lVert#1\rVert}
 
 \bibliographystyle{abbrv}
@@ -401,7 +403,7 @@ The simulation requires as input the vector map with the polygon of the ski slop
   \end{center}
 \end{figure}
 
-\section{Output data}
+\section{Output data}\label{output_data}
 The output produced by the simulation is the status of each skier at each integration step of the simulation. The information logged at a time $t$ for a skier $a$ are the position $r_a$ and the velocity $\dot{r}_a$.
 
 Starting from this data two main analysis have been performed: speed average and average density of skiers computation. To analyze the speed of skiers along the ski slope a raster map of average speed has been produced. The map is obtained interpolating the speed values simulated by the simulation (see fig.\ref{uno_tognola_speed}). The interpolation was done using the GRASS module v.surf.idw. The GRASS module v.kernel was used to compute the density of skiers on the slope. The raster density map is computed using a moving kernel with gaussian distribution (see fig.\ref{uno_tognola_density}).
@@ -487,7 +489,7 @@ An analysis of the performances of the software was performed in order to improv
   \end{center}
 \end{figure}
 
-\chapter{Steps to validate the model}\label{implementation}
+\chapter{Steps to validate the model}\label{steps_validate}
 \section{Collecting data}
 The mobile application SkiLogger was used to collect real data describing the skiers trajectories. SkiLogger is an Android application developed inside the MPBA unit of the Bruno Kessler Foundation. It allows the skiers to track their position using GPS technology while skiing.
 
@@ -500,10 +502,111 @@ v_i=\frac{\norm{x_i-x_{i-1}}+\norm{x_{i+1}-x_i}}{t_{i+1}-t_{i-1}}
 
 The second step in the processing of data is to filter the track of the skiers on the ski lifts. A sliding window considering sequences of ten points at a time was used. A sequence is valid if the slope between the first and the last point is downhill and greater than a minimum threshold or the skier keeps a minimum value of speed. This is done to exclude sequences tracking movement in flat areas or moving uphill but avoiding to eliminate the sequences tracking movement in area of the ski slope that are counter slope and where skiers should keep a minimum speed to avoid stopping.
 
-Finally, the last step in the cleaning of the data is to isolate the single downhill track. The start of a track is defined as a sequence of at least forty points of the same skier that are within a temporal range and that cover more than a minimum distance. This is useful to eliminate the noise data produced by the gps when skiers stop. In fact, when a skier does not move, if the gps does not have a good precision it tends to jump from different position generating false movement. Once the start of a track is found all the following points, all the following sequences of forty points that are within a time range and that represent a downhill movement are considered to be part of the start track. This last step individuates the single tracks and eliminates the points that are noise related to the inaccuracy of the gps.
+Finally, the last step in the cleaning of the data is to isolate the single downhill track. The start of a track is defined as a sequence of at least forty points of the same skier that are within a temporal range and that cover more than a minimum distance. This is useful to eliminate the noise data produced by the gps when skiers stop. In fact, when a skier does not move, if the gps does not have a good precision it tends to jump from different position generating false movement. Once the start of a track is found all the following points, all the following sequences of forty points that are within a time range and that represent a downhill movement are considered to be part of the start track. This last step individuates the single tracks and eliminates the points that are noise related to the inaccuracy of the gps. Figure \ref{data_tognola} shows an example of the data recorded. In some sections of the slope gps inaccuracies can be noted. Sometimes discrepancies can be due also to inaccuracies in the trail of the ski slope.
 
-For the season 2012/2013 a total of 178501 meters of descent has been tracked. 
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/data_tognola.eps}
+    \caption{Real skiers data logged with the mobile application SkiLogger on the ski slope ``Uno di Tognola'' in San Martino di Castrozza}\label{data_tognola}
+  \end{center}
+\end{figure}
 
+For the season 2012/2013 a total of 178502 meters of descent has been tracked divided in 115 separate tracks. The average length of the tracks is of 1552 meters. 100 tracks are longer than 500 meters (Table \ref{descendts}).
+
+\begin{table}
+  \begin{center}
+  \begin{tabular}{ | l | c | }
+    \hline
+    Total number of tracks & 115 \\ \hline
+    Total meters tracked & 178502m \\ \hline
+    Average length for track & 1552m \\ \hline
+    Tracks longer than 500m & 100 \\
+    \hline
+  \end{tabular}
+  \caption{Summary table for tracks data logged}
+  \label{descendts}
+  \end{center}
+\end{table}
+
+The total number of skiers that has used the application is 18. Each skier was request to fill in a little form before using the application. The data asked included a self-assessment of the skiing skill, the kind of tool used (skis, snowboard, telemark...), the dimension of the group and the age group. Only two skiers chose the beginner level and tracked a 6 tracks for a total of 906 meters. Three skiers were intermediate, with 6 tracks and 6264 meters tracked. Thirteen skiers were experts, they logged 103 tracks and 171331 meters (Table \ref{skiers}).
+
+\begin{table}
+  \begin{center}
+  \begin{tabular}{ c | c | c | c }
+    \hline
+    Level & Skiers number & Tracks & Total meters \\
+    \hline
+    Beginner & 2  & 6 & 906m \\
+    Intermediate & 3 & 6 & 6264m \\
+    Expert & 13 & 103 & 171331m \\
+    \hline
+  \end{tabular}
+  \caption{Summary table for skiers that have used SkiLogger}
+  \label{skiers}
+  \end{center}
+\end{table}
+
+The main issue of the data collected is that they are not statistically relevant. Of the total 115 tracks, 52 were tracked by one skier. Another problem is that they are spread on ten different skiing resort in Trentino. For this reason we have very few ski slopes that were tracked by different skiers. In particular there are only two slopes with 5 or 4 different skiers, 8 slopes with 3 skiers and 62 slopes with 1 or 2 skiers (Table \ref{slopes}).
+
+\begin{table}
+  \begin{center}
+  \begin{tabular}{ c | c }
+    \hline
+    Different skiers & Slopes number \\
+    \hline
+    5 & 1 \\
+    4 & 1 \\
+    3 & 8 \\
+    2 & 18 \\
+    1 & 44 \\
+    \hline
+  \end{tabular}
+  \caption{Table summarizing the number of different skiers for the ski slopes}
+  \label{slopes}
+  \end{center}
+\end{table}
+
+The data collected does not allow to do a realistic tuning of the parameters and to validate the model for ski slopes in Trentino. However some comparisons between the data collected and the simulated data has been performed.
+
+\section{Simulated vs. real data}
+The data collected are to few to analyze the map of skiers density produced. Instead, this part of the analysis focuses on the difference between the speed estimated by the simulation and the speed recorded by the SkiLogger application. Starting from the map of simulated speed (see Figure\ref{uno_tognola_speed}), produced as described in section \ref{output_data}, the values of speed computed for each point tracked by the application was compared to the values of speed of the map. Figure \ref{sm_track47} shows the comparison between real and simulated values of speed for the track 47 of the skier 15 recorded on the ski slope ``Uno di Tognola'': while the simulated skiers do not stop during the descent the skier stopped at least three times.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/sm_track47.eps}
+    \caption{Comparison between simulated and real speed for the track 47 on the ski slope ``Uno di Tognola''}\label{sm_track47}
+  \end{center}
+\end{figure}
+
+For each track recorded on the ski slope were computed the error between real and simulated values as $e=v_R-v_S$ where $v_R$ is the real speed recorded and $v_S$ the speed simulated by the model. Figure \ref{map_error} show the map of the error made for each point of the tracks. The point in the map were the skiers error is higher is were the skiers stopped. It can be seen that the error produced by the stops reverberates on the following points. To compare the speed values taking into account the stops a new simulation was run where the simulated skiers were forced to stop according to the stops made by the skier 35 in the track 116. A new map of simulated speed were interpolated, Figure \ref{sm_stops_track116} shows the comparison for the track 116.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/map_error.eps}
+    \caption{Map of the errors between the real and the simulated speed on the tracks recorded on the ski slope ``Uno di Tognola''}\label{map_error}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/sm_track116.eps}
+                \caption{}
+                \label{Sno_stops}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/sm_stops_track116.eps}
+                \caption{}
+                \label{Sstops}
+        \end{subfigure}
+        \caption{Simulated and real speed values for track 116 of ``Uno di Tognola''. Figure \ref{Sno_stops} is without stops, in Figure \ref{Sstops} simulated skiers were forced to stop as the real skier}\label{sm_stops_track116}
+\end{figure}
+
+\chapter{Conclusions}
 
 
 \bibliography{thesis}
