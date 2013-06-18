@@ -43,16 +43,47 @@ Anno accademico 2012-2013
 \end{titlepage}
 \tableofcontents
 
-\chapter*{Introduction}
+\chapter*{Summary}
 \addcontentsline{toc}{chapter}{Introduction}
-The goal of this thesis work is to implement a computational model of skiers at high spatial resolution based on the particle-based approach. It has been developed within the context of the SicurSkiWeb project, which is a new project of the Bruno Kessler Foundation in collaboration with the Polizia di Stato and the Association of skiing resorts of Trentino. SicurSkiWeb offers a GeoICT management platform collecting all data about rescue interventions by ski patrols, with the goal of providing a predictive platform to increase safe skiing. The goal of the model implemented is to simulate the trajectories of skiers descending a ski slope. This will be useful inside a wider predictive model for ski accidents prevention to estimate the state of skiing traffic inside the ski slopes. In particular two key factors were investigated: the average speed and the average density of skiers in the different zones of the ski slopes.
+The goal of this thesis work is to implement a computational model of skiers at high spatial resolution based on the agent-based approach. The model simulates the trajectories of skiers descending a ski slope. This will be useful inside a wider predictive model for ski accidents prevention to estimate the state of skiing traffic inside the ski slopes. In particular two key factors were investigated: the average speed and the average density of skiers in the different zones of the ski slopes.
 
-The model implemented is a particle-based model. It was proposed by Holleczek and Troster \cite{hol2012}. Skiers are modeled as particles with a mass subjected to physical and social forces, which define the riding behavior of skiers during their descents on ski slopes. Physical forces determine the acceleration of skiers. Social forces are used to individuate the skiers desired direction, namely the direction in which a skier wants to travel, that is used to decide whether skiers need to adjust their direction performing a turn. The original model was limited to experienced skiers only. The major change introduced was modeling other classes of skiers. Other changes are related to the implementation of the social forces: skiers choices related to their trajectories were made dynamically depend on the status of the skiers and on the condition of the slope.
+The thesis work was developed within the context of the SicurSkiWeb project, which is a new project of the Bruno Kessler Foundation in collaboration with the Polizia di Stato and the Association of skiing resorts of Trentino. SicurSkiWeb offers a GeoICT management platform collecting all data about rescue interventions by ski patrols, with the goal of providing a predictive platform to increase safe skiing.
 
-The mobile application SkiLogger, developed inside the SicurSkiWeb project, was used to collect data of real skiers. SkiLogger can be used by skiers to track their trajectories using the GPS technology. The application was released for beta testing in the February 2013, the data collected were not enough to do a robust calibration of the parameters and to validate the model. However a comparison between real data collected and simulated data was performed. In particular, the comparison between simulated and recorded speed data has shown a good correspondence.
+The model implemented is a particle-based model proposed by Holleczek and Troster \cite{hol2012}. Skiers are modeled as particles with a mass subjected to physical and social forces, which define their riding behavior during the descents on ski slopes. Physical forces determine the acceleration of skiers. Social forces are used to individuate the skiers desired direction, namely the direction in which a skier is inclined to travel, that is used to decide whether skiers need to adjust their direction performing a turn. The model presented by Holleczek and Troster was limited to experienced skiers only. The major change introduced was modeling other classes of skiers. Other changes are related to the implementation of the social forces: skiers choices related to their trajectories were made dynamically depend on the status of the skiers and on the condition of the slope.
 
+An adaptation of the model was additionally realized in order to simulate ski lessons. In these simulations agents have strongly correlated trajectories: the first agent simulates the instructor and decide the trajectory autonomously, the following agents are forced to emulate the instructor trajectory.
+
+The implementation was realized in C++ using the GRASS GIS C-API for the spatial computations. GRASS GIS is an Open Source Geographic Information System (GIS) software used for geospatial data management and analysis.
+
+The mobile application SkiLogger, developed inside the SicurSkiWeb project, was used to collect data of real skiers. SkiLogger can be used by skiers to track their trajectories using GPS sensors, now usually available also on common smartphones. The application was released for beta testing in the February 2013, allowing to track a total of 171 Km of descents on ski slopes by 18 distinct skiers. The data collected were not enough to do a robust calibration of the parameters and to validate the model. A comparison between real data and simulated data was performed in terms of speed values. The average error for the tracks considered ranges between 4.28 m/s and 6.44 m/s. This result is affected by the stops made by the skiers tracked. Introducing a new experimental stop parameter the average error made for a specific track was reduced from 5.56 m/s to 2.52 m/s.
+
+Figure \ref{traj} shows simulated and recorded trajectories on the ski slope ``Uno di Tognola'' of San Martino di Castrozza in Trentino (Italy).
+
+\begin{figure}[!h]
+        \centering
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/simulated_trajectories.eps}
+                \caption{Simulated trajectories}\label{traj_sim}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/real_trajectories.eps}
+                \caption{Recorded trajectories}\label{traj_real}
+        \end{subfigure}
+        \caption{Simulated and recorded trajectories on the ski slope ``Uno di Tognola''}\label{traj}
+\end{figure}
+
+Chapter \ref{model} describes the model and defines the physical and social forces. Chapter \ref{implementation} presents the technologies used and gives details related to the model implementations and the parameters selection. Chapter \ref{steps_validate} presents the data collected and the comparisons with the simulated data.
+
+This thesis work was developed in the MPBA unit of the Bruno Kessler Foundation. I would like to thank Prof. Alberto Montresor, who has supervised me during this work. This thesis would not have been possible without the help and support of all the MPBA unit, in particular I would like to thank Cesare Furlanello, for having guided and advised me during this period, and Riccardo De Filippi, who helped me in writing the thesis. A big thank goes to Andrea Gobbi, for his patience, his competence and for the many useful discussion we had during this months. Finally, I thank my family for supporting me throughout all my studies at University.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+
+
 \chapter{The model}\label{model}
 The model implemented can be classified as a two-dimensional microscopic-driven many-particle system with the constraint that skiers are exposed to gravity and centripetal forces. It was published by Holleczek and Troster \cite{hol2012}.
 
@@ -523,14 +554,16 @@ v_i=\frac{\norm{x_i-x_{i-1}}+\norm{x_{i+1}-x_i}}{t_{i+1}-t_{i-1}}
 
 The second step processing the data is to filter the position tracked when skiers are on the ski lifts. For this purpose, a sliding window that considers sequences of ten points at a time was used. A sequence of point is considered valid if the slope between the first and the last point is downhill and it is greater than a minimum threshold or if the skier keeps a speed greater than a fixed minimum speed. The idea is to exclude sequences of point tracking movements in flat areas or moving uphill, avoiding at the same time to eliminate those sequences tracking movement in area of ski slopes that are counter slope and where skiers should usually keep a minimum speed to avoid stopping.
 
-Finally, the last step in the process of cleaning the data is to isolate the single downhill tracks. This is done in two steps: first the start of the tracks are individuated, then each point is assigned to the right track (if any exists). The start of a track is defined as a sequence of at least forty points of the same skier, that are logged within a temporal range and that cover more than a fixed minimum distance. This is done to eliminate the noise data produced by the gps when skiers stop. In fact, when a skier does not move, the gps tends to jump from different positions generating false movement. This is particularly true when the gps does not have a good precision. Once the start of a track is found all the following sequences of forty points that are within a time range and that represent a downhill movement are considered to be part of this start track. This last step individuates the single tracks and eliminates the points that are noise due to the inaccuracy of the gps. Figure \ref{data_tognola} shows an example of the data recorded with the tracks highlighted. In some sections of the slope gps inaccuracies can be noted. Sometimes discrepancies can be due also to inaccuracies in the trail of the ski slope.
+Finally, the last step in the process of cleaning the data is to isolate the single downhill tracks. This is done in two steps: first the start of the tracks are individuated, then each point is assigned to the right track (if any exists). The start of a track is defined as a sequence of at least forty points of the same skier, that are logged within a temporal range and that cover more than a fixed minimum distance. This is done to eliminate the noise data produced by the gps when skiers stop. In fact, when a skier does not move, the gps tends to jump from different positions generating false movement. This is particularly true when the gps does not have a good precision. Once the start of a track is found all the following sequences of forty points that are within a time range and that represent a downhill movement are considered to be part of this start track. This last step individuates the single tracks and eliminates the points that are noise due to the inaccuracy of the gps.
 
-\begin{figure}
+\begin{figure}[!h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{images/data_tognola.eps}
     \caption{Real skiers data logged with the mobile application SkiLogger on the ski slope ``Uno di Tognola'' in San Martino di Castrozza}\label{data_tognola}
   \end{center}
 \end{figure}
+
+Figure \ref{data_tognola} shows an example of the data recorded with the tracks highlighted. In some sections of the slope gps inaccuracies can be noted. Sometimes discrepancies can be due also to inaccuracies in the trail of the ski slope.
 
 For the season 2012/2013 a total of 178502 meters of descent has been tracked divided in 115 separated tracks. The average length of a track is of 1552 meters. 100 tracks are longer than 500 meters (Table \ref{descendts}).
 
