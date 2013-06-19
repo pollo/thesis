@@ -5,6 +5,33 @@
 \usepackage{subcaption}
 \usepackage{amsmath}
 
+\makeatletter
+\newcommand\ackname{Acknowledgements}
+\if@titlepage
+  \newenvironment{acknowledgements}{%
+      \titlepage
+      \null\vfil
+      \@beginparpenalty\@lowpenalty
+      \begin{center}%
+        \bfseries \ackname
+        \@endparpenalty\@M
+      \end{center}}%
+     {\par\vfil\null\endtitlepage}
+\else
+  \newenvironment{acknowledgements}{%
+      \if@twocolumn
+        \section*{\abstractname}%
+      \else
+        \small
+        \begin{center}%
+          {\bfseries \ackname\vspace{-.5em}\vspace{\z@}}%
+        \end{center}%
+        \quotation
+      \fi}
+      {\if@twocolumn\else\endquotation\fi}
+\fi
+\makeatother
+
 \newcommand{\norm}[1]{\lVert#1\rVert}
 
 \bibliographystyle{abbrv}
@@ -41,48 +68,59 @@ Relatore esterno:\hspace{6.8cm}Laureando:   \\
 Anno accademico 2012-2013
 \end{center}
 \end{titlepage}
-\tableofcontents
 
 \chapter*{Summary}
-\addcontentsline{toc}{chapter}{Introduction}
-The goal of this thesis work is to implement a computational model of skiers at high spatial resolution based on the agent-based approach. The model simulates the trajectories of skiers descending a ski slope. This will be useful inside a wider predictive model for ski accidents prevention to estimate the state of skiing traffic inside the ski slopes. In particular two key factors were investigated: the average speed and the average density of skiers in the different zones of the ski slopes.
+The goal of this thesis work is to implement a computational model of skiers at high spatial resolution based on the agent-based approach. The model simulates the trajectories of skiers descending a ski slope, with different applications of interest for skiing safety analysis as well as skiers behavior profiling. In particular the first applicative goal of this thesis is to contribute to a general predictive model for skiing accidents prevention by providing estimates of traffic indicators along the ski slopes. Specifically, the computational model aims to provide average speed and density of skiers.
 
 The thesis work was developed within the context of the SicurSkiWeb project, which is a new project of the Bruno Kessler Foundation in collaboration with the Polizia di Stato and the Association of skiing resorts of Trentino. SicurSkiWeb offers a GeoICT management platform collecting all data about rescue interventions by ski patrols, with the goal of providing a predictive platform to increase safe skiing.
 
-The model implemented is a particle-based model proposed by Holleczek and Troster \cite{hol2012}. Skiers are modeled as particles with a mass subjected to physical and social forces, which define their riding behavior during the descents on ski slopes. Physical forces determine the acceleration of skiers. Social forces are used to individuate the skiers desired direction, namely the direction in which a skier is inclined to travel, that is used to decide whether skiers need to adjust their direction performing a turn. The model presented by Holleczek and Troster was limited to experienced skiers only. The major change introduced was modeling other classes of skiers. Other changes are related to the implementation of the social forces: skiers choices related to their trajectories were made dynamically depend on the status of the skiers and on the condition of the slope.
+The model implemented is a particle-based model proposed by Holleczek and Troster \cite{hol2012}. Skiers are modeled as particles with a mass subjected to physical and social forces, which define their riding behavior during the descents on ski slopes. Physical forces determine the acceleration of skiers. Social forces are used to individuate the skiers desired direction, namely the direction in which a skier is inclined to travel, that is used to decide whether skiers need to adjust their direction performing a turn. The model presented by Holleczek and Troster was limited to experienced skiers only. The major change introduced in this thesis is the modeling of other classes of skiers, such as beginners and intermediates. Other changes are related to the implementation of the social forces: skiers choices related to their trajectories were made dynamically depend on the status of the skiers and on the condition of the slope.
 
-An adaptation of the model was additionally realized in order to simulate ski lessons. In these simulations agents have strongly correlated trajectories: the first agent simulates the instructor and decide the trajectory autonomously, the following agents are forced to emulate the instructor trajectory.
+An adaptation of the model was additionally realized in order to simulate ski lessons. In these patterns agents have strongly correlated trajectories: the first agent simulates the instructor and decides the trajectory autonomously, the following agents are forced to emulate the instructor trajectory.
 
-The implementation was realized in C++ using the GRASS GIS C-API for the spatial computations. GRASS GIS is an Open Source Geographic Information System (GIS) software used for geospatial data management and analysis.
+The implementation was realized in C++ using the GRASS GIS C-API for the spatial computations. GRASS GIS is an Open Source Geographic Information System (GIS) software used for geospatial data management and analysis. A new GRASS module has been developed.
 
-The mobile application SkiLogger, developed inside the SicurSkiWeb project, was used to collect data of real skiers. SkiLogger can be used by skiers to track their trajectories using GPS sensors, now usually available also on common smartphones. The application was released for beta testing in the February 2013, allowing to track a total of 171 Km of descents on ski slopes by 18 distinct skiers. The data collected were not enough to do a robust calibration of the parameters and to validate the model. A comparison between real data and simulated data was performed in terms of speed values. The average error for the tracks considered ranges between 4.28 m/s and 6.44 m/s. This result is affected by the stops made by the skiers tracked. Introducing a new experimental stop parameter the average error made for a specific track was reduced from 5.56 m/s to 2.52 m/s.
-
-Figure \ref{traj} shows simulated and recorded trajectories on the ski slope ``Uno di Tognola'' of San Martino di Castrozza in Trentino (Italy).
+The model has been tested by using a set of real data collected in February and March 2013. The mobile application SkiLogger, developed inside the SicurSkiWeb project, was used to collect data of real skiers. SkiLogger can be used by skiers to track their trajectories by GPS sensors, now usually available also on common smartphones. The application allowed to track a total of 171 Km of descents on ski slopes by 18 distinct skiers. An initial calibration of the model was based on the data collected. A comparison between real data and simulated data was performed in terms of speed values. The average error for the tracks considered ranges between 4.28 m/s and 6.44 m/s, while recorded speeds range from 0 to 30 m/s. The model has been then modified to include possible stops along the ski slope. A new experimental stop parameter was introduced, obtaining a $55\%$ reduction of the average error made for a specific track. Figure \ref{speeds} shows the recorded speeds of a track on the ski slope ``Uno di Tognola'' of San Martino di Castrozza in Trentino (Italy) and compares them to the speeds predicted by the simulation.
 
 \begin{figure}[!h]
         \centering
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{images/simulated_trajectories.eps}
-                \caption{Simulated trajectories}\label{traj_sim}
+                \includegraphics[width=\textwidth]{images/sm_track116.eps}
         \end{subfigure}%
         ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
           %(or a blank line to force the subfigure onto a new line)
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{images/real_trajectories.eps}
-                \caption{Recorded trajectories}\label{traj_real}
+                \includegraphics[width=\textwidth]{images/sm_stops_track116.eps}
         \end{subfigure}
-        \caption{Simulated and recorded trajectories on the ski slope ``Uno di Tognola''}\label{traj}
+        \caption{Comparison between speed values recorded for a track and average simulated speeds. Figure on the left shows simulated speed values without stops. Figure on the right shows speed values with forced stops.}\label{speeds}
 \end{figure}
 
 Chapter \ref{model} describes the model and defines the physical and social forces. Chapter \ref{implementation} presents the technologies used and gives details related to the model implementations and the parameters selection. Chapter \ref{steps_validate} presents the data collected and the comparisons with the simulated data.
 
+\begin{acknowledgements}
 This thesis work was developed in the MPBA unit of the Bruno Kessler Foundation. I would like to thank Prof. Alberto Montresor, who has supervised me during this work. This thesis would not have been possible without the help and support of all the MPBA unit, in particular I would like to thank Cesare Furlanello, for having guided and advised me during this period, and Riccardo De Filippi, who helped me in writing the thesis. A big thank goes to Andrea Gobbi, for his patience, his competence and for the many useful discussion we had during this months. Finally, I thank my family for supporting me throughout all my studies at University.
+\end{acknowledgements}
+
+\tableofcontents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Introduction}
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+Alpine skiing is a winter sport widely practiced in the Alps and it is a key resource for the tourism sector. In Trentino as well it has an high importance, more than 80.000.000 of single passages on the ski lifts of the Trentino's ski resorts are estimated each year. Alpine skiing entails the risk of accidents, in Trentino with a 1:10.000 ratio on single passages people are involved in accidents.
 
+SicurSkiWeb is a new project of the Bruno Kessler Foundation started with the goal of monitoring and improving safety on ski slopes. SicurSkiWeb is in collaboration with the Polizia di Stato and the Association of skiing resorts of Trentino. The project offers a GeoICT management platform collecting all data about rescue interventions by ski patrols. Inside the platform are now recorded data related to 2571 interventions. 70\% of accidents are related to skiers while 20\% are snowboarder. 80\% of the interventions were for accidental causes and 11\% for collisions with other persons.
+
+The IT infrastructure is divided in three modules:
+\begin{itemize}
+\item An Android application synchronized for data collection.
+\item A WebGIS platform to manage or visualize field data, and to monitor constantly the evolution of the risk on the slopes.
+\item A set of analysis tools for understanding, study and to map the risk and its relation with environmental and social factors.
+\end{itemize}
+This thesis work aims to provide an analysis tool to describe the riding behavior of skiers during the descents on ski slopes, that will be used as a component of the analysis module of the SicurSkiWeb project.
+
+Traffic simulations have been widely used to predict motions of objects such as vehicles and pedestrians using models from statistical physic. Holleczek and Troster proposed to apply the same methodologies to predict skiing traffic. Following their approach, skiing dynamics has been simulated using a particle-based model.
 
 \chapter{The model}\label{model}
 The model implemented can be classified as a two-dimensional microscopic-driven many-particle system with the constraint that skiers are exposed to gravity and centripetal forces. It was published by Holleczek and Troster \cite{hol2012}.
@@ -99,7 +137,7 @@ The social forces implemented in the model describe the decisions taken by a ski
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.4\textwidth]{images/start_turn_pic.eps}
-    \caption{(From \cite{hol2012}) When the angle between the current direction of motion $e_{\dot{r}}$ and the desired direction $e_{social}$ is bigger than $\delta$ the skier performs a turn to adjust his or her direction}\label{start_turn_pic}
+    \caption{(From \cite{hol2012}) When the angle between the current direction of motion $e_{\dot{r}}$ and the desired direction $e_{social}$ is bigger than $\delta$ the skier performs a turn to adjust his or her direction.}\label{start_turn_pic}
   \end{center}
 \end{figure}
 
@@ -147,7 +185,7 @@ In general, repulsion social forces act on skiers only if he or she is capable o
 
 \begin{equation}\label{visibility}
 w(u,v)=\begin{cases}
-  1 & \text{if $(u/\Vert u \Vert)\cdot (v/\Vert v \Vert) \geq cos \varphi$} \\
+  1 & \text{if $(u/\Vert u \Vert)\cdot (v/\Vert v \Vert) \geq \cos \varphi$} \\
   0 & \text{otherwise }
   \end{cases}
 \end{equation}
@@ -260,7 +298,7 @@ Figure \ref{effective_force_pic} shows the effective force ($F_{eff}$ and $F_{EF
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{images/figure6.eps}
-    \caption{(from \cite{hol2012}) In (a) effective force during the descent on a straight line ($F_{eff}=F_{lat}-F_N$). In (b) effective force during a carved turn ($F_{EFF}=F_{lat}-F_N-F_C$)}\label{effective_force_pic}
+    \caption{(from \cite{hol2012}) In (a) effective force during the descent on a straight line ($F_{eff}=F_{lat}-F_N$). In (b) effective force during a carved turn ($F_{EFF}=F_{lat}-F_N-F_C$).}\label{effective_force_pic}
   \end{center}
 \end{figure}
 
@@ -297,7 +335,7 @@ F_{NET}=F_P + F_{AIR} + F_{GROUND} + F_C
 The model proposed describes the motion of an expert skier that skies performing perfect carved turns and the turning radio is taken constant and equals to the sidecut radius of the skis. Not experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not consider that skiers could stop while descending a slope.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
 
 \section{Differences from the original model}
-The main change introduced in the original model was modeling also non-experienced skiers. Beginner and intermediate skiers perform skidded turns. In a skidded turn the direction of motion is parallel to the skis, however there is an additional component of the motion directed to the side of the turn due to a slippage of the skis on the snow. This results in a significant loss in speed due to the "plowing" action of the skis on the snow which generates a high frictional resistance. To simulate skidded turns, only a fraction of the force $F_P$, the component of the gravitational force parallel to the direction of motion, was considered to accelerate the skiers. In fact, a fraction of this force is loss in the slippage and do not produce an increase of the speed. Therefore, for non-experienced skiers the net force while turning (defined in \ref{physical_resultant}), $F_{NET}$, should be redefined as
+The main change introduced in the original model was modeling also non-experienced skiers. Beginner and intermediate skiers perform skidded turns. In a skidded turn the direction of motion is parallel to the skis, however there is an additional component of the motion directed to the side of the turn due to a slippage of the skis on the snow. This results in a significant loss in speed due to the ``plowing'' action of the skis on the snow which generates a high frictional resistance. To simulate skidded turns, only a fraction of the force $F_P$, the component of the gravitational force parallel to the direction of motion, was considered to accelerate the skiers. In fact, a fraction of this force is loss in the slippage and do not produce an increase of the speed. Therefore, for non-experienced skiers the net force while turning (defined in \ref{physical_resultant}), $F_{NET}$, should be redefined as
 \begin{equation}
 F_{NET}=(1-\eta) F_P + F_{AIR} + F_{GROUND} + F_C
 \end{equation}
@@ -318,21 +356,21 @@ Hereafter the new mechanism for the waypoints selection is explained. Let $a$ be
 
 \begin{equation}
 \alpha=\begin{cases}
-  \arccos(e_{aR} \cdot e_{aL}) & \text{if(($e_{aR} \times e_{aL})\cdot n \ge 0$)} \\
-  2\pi-\arccos(e_{aR} \cdot e_{aL}) & \text{if(($e_{aR} \times e_{aL})\cdot n < 0$)}
+  \arccos(e_{aR} \cdot e_{aL}) & \text{if } (e_{aR} \times e_{aL})\cdot n \ge 0 \\
+  2\pi-\arccos(e_{aR} \cdot e_{aL}) & \text {if } (e_{aR} \times e_{aL})\cdot n < 0
 \end{cases}
 \end{equation}
-where $n$ is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $\alpha$. More precisely, let $\delta$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
+where $n$ is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $\alpha$. More precisely, let $p$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
 
 \begin{equation}\label{new_waypoint}
-w_a=r_a+\rho F\left(\frac{e_{aR}+e_{aL}}{\norm{e_{aR}+e_{aL}}},\mathcal{U}\left(-\frac{\alpha\delta}{2},\frac{\alpha\delta}{2}\right)\right)
+w_a=r_a+\rho F\left(\frac{e_{aR}+e_{aL}}{\norm{e_{aR}+e_{aL}}},\mathcal{U}\left(-\frac{p \alpha}{2},\frac{p \alpha}{2}\right)\right)
 \end{equation}
 where $\rho$ is the distance at which waypoint are chosen, $F\left(v,\beta\right)$ rotates the vector $v$ of an angle $\beta$ and $\mathcal{U}(a,b)$ returns a random number with uniform distribution on $(a,b)$ (see Fig.\ref{new_waypoint_pic}).
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{images/waypoint_new.eps}
-    \caption{Selection of a waypoint: the skier $a$ selects the new waypoint $w$ choosing with uniform distribution on the angle $\delta\alpha$, a fraction of $\alpha$. The angle $\alpha$ is the angle between $e_{aR}$, the vector representing the direction towards the right edge, and $e_{aL}$, the vector towards the left edge,}\label{new_waypoint_pic}
+    \caption{Selection of a waypoint: the skier $a$ selects the new waypoint $w$ choosing with uniform distribution on the angle $p\alpha$, a fraction of $\alpha$. The angle $\alpha$ is the angle between $e_{aR}$, the vector representing the direction towards the right edge, and $e_{aL}$, the vector towards the left edge.}\label{new_waypoint_pic}
   \end{center}
 \end{figure}
 
@@ -345,26 +383,26 @@ The new approach for waypoints selection considers closely skier speed and the e
 \item \label{avoid_impact} Skiers usually avoid to choose a direction that would make them turn on the edge of the slope. Therefore, the new waypoint should be in a position that does not lead the skier to impact the edge of the slope.
 \end{enumerate}
 
-To model the influences of skier's speed and shape of the slope it is possible to act on the parameter $\delta$ of the equation \ref{new_waypoint}. When $\delta$ is increasing, the width of the angle in which new waypoints can be chosen becomes larger. As a consequence the probability of performing turns becomes higher.
+To model the influences of skier's speed and shape of the slope it is possible to act on the parameter $p$ of the equation \ref{new_waypoint}. When $p$ is increasing, the width of the angle in which new waypoints can be chosen becomes larger. As a consequence the probability of performing turns becomes higher.
 
-Point \ref{depending_velocity} can be satisfied by making the parameter $\delta$ linearly depend on skier's speed $v$. Moreover it is required that when the speed $v$ is close to $0$ the width of the angle should be also close to $0$ and when $v$ is close to a high value of speed $v_{high}$ the angle should have maximum width. Therefore, $\delta$ can be set to
+Point \ref{depending_velocity} can be satisfied by making the parameter $p$ linearly depend on skier's speed $v$. Moreover it is required that when the speed $v$ is close to $0$ the width of the angle should be also close to $0$ and when $v$ is close to a high value of speed $v_{high}$ the angle should have maximum width. Therefore, $p$ can be set to
 \begin{equation}\label{delta_vel}
-\delta= \frac{v}{v_{high}}
+p= \frac{v}{v_{high}}
 \end{equation}
 
 The requirement \ref{frequency} is already met by the mechanism described above. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
 
-To fulfill the third requirement an additional factor depending on the slope should be considered. Let $s$ be the slope that the skier is going to encounter and let $s_{lim}$ a value of slope that is considered small enough to require an additional acceleration by the skier. Then if $s<s_{lim}$ the width of the angle in which to choose the new waypoint should be narrowed again. Taking into account \ref{delta_vel} then we can write $\delta$ as
+To fulfill the third requirement an additional factor depending on the slope should be considered. Let $s$ be the slope that the skier is going to encounter and let $s_{lim}$ a value of slope that is considered small enough to require an additional acceleration by the skier. Then if $s<s_{lim}$ the width of the angle in which to choose the new waypoint should be narrowed again. Taking into account \ref{delta_vel} then we can write $p$ as
 
 \begin{equation}
-\delta=\begin{cases}
-   \frac{v}{v_{high}}\frac{s}{s_{lim}} & \text{if ($s < s_{lim}$)} \\
+p=\begin{cases}
+   \frac{v}{v_{high}}\frac{s}{s_{lim}} & \text{if } s < s_{lim} \\
    \frac{v}{v_{high}} & \text{otherwise}
 \end{cases}
 \end{equation}
 If, despite this, skiers will come to a complete stop (maybe due to a counter slope), they will start walking at constant speed.
 
-Finally, to satisfy point \ref{avoid_impact} manipulating $\delta$ will not be enough. The minimum turning radius of skiers gives a bound to their ability of avoiding a collision or to hit the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
+Finally, to satisfy point \ref{avoid_impact} manipulating $p$ will not be enough. The minimum turning radius of skiers gives a bound to their ability of avoiding a collision or to hit the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
 
 \chapter{Implementation}\label{implementation}
 The model was implemented using C++ and GRASS GIS. GRASS GIS is a Geographic Information System (GIS) open source software used for geospatial data management and analysis. It was chosen to perform the geospatial computation needed by the model.
@@ -383,7 +421,7 @@ GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support S
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{images/grass6_arch.eps}
-    \caption{(from http://grass.osgeo.org) GRASS software architecture}\label{grass_structure}
+    \caption{(from http://grass.osgeo.org) GRASS software architecture.}\label{grass_structure}
   \end{center}
 \end{figure}
 
@@ -397,7 +435,7 @@ The software structure was designed to be the most flexible as possible. The mai
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.7\textwidth]{images/Class_diagram.eps}
-    \caption{Class diagram}\label{class_diagram}
+    \caption{Class diagram.}\label{class_diagram}
   \end{center}
 \end{figure}
 
@@ -415,13 +453,13 @@ The input data required by the simulation to run are the data needed by the Gras
   \end{center}
 \end{figure}
 
-The simulation requires a Digital Elevation Model. For this purpose a Digital Terrain Model (DTM) of the area of Trentino was used. The DTM was obtained using the LIDAR technology, a remote sensing sensing technology that uses laser light to measures distances. The measurements were done in the years 2006 and 2007. It is at a resolution of 1x1m except for areas at high elevation where resolution is of 2x2m.
+The simulation requires a Digital Elevation Model. For this purpose a Digital Terrain Model (DTM) of the area of Trentino was used. The DTM was obtained using the LIDAR technology, a remote sensing sensing technology that uses laser light to measures distances. The measurements were done in the years 2006 and 2007. It is at a resolution of 1x1m except for areas at high elevation where resolution is of $2\times 2m$.
 
 The measurements for the DTM were done in seasons without snow. As a consequence the DTM on which real skiers move is different from the DTM obtained with the Lidar. Two strategy was thought to simulate the effect of the snow on the DTM.
 
-The first strategy uses a simple model to simulate the distribution of the snow. The model considers two limit cases to describe the profile of the snow. Given a surface $y(x)$ and a snowfall of $h$ meters, the first case describes a new profile were the snow is supposed to adhere perfectly to the terrain: $y_s(x)=y(x)+h$. The second case considers the snow to behave like a liquid and creates a new profile $y_L(x)$ where the new precipitation accumulates in the valleys, making the profile constant, and leaves $y_L(x)=y(x)$ on the ridges. Neither the first nor the second case can be considered realistic, however it can be thought that the real behavior of the snow can be described as an average between the two cases. So the actual profile after the precipitation can be described as
+The first strategy uses a simple model to simulate the distribution of the snow. The model considers two limit cases to describe the profile of the snow. Given a surface $y(x)$ and a snowfall of $h$ meters, the first case describes a new profile were the snow is supposed to adhere perfectly to the terrain: $y_S(x)=y(x)+h$. The second case considers the snow to behave like a liquid and creates a new profile $y_L(x)$ where the new precipitation accumulates in the valleys, making the profile constant, and leaves $y_L(x)=y(x)$ on the ridges. Neither the first nor the second case can be considered realistic, however it can be thought that the real behavior of the snow can be described as an average between the two cases. So the actual profile after the precipitation can be described as
 \begin{equation}
-Y(x)=(1-l)y_s(x)+ly_L
+Y(x)=(1-l)y_S(x)+ly_L
 \end{equation}
 where $l$ is a parameter describing how much the snow has a liquid-like behavior. By the point of view of the implementation, the critical point is to compute the profile $y_L$. For this purpose some GRASS modules were explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}. This module was used to compute the profile $y_L$.
 
@@ -430,7 +468,7 @@ The second strategy does not aim at building a realistic model for the snow prec
 \begin{figure}[!h]
   \centering
     \includegraphics[width=0.7\textwidth]{images/profiles_dtm.eps}
-    \caption{Profiles of the dtm and of the simulated dtm after rain fall}\label{profile_dtm}
+    \caption{Profiles of the dtm and of the simulated dtm after rain fall.}\label{profile_dtm}
 \end{figure}
 
 Figure \ref{profile_dtm} shows the profiles of the original dtm, of the dtm obtained from the first strategy and of the dtm obtained from the second for a particularly critical point on a ski slope. The best result is given by the second strategy. The problem following the first strategy is the imprecision of the results from the module r.sim.water which does not return a feasible profile for a liquid-like behavior. This can be due to a misconfiguration of the parameters of the module or maybe to a too demanding level of precision. Finally, the second strategy was chosen.
@@ -454,7 +492,7 @@ The output produced by the simulation is the status of each skier at each integr
                 \includegraphics[width=\textwidth]{images/rod_density_map.eps}
                 \caption{}\label{rododendro_den}
         \end{subfigure}
-        \caption{Average simulated speed map and skiers density map for the ski slope ``Rododendro''}\label{rododendro}
+        \caption{Average simulated speed map (a) and skiers density map (b) for the ski slope ``Rododendro''.}\label{rododendro}
 \end{figure}
 
 Starting from this data two main analysis have been performed: speed average and average density of skiers computation. To analyze the speed of skiers along the ski slope a raster map of average speed has been produced. The map is obtained interpolating the speed values simulated by the simulation (see Fig.\ref{uno_tognola_vel} and Fig.\ref{rododendro_vel}). The interpolation was done using the GRASS module v.surf.idw. The GRASS module v.kernel was used to compute the density of skiers on the slope. The raster density map is computed using a moving kernel with gaussian distribution (see Fig.\ref{uno_tognola_den} and Fig.\ref{rododendro_den}).
@@ -473,7 +511,7 @@ Starting from this data two main analysis have been performed: speed average and
                 \includegraphics[width=\textwidth]{images/sm_density_map.eps}
                 \caption{}\label{uno_tognola_den}
         \end{subfigure}
-        \caption{Average simulated speed map and skiers density map for the ski slope ``Rododendro''}\label{uno_tognola}
+        \caption{Average simulated speed map (a) and skiers density map (b) for the ski slope ``Rododendro''.}\label{uno_tognola}
 \end{figure}
 
 \section{Parameters Selection}
@@ -483,9 +521,9 @@ The model assumes that skiers arrive at the beginning of ski slope at a constant
 
 As in \cite{hol2012} and in \cite{hel2008}, the repulsive potentials defining the social forces are exponential defined as
 \begin{align}
-U(\norm{r_{aL}})&=U_0 exp(-\norm{r_{aL}}/R_L) \\
-U(\norm{r_{aR}})&=U_0 exp(-\norm{r_{aR}}/R_R) \\
-V(s)&=V_0 exp(-s/R_A)
+U(\norm{r_{aL}})&=U_0 \exp(-\norm{r_{aL}}/R_L) \\
+U(\norm{r_{aR}})&=U_0 \exp(-\norm{r_{aR}}/R_R) \\
+V(s)&=V_0 \exp(-s/R_A)
 \end{align}
 where $R_L$, $R_R$ and $R_A$ denote the ranges of the social repulsions, and $U_0$ and $V_0$ are scaling constants that regulate the interaction strength between skiers and the respective object.
 
@@ -502,11 +540,11 @@ The parameters regulating the social forces were set to have forces with equival
     Strength of athlete repulsion & $V_0$ & 8 \\
     Range of edge repulsion & $R_L=R_R$ & 10 \\
     Range of athlete repulsion & $R_A$ & 8 \\
-    Angle of view & $2\varphi$ & 180° \\
-    Directional deviation & $\delta$ & 10° \\
+    Angle of view & $2\varphi$ & $180$ \\
+    Directional deviation & $\delta$ & $10°$ \\
     \hline
   \end{tabular}
-  \caption{Summary table for parameters regulating social forces}
+  \caption{Summary table for parameters regulating social forces.}
   \label{social_parameters_table}
 \end{table}
 
@@ -527,7 +565,7 @@ The initialization of the parameters regulating the physical forces was based on
     Frontal area & $A$ & $0.6 m^2$ \\
     \hline
   \end{tabular}
-  \caption{Summary table for parameters regulating physical forces}
+  \caption{Summary table for parameters regulating physical forces.}
   \label{physical_parameters_table}
 \end{table}
 
@@ -537,7 +575,7 @@ An analysis of the performances of the software was performed in order to improv
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{images/caching.eps}
-    \caption{Computation time comparison between simulations with cache and simulation without it}\label{speed-up_cache}
+    \caption{Computation time comparison between simulations with cache and simulation without it.}\label{speed-up_cache}
   \end{center}
 \end{figure}
 
@@ -559,7 +597,7 @@ Finally, the last step in the process of cleaning the data is to isolate the sin
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{images/data_tognola.eps}
-    \caption{Real skiers data logged with the mobile application SkiLogger on the ski slope ``Uno di Tognola'' in San Martino di Castrozza}\label{data_tognola}
+    \caption{Real skiers data logged with the mobile application SkiLogger on the ski slope ``Uno di Tognola'' in San Martino di Castrozza.}\label{data_tognola}
   \end{center}
 \end{figure}
 
@@ -577,7 +615,7 @@ For the season 2012/2013 a total of 178502 meters of descent has been tracked di
     Tracks longer than 500m & 100 \\
     \hline
   \end{tabular}
-  \caption{Summary table for tracks data logged}
+  \caption{Summary table for tracks data logged.}
   \label{descendts}
 \end{table}
 
@@ -594,7 +632,7 @@ The total number of skiers that has used the application is 18. Each skier was r
     Expert & 13 & 103 & 171331m \\
     \hline
   \end{tabular}
-  \caption{Summary table for skiers that have used SkiLogger}
+  \caption{Summary table for skiers that have used SkiLogger.}
   \label{skiers}
 \end{table}
 
@@ -613,19 +651,25 @@ The main issue of the data collected is that they are not statistically relevant
     1 & 44 \\
     \hline
   \end{tabular}
-  \caption{Table summarizing the number of different skiers for the ski slopes}
+  \caption{Table summarizing the number of different skiers for the ski slopes.}
   \label{slopes}
 \end{table}
 
 The data collected does not allow to do a realistic tuning of the parameters and to validate the model for ski slopes in Trentino. However some comparisons between the data collected and the simulated data has been performed.
 
 \section{Simulated vs. real data}
+\begin{figure}[!h]
+  \centering
+    \includegraphics[width=0.8\textwidth]{images/traiettorie.eps}
+    \caption{Simulated and recorded trajectories on the ski slope ``Uno di Tognola''.}\label{traj}
+\end{figure}
+
 The data collected are to few to analyze the map of skiers density produced. Instead, this part of the analysis focuses on the difference between the speed estimated by the simulation and the speed recorded by the SkiLogger application. Starting from the map of simulated speed (see Fig.\ref{uno_tognola_vel}), produced as described in section \ref{output_data}, the values of speed computed for each point tracked by the application were compared to the values of speed of the map. Figure \ref{sm_track47} shows the comparison between real and simulated values of speed for the track 47 of the skier 15 recorded on the ski slope ``Uno di Tognola'': while the simulated skiers do not stop during the descent the real skier stopped at least three times.
 
 \begin{figure}[!b]
   \begin{center}
     \includegraphics[width=0.7\textwidth]{images/sm_track47.eps}
-    \caption{Comparison between simulated and real speed for the track 47 on the ski slope ``Uno di Tognola''}\label{sm_track47}
+    \caption{Comparison between simulated and real speed for the track 47 on the ski slope ``Uno di Tognola''.}\label{sm_track47}
   \end{center}
 \end{figure}
 
@@ -634,7 +678,7 @@ To investigate the relation between simulate and real speeds, the spatial distri
 \begin{figure}
   \centering
     \includegraphics[width=0.8\textwidth]{images/map_error.eps}
-    \caption{Map of the errors between the real and the simulated speed on the tracks recorded on the ski slope ``Uno di Tognola''}\label{map_error}
+    \caption{Map of the errors between the real and the simulated speed on the tracks recorded on the ski slope ``Uno di Tognola''.}\label{map_error}
 \end{figure}
 
 To compare the speed values without the influence produced by the errors due to the stops, a new simulation was run where the simulated skiers were forced to stop according to the stops made by the skier 35 in the track 116. A new map of simulated speed was interpolated, Figure \ref{sm_stops_track116} shows the new comparison for the track 116. In the first part of the track the simulation shows a good correspondence with the real data. In the last two runs the simulation overestimates the speed.
@@ -655,11 +699,24 @@ To compare the speed values without the influence produced by the errors due to 
                 \caption{}
                 \label{Sstops}
         \end{subfigure}
-        \caption{Simulated and real speed values for track 116 of ``Uno di Tognola''. Figure \ref{Sno_stops} is without stops, in Figure \ref{Sstops} simulated skiers were forced to stop as the real skier}\label{sm_stops_track116}
+        \caption{Simulated and real speed values for track 116 of ``Uno di Tognola''. Figure \ref{Sno_stops} is without stops, in Figure \ref{Sstops} simulated skiers were forced to stop as the real skier.}\label{sm_stops_track116}
 \end{figure}
 
-\chapter*{Conclusions}
+\section{Simulated ski lessons}
+In the data collected there were two recorded tracks related to a ski lessons. To make the model simulating this kind of situations an adaptation was realized. There are many kind of ski lessons. The first distinction is between individual and group lessons. In group lessons instructors usually choose the trajectory and is followed by the skiers that try to emulate their movement; alternatively the instructor performs some turns, stops and observes the skiers performing the turns one at a time. The ski lessons simulation focused on the group lessons in the case that skiers involved in the lesson form a queue behind the instructor.
 
+The instructor was simulated as an expert skier, the skidding factor was set to $\eta=0$ and the parameter ${v_{high}}$ was kept low to force them making more turns. Additionally the time between the choice of two consecutive waypoints is higher than usual and also the turning radius is increased.
+
+The other skiers were modeled as non-experienced skiers, with the skidding factor $\eta$ assuming different values. These skiers have forced waypoints. Precisely, each time the instructor begins a turn a waypoint is set in this position for all the skiers. In this way each skier tries to reach each waypoint fixed by the instructor being at the same time subjected to the other social forces such as the repulsion from the other skiers. If a waypoint becomes unreachable the skier passes to the following one. In the case that at a certain time no waypoints are available, the waypoint is set to the instructor position. To avoid being to distance from the other skiers the instructor reduces their speed according to the distance between the nearest skier and the farthest one. Figure \ref{lesson} shows the simulated trajectories for a ski lesson.
+
+\begin{figure}
+  \centering
+    \includegraphics[width=0.8\textwidth]{images/lesson.eps}
+    \caption{Trajectories of a simulated ski lesson on the ski slope ``Rododendro'' of San Martino di Catrozza. The red line is the instructor trajectory.}\label{lesson}
+\end{figure}
+
+\chapter*{Conclusions and future works}
+\addcontentsline{toc}{chapter}{Conclusions and future works}
 
 \bibliography{thesis}
 \end{document}
