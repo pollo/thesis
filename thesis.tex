@@ -4,6 +4,7 @@
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage{subcaption}
 \usepackage{amsmath}
+\usepackage{hyperref}
 
 \makeatletter
 \newcommand\ackname{Acknowledgements}
@@ -350,7 +351,7 @@ Other changes in the original model are related to the social forces. In particu
   \end{center}
 \end{figure}
 
-A more dynamic approach in the waypoints selection has been considered to better model the decisions taken from a skier while descending a slope. The new strategy allow each skier to dynamically choose waypoints during the descent, based on the position of the skier, on the shape of the trail, on the slope of the terrain and on the skier speed.
+A more dynamic approach in the waypoints selection has been considered to better model the decisions taken from a skier while descending a slope. The new strategy allows each skier to dynamically choose waypoints during the descent, based on the position of the skier, on the shape of the trail, on the slope of the terrain and on the skier speed.
 
 Hereafter the new mechanism for the waypoints selection is explained. Let $a$ be a skier at position $r_a$, let $r_a^L$ be the location on the left slope edge closest to $r_a$ and $r_a^R$ the location on the right slope edge closest to $r$. The vectors given the directions toward the edges are $e_{aR}=\left(r_a^L-r_a\right)/\norm{r_a^L-r_a}$ and $e_{aL}=\left(r_a^R-r_a\right)/\norm{r_a^R-r_a}$. Let $\alpha$ be the angle between $e_{aR}$ and $e_{aL}$ defined as
 
@@ -664,7 +665,7 @@ The data collected does not allow to do a realistic tuning of the parameters and
     \caption{Simulated and recorded trajectories on the ski slope ``Uno di Tognola''.}\label{traj}
 \end{figure}
 
-The data collected are to few to analyze the map of skiers density produced. Instead, this part of the analysis focuses on the difference between the speed estimated by the simulation and the speed recorded by the SkiLogger application. Starting from the map of simulated speed (see Fig.\ref{uno_tognola_vel}), produced as described in section \ref{output_data}, the values of speed computed for each point tracked by the application were compared to the values of speed of the map. Figure \ref{sm_track47} shows the comparison between real and simulated values of speed for the track 47 of the skier 15 recorded on the ski slope ``Uno di Tognola'': while the simulated skiers do not stop during the descent the real skier stopped at least three times.
+The data collected are to few to analyze the map of skiers density produced. Instead, this part of the analysis focuses on the difference between the speed estimated by the simulation and the speed recorded by the SkiLogger application. Starting from the map of simulated speed (see Fig.\ref{uno_tognola_vel}), produced as described in section \ref{output_data}, the values of speed computed for each point tracked by the application were compared to the values of speed of the map. Figure \ref{sm_track47} shows the comparison between real and simulated values of speed for the track 47 of the skier 15 recorded on the ski slope ``Uno di Tognola'': while the simulated skiers do not stop during the descent the real skier stopped at least three times. The average error for the tracks considered ranges between 4.28 m/s and 6.44 m/s, while recorded speeds range from 0 to 30 m/s.
 
 \begin{figure}[!b]
   \begin{center}
@@ -681,7 +682,7 @@ To investigate the relation between simulate and real speeds, the spatial distri
     \caption{Map of the errors between the real and the simulated speed on the tracks recorded on the ski slope ``Uno di Tognola''.}\label{map_error}
 \end{figure}
 
-To compare the speed values without the influence produced by the errors due to the stops, a new simulation was run where the simulated skiers were forced to stop according to the stops made by the skier 35 in the track 116. A new map of simulated speed was interpolated, Figure \ref{sm_stops_track116} shows the new comparison for the track 116. In the first part of the track the simulation shows a good correspondence with the real data. In the last two runs the simulation overestimates the speed.
+To compare the speed values without the influence produced by the errors due to the stops, a new simulation was run where the simulated skiers were forced to stop according to the stops made by the skier 35 in the track 116. A new map of simulated speed was interpolated, Figure \ref{sm_stops_track116} shows the new comparison for the track 116. In the first part of the track the simulation shows a good correspondence with the real data. In the last two runs the simulation overestimates the speed. Overall, the average error decreased from 5.56 m/s to 2.52 m/s.
 
 \begin{figure}[!h]
         \centering
@@ -717,6 +718,24 @@ The other skiers were modeled as non-experienced skiers, with the skidding facto
 
 \chapter*{Conclusions and future works}
 \addcontentsline{toc}{chapter}{Conclusions and future works}
+A particle-based model to simulate the riding behavior of skiers descending ski slopes has been implemented. The model was originally proposed by Holleczek and Troster \cite{hol2012}, the following new features were introduced:
+\begin{itemize}
+\item Non-experienced skiers were included in the model. Calibrating a new introduced parameter, the skidding parameter $\eta$, intermediate and beginner skiers can be simulated.
+\item The waypoints has been made dynamical, the new strategy implemented allows each skier to choose waypoints during the descent, based on their position, on the shape of the trail, on the slope of the terrain and on the skier speed.
+\end{itemize}
+Additionally an adaptation of the model has been implemented to simulate ski lessons. In these simulations a variable number of skiers follow the instructor trying to reproduce his or her trajectory.
+
+An Open Source GRASS module has been released. The module implements the model described using C++ and the GRASS GIS Library. The module is an executable that can be run in a GRASS environment. The code can be find at \url{http://github.com/pollo/skiing_traffic}.
+
+The simulations were used to compute indicators about the skiing traffic on the slopes. In particular, the average speed and density of skiers have been investigated. Two outputs were produced: a raster map reporting for each pixel of the ski slope the average speed of the simulated skiers in this position; a raster map indicating for each pixel the density of the skiers in this area of the slope.
+
+The model has been tested on real data collected by the mobile application SkiLogger. For the ski slope ``Uno di Tognola'' in San Martino di Castrozza, 8 recorded tracks were available. A comparison between the simulated and the recorded speed showed an average error for single track that ranges between 4.28 m/s and 6.44 m/s, while recorded speeds range from 0 to 30 m/s. Introducing a new parameters forcing simulated skiers to stop in some predetermined areas, the average error for a specific track was decreased from 5.56 m/s to 2.52 m/s.
+
+For the next ski season a new version of the SkiLogger application will be released offering new features to the skiers. Once a critical mass of data will be collected, a complete calibration and validation of the model for the Trentino ski slopes will be made. Moreover, the possibility of collecting more empirical data exploiting the potentiality of wearable-sensors will be investigated.
+
+So far, there are not studies validating the prediction of skiers density on the ski slope made by this kind of simulations. If a big quantity of data will be recorded in the next season, then also a validation of this part of the model will be performed. Alternatively, a different approach can be followed using video records of some selected ski slopes from which extract the skiers trajectories with computer vision algorithms.
+
+To predict in a more precise way the skiers density new aspects related to the skiers behavior will be investigated. So far, the model do not differentiate between different skiers attitudes. While riding downhill, the skiers choice of the trajectory is influenced by the perceptions they get by the environment. These are not limited to other skiers and edges repulsion and deal also on the personal attitude of the skier. For example a prudent skier will predict more carefully the possible trajectories of other skiers, will examine the condition of the slope and of the snow to choose the less risky trajectory possible. On the opposite side, a more daring skier will choose a more challenging trajectory that gives him the possibility of testing his or her skills. In the future, having a big amount of empirical data will be possible investigate the foundation of these conjectures.
 
 \bibliography{thesis}
 \end{document}
