@@ -79,7 +79,7 @@ The model implemented is a particle-based model proposed by Holleczek and Troste
 
 An adaptation of the model was additionally realized in order to simulate ski lessons. In these patterns agents have strongly correlated trajectories: the first agent simulates the instructor and decides the trajectory autonomously, the following agents are forced to emulate the instructor trajectory.
 
-The implementation was realized in C++ using the GRASS GIS C-API for the spatial computations. GRASS GIS is an Open Source Geographic Information System (GIS) software used for geospatial data management and analysis. A new GRASS module has been developed.
+The implementation was realized in C++ using the GRASS GIS C-API for the spatial computations. GRASS GIS is an Open Source Geographic Information System (GIS) software used for geospatial data management and analysis. A new GRASS module has been developed. An analysis of the code performances was done optimizing the software produced with caching mechanisms that reduce the global computation time.
 
 The model has been tested by using a set of real data collected in February and March 2013. The mobile application SkiLogger, developed inside the SicurSkiWeb project, was used to collect data of real skiers. SkiLogger can be used by skiers to track their trajectories by GPS sensors, now usually available also on common smartphones. The application allowed to track a total of 171 Km of descents on ski slopes by 18 distinct skiers. An initial calibration of the model was based on the data collected. A comparison between real data and simulated data was performed in terms of speed values. The average error for the tracks considered ranges between 4.28 m/s and 6.44 m/s, while recorded speeds range from 0 to 30 m/s. The model has been then modified to include possible stops along the ski slope. A new experimental stop parameter was introduced, obtaining a $55\%$ reduction of the average error made for a specific track. Figure \ref{speeds} shows the recorded speeds of a track on the ski slope ``Uno di Tognola'' of San Martino di Castrozza in Trentino (Italy) and compares them to the speeds predicted by the simulation.
 
@@ -137,7 +137,7 @@ The social forces implemented in the model describe the decisions taken by a ski
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{images/start_turn_pic.eps}
+    \includegraphics[width=0.5\textwidth]{images/start_turn_pic.eps}
     \caption{(From \cite{hol2012}) When the angle between the current direction of motion $e_{\dot{r}}$ and the desired direction $e_{social}$ is bigger than $\delta$ the skier performs a turn to adjust his or her direction.}\label{start_turn_pic}
   \end{center}
 \end{figure}
@@ -209,8 +209,8 @@ Figure \ref{social_forces_diagram} shows a diagram of the social forces describe
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{images/social_forces_dia.eps}
-    \caption{Diagram of the social forces. The forces $F_R$ and $F_L$ keep the skier $a$ away from the edges, the force $F_O$ repels the skier from the obstacle, the force $F_S$ repels $a$ from the skier $b$ and the force $F_D$ attracts the skier towards the waypoint.}\label{social_forces_diagram}
+    \includegraphics[width=0.7\textwidth]{images/social_forces_dia.eps}
+    \caption{(From \cite{hol2012}) Diagram of the social forces. The forces $F_R$ and $F_L$ keep the skier $a$ away from the edges, the force $F_O$ repels the skier from the obstacle, the force $F_S$ repels $a$ from the skier $b$ and the force $F_D$ attracts the skier towards the waypoint.}\label{social_forces_diagram}
   \end{center}
 \end{figure}
 
@@ -735,7 +735,7 @@ For the next ski season a new version of the SkiLogger application will be relea
 
 So far, there are not studies validating the prediction of skiers density on the ski slope made by this kind of simulations. If a big quantity of data will be recorded in the next season, then also a validation of this part of the model will be performed. Alternatively, a different approach can be followed using video records of some selected ski slopes from which extract the skiers trajectories with computer vision algorithms.
 
-To predict in a more precise way the skiers density new aspects related to the skiers behavior will be investigated. So far, the model do not differentiate between different skiers attitudes. While riding downhill, the skiers choice of the trajectory is influenced by the perceptions they get by the environment. These are not limited to other skiers and edges repulsion and deal also on the personal attitude of the skier. For example a prudent skier will predict more carefully the possible trajectories of other skiers, will examine the condition of the slope and of the snow to choose the less risky trajectory possible. On the opposite side, a more daring skier will choose a more challenging trajectory that gives him the possibility of testing his or her skills. In the future, having a big amount of empirical data will be possible investigate the foundation of these conjectures.
+To predict in a more precise way the skiers density new aspects related to the skiers behavior will be investigated. So far, the model do not differentiate between different skiers attitudes. While riding downhill, the skiers choice of the trajectory is influenced by the perceptions they get by the environment. These are not limited to other skiers and edges repulsion and deal also on the personal attitude of the skier. For example a prudent skier will predict more carefully the possible trajectories of other skiers, will examine the condition of the slope and of the snow to choose the less risky trajectory possible. On the opposite side, a more daring skier will choose a more challenging trajectory that gives him the possibility of testing his or her skills. Another aspect to investigate will be the behavior and the dynamics of skiers moving in groups. In the future, collecting more empirical data, will be possible investigate the foundation of these conjectures.
 
 \bibliography{thesis}
 \end{document}
