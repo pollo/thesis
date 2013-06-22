@@ -435,7 +435,7 @@ The software structure was designed to be the most flexible as possible. The mai
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=0.7\textwidth]{images/Class_diagram.eps}
+    \includegraphics[width=\textwidth]{images/Class_diagram.eps}
     \caption{Class diagram.}\label{class_diagram}
   \end{center}
 \end{figure}
@@ -447,9 +447,9 @@ The class GrassBackend implements the interface GisBackend and is the class used
 \section{Input data}
 The input data required by the simulation to run are the data needed by the GrassBackend. It requires the vector map with the polygon of the ski slope for which the model should be run. The ski slope (see Fig.\ref{uno_tognola_3d} for an example) is extracted from a vector map containing the polygons of slopes of the skiing resort in Trentino. This data are available inside the SicurSkiWeb project and were derived starting from orthophotos and tuned with measurements done in place. From the polygon of the ski slope left and right edge, start and stop areas are derived.
 
-\begin{figure}
+\begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{images/uno_tognola_3d.eps}
+    \includegraphics[width=\textwidth]{images/uno_tognola_3d.eps}
     \caption{3d visualization of the ski slope ``Uno di Tognola'' polygon (in blue) in San Martino di Castrozza.}\label{uno_tognola_3d}
   \end{center}
 \end{figure}
@@ -468,8 +468,8 @@ The second strategy does not aim at building a realistic model for the snow prec
 
 \begin{figure}[!h]
   \centering
-    \includegraphics[width=0.7\textwidth]{images/profiles_dtm.eps}
-    \caption{Profiles of the dtm and of the simulated dtm after rain fall.}\label{profile_dtm}
+    \includegraphics[width=\textwidth]{images/profiles_dtm.eps}
+    \caption{Profile of the DTM compared to profile of the DTM smoothed and of the DTM covered with simulated snow.}\label{profile_dtm}
 \end{figure}
 
 Figure \ref{profile_dtm} shows the profiles of the original dtm, of the dtm obtained from the first strategy and of the dtm obtained from the second for a particularly critical point on a ski slope. The best result is given by the second strategy. The problem following the first strategy is the imprecision of the results from the module r.sim.water which does not return a feasible profile for a liquid-like behavior. This can be due to a misconfiguration of the parameters of the module or maybe to a too demanding level of precision. Finally, the second strategy was chosen.
@@ -479,16 +479,17 @@ Starting from the smoothed DTM, slope raster map and aspect raster map were comp
 \section{Output data}\label{output_data}
 The output produced by the simulation is the status of each skier at each integration step of the simulation. The information logged at a time $t$ for a skier $a$ are the position $r_a$ and the velocity $\dot{r}_a$.
 
-\begin{figure}[!h]
+\begin{figure}
         \centering
-        \begin{subfigure}[b]{0.5\textwidth}
+        \begin{subfigure}[b]{\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{images/rod_velocity_map.eps}
                 \caption{}\label{rododendro_vel}
         \end{subfigure}%
-        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+
+        %~ add desired spacing between images, e. g. ~, \quad, \qquad etc.
           %(or a blank line to force the subfigure onto a new line)
-        \begin{subfigure}[b]{0.5\textwidth}
+        \begin{subfigure}[b]{\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{images/rod_density_map.eps}
                 \caption{}\label{rododendro_den}
@@ -500,19 +501,20 @@ Starting from this data two main analysis have been performed: speed average and
 
 \begin{figure}
         \centering
-        \begin{subfigure}[b]{0.5\textwidth}
+        \begin{subfigure}[b]{\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{images/sm_velocity_map.eps}
                 \caption{}\label{uno_tognola_vel}
         \end{subfigure}%
-        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+
+        %~ add desired spacing between images, e. g. ~, \quad, \qquad etc.
           %(or a blank line to force the subfigure onto a new line)
-        \begin{subfigure}[b]{0.5\textwidth}
+        \begin{subfigure}[b]{\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{images/sm_density_map.eps}
                 \caption{}\label{uno_tognola_den}
         \end{subfigure}
-        \caption{Average simulated speed map (a) and skiers density map (b) for the ski slope ``Rododendro''.}\label{uno_tognola}
+        \caption{Average simulated speed map (a) and skiers density map (b) for the ski slope ``Uno di Tognola''.}\label{uno_tognola}
 \end{figure}
 
 \section{Parameters Selection}
