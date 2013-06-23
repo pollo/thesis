@@ -40,15 +40,15 @@
 
 \begin{titlepage}
   \begin{center}
-    \begin{Large}Universit\`a degli Studi di Trento\\\end{Large}
-     Facolt\`a di Scienze Matematiche, Fisiche e Naturali\\
+    \begin{Large}University of Trento\\\end{Large}
+     Departement of Information Engineering and Computer Science  \\
      \vspace{10pt}
      \begin{figure}[htbp]
        \begin{center}
          \includegraphics[width=3cm]{images/sigillo_unitn.eps}
        \end{center}
      \end{figure}
-Corso di Laurea in Informatica\\
+Degree Course in Computer Science\\
 
 \vspace{10pt}
 \line(1,0){338}
@@ -58,15 +58,15 @@ Final Thesis\\
 \end{center}
 \vspace{3cm}
 \begin{center}
-\begin{Large}An Open Source implementation of a particle-based model for skiing dynamics\\\end{Large}
+\begin{Large}An open-source implementation of a particle-based model for skiing dynamics\\\end{Large}
 \vspace{3cm}
 \end{center}
-Relatore interno: \\ \textbf{Prof. Alberto Montresor} \\
-Relatore esterno:\hspace{6.8cm}Laureando:   \\
+Supervisor: \\ \textbf{Prof. Alberto Montresor} \\
+Supervisor:\hspace{7.76cm}Graduant:   \\
 \textbf{Dott. Cesare Furlanello}\hspace{4.9cm}\textbf{Matteo Poletti}
 \vspace{1cm}
 \begin{center}
-Anno accademico 2012-2013
+Accademic Year 2012-2013
 \end{center}
 \end{titlepage}
 
@@ -107,8 +107,7 @@ This thesis work was developed in the MPBA unit of the Bruno Kessler Foundation.
 \tableofcontents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter*{Introduction}
-\addcontentsline{toc}{chapter}{Introduction}
+\chapter{Introduction}
 Alpine skiing is a winter sport widely practiced in the Alps and it is a key resource for the tourism sector. Each year more than 80.000.000 single passages on the ski lifts are counted in Trentino's ski resorts where the ski accidents risk ratio on single passages is of 1:10.000.
 
 SicurSkiWeb is a project of the Bruno Kessler Foundation started with the goal of monitoring and improve safety on ski slopes. In collaboration with the Polizia di Stato, the Trentino Skiing Resorts Managers Association and the Trentino Ski Instructor Assosiation the main output of the project is a GeoICT platform for the collection and the analysis of all data collected during the rescue interventions by ski patrols. Up to today in the platform geodatabase are recorded to 2571 interventions showing that the 70\% of accidents involve skiers while 20\%  snowboarder and that 80\% of the interventions are caused accidentally while 11\% are caused for collisions with other persons.
@@ -117,9 +116,9 @@ The IT infrastructure is composed of three modules:
 \begin{itemize}
 \item An Android application synchronized with the platform geodatabase for data collection.
 \item A WebGIS platform to manage or visualize field data and to constantly monitor the evolution of the risk on the slopes.
-\item A set of analysis tools for understanding, study and to map the risk of accidents and its relation with environmental and social factors.
+\item A set of analysis tools for understanding, studying and mapping the risk of accidents and its relation with environmental and social factors.
 \end{itemize}
-This thesis work aims to provide an analysis tool to describe the behavior of skiers while performing their descents on ski slopes. The output of this analysis will be used as a useful component of the analysis module of SicurSkiWeb platform.
+This thesis work aims at provide an analysis tool to describe the behavior of skiers while performing their descents on ski slopes. The output of this analysis will be used as a useful component of the analysis module of SicurSkiWeb platform.
 
 Traffic simulations have been widely used to predict motions of objects such as vehicles and pedestrians using models from statistical physic. Holleczek and Troster proposed to apply the same methodologies to predict skiing traffic. Following their approach, skiing dynamics has been simulated using a particle-based model.
 
@@ -145,41 +144,41 @@ The social forces implemented in the model describe the decisions taken by a ski
 To describe the social force that attracts the skier towards the chosen destination, the model assumes that each skier, while descending, selects several waypoints $x_a^1....x_a^n$ as temporary destinations. Thus, at each time $t$ the skier $a$ wants to reach a waypoint $x_a^k$. The direction toward the current waypoint is expressed by
 
 \begin{equation}\label{waypoint_direction}
-e_a(t)=\frac{x^k_a-r_a(t)}{\Vert x^k_a-r_a(t) \Vert}
+e_a(t)=\frac{x^k_a-r_a(t)}{\Vert x^k_a-r_a(t) \Vert},
 \end{equation}
 where, as defined above, $r_a(t)$ is the position of $a$ at time $t$. The destination social force drives the skier toward the waypoint and is defined as
 
 \begin{equation}\label{destination_force}
-F_D(r_a)=A_0 e_a(t)
+F_D(r_a)=A_0 e_a(t),
 \end{equation}
 where $A_0$ is a scaling constant that represents the strength of the destination force.
 
 The attitude of skiers to keep a minimum distance from the edges is modeled with repulsion forces that are stronger when the skier gets closer to the edge of the slope. At each position $r_a$ the skier $a$ is subjected to repulsion forces from the left and right edges of the slope. Let $r_a^L$ be the closest location to $r_a$ on the left edge, then the distance between the skier and the edge can be expressed as $r_{aL}=r_a-r_A^L$. The repulsion force from the left edge is defined as
 
 \begin{equation}\label{left_force}
-F_L(r_{aL})=-\nabla_{r_{aL}}U(\Vert r_{aL} \Vert )
+F_L(r_{aL})=-\nabla_{r_{aL}}U(\Vert r_{aL} \Vert ),
 \end{equation}
 where $U(\Vert r_{aL} \Vert )$ is a monotonically decreasing potential. In a symmetric way the repulsion force from the right edge can be defined as
 
 \begin{equation}\label{right_force}
-F_R(r_{aR})=-\nabla_{r_{aR}}U(\Vert r_{aR} \Vert )
+F_R(r_{aR})=-\nabla_{r_{aR}}U(\Vert r_{aR} \Vert ).
 \end{equation}
 
 The model takes into account also the natural human behavior of avoiding collisions with other skiers. This is described by a repulsion force, referred as skier repulsion force, that each skier imposes on the other skiers. The repulsion force that skier $b$ imposes on the skier $a$ can be expressed as
 
 \begin{equation}\label{skier_force}
-F_S(r_{ab})=-\nabla_{r_{ab}}V(s(r_{ab}))
+F_S(r_{ab})=-\nabla_{r_{ab}}V(s(r_{ab})),
 \end{equation}
 where $r_{ab}=r_a-r_b$ is the distance vector between the two skiers, $V(s(r_{ab}))$ is a monotonically decreasing potential with equipotential lines shaped as ellipses directed into the direction of motion and $s$ represents the semiminor axis of this ellipse and is defined as
 
 \begin{equation}\label{skier_s}
-s(r_{ab})=\frac{\sqrt{(\Vert r_{ab} \Vert + \Vert r_{ab}-v_b \Delta t e_b \Vert )^2-(v_b \Delta t)^2}}{2}
+s(r_{ab})=\frac{\sqrt{(\Vert r_{ab} \Vert + \Vert r_{ab}-v_b \Delta t e_b \Vert )^2-(v_b \Delta t)^2}}{2}.
 \end{equation}
 
 Finally a repulsion force from the obstacles on the slope is considered. The force that an obstacle $o$ imposes on the skier $a$ is defined as
 
 \begin{equation}\label{obstacle_force}
-F_O(r_{ao})=-\nabla_{r_{ao}}W(\Vert r_{ao} \Vert )
+F_O(r_{ao})=-\nabla_{r_{ao}}W(\Vert r_{ao} \Vert ).
 \end{equation}
 
 In general, repulsion social forces act on skiers only if he or she is capable of perceiving what triggers the force. The model assumes that objects are perceived only within a certain range $\varphi$ of the skier direction. $2\varphi$ can be considered as the angle of view. This is modeled by the weight
@@ -197,13 +196,13 @@ F_D(r_a)&=A_0 e_a(t),\\
 F_L(\dot{r_a},r_{aL})&=w(\dot{r_a},-r_{aL})F_L(r_{aL}),\\
 F_R(\dot{r_a},r_{aR})&=w(\dot{r_a},-r_{aR})F_R(r_{aR}),\\
 F_A(\dot{r_a},r_{ab})&=w(\dot{r_a},-r_{ab})F_A(r_{ab}),\\
-F_O(\dot{r_a},r_{ao})&=w(\dot{r_a},-r_{ao})F_O(r_{ao})
+F_O(\dot{r_a},r_{ao})&=w(\dot{r_a},-r_{ao})F_O(r_{ao}).
 \end{align}
 
 The resultant social force $F^a_{social}$ is the superposition of all social forces that apply on skier $a$:
 
 \begin{equation}
-F^a_{social}=F_D(r_a)+F_L(\dot{r_a},r_{aL})+F_R(\dot{r_a},r_{aR})+\sum_b F_A(\dot{r_a},r_{ab})+\sum_o F_O(\dot{r_a},r_{ao})\nonumber
+F^a_{social}=F_D(r_a)+F_L(\dot{r_a},r_{aL})+F_R(\dot{r_a},r_{aR})+\sum_b F_A(\dot{r_a},r_{ab})+\sum_o F_O(\dot{r_a},r_{ao}).\nonumber
 \end{equation}
 Figure \ref{social_forces_diagram} shows a diagram of the social forces described above.
 
@@ -233,27 +232,27 @@ Gravitational, centripetal and friction forces determine the skier acceleration 
 \end{equation}
 and the inclination angle $\gamma$ of the current trajectory $e_{\dot{r}}$ is
 \begin{equation}
-\gamma =\arcsin[(\sin \alpha )(\sin \beta )]
+\gamma =\arcsin[(\sin \alpha )(\sin \beta )],
 \end{equation}
 where $\beta$ is the angle between $e_{\dot{r}}$ and the horizontal of the slope.
 
 To compute the force accelerating the skier the gravitational force, the friction forces and the centripetal forces should be investigated. As first the gravitational force $F_G$ is considered. It can be expressed as
 \begin{equation}
-F_G=mg\left[\begin{matrix}0\\0\\-1\end{matrix}\right]
+F_G=mg\left[\begin{matrix}0\\0\\-1\end{matrix}\right],
 \end{equation}
 where $g$ is the gravitational acceleration and $m$ the mass of the skier. The gravitational force can be subdivided into normal force $F_N$, acting parallel to the surface normal $n$, and into downhill force $F_S$, acting parallel to the fall line.
 \begin{equation}\label{downhill_force}
-F_G=F_S-F_N
+F_G=F_S-F_N.
 \end{equation}
 The normal force $F_N$ can be expressed as
 \begin{equation}
-F_N=mg(\cos \alpha )n
+F_N=mg(\cos \alpha )n.
 \end{equation}
 
 The  downhill force $F_S$ itself can be subdivided into $F_P$ which is acting parallel to the current trajectory $e_{\dot{r}}$ and into the lateral force $F_{lat}$ acting perpendicularly to the current trajectory (see. Fig\ref{downhill_force_pic}).
 
 \begin{equation}
-F_S=F_P+F_{lat}
+F_S=F_P+F_{lat}.
 \end{equation}
 \begin{figure}
   \begin{center}
@@ -264,17 +263,17 @@ F_S=F_P+F_{lat}
 
 The downhill force $F_p$ can be written as
 \begin{equation}
-F_P=mg ( \sin \gamma ) e_{\dot{r}}=mg ( \sin \alpha ) ( \sin \beta ) e_{\dot{r}}
+F_P=mg ( \sin \gamma ) e_{\dot{r}}=mg ( \sin \alpha ) ( \sin \beta ) e_{\dot{r}}.
 \end{equation}
 where $\gamma$ is the inclination angle of $e_{\dot{r}}$.
 
 Remembering \ref{downhill_force}, the downhill force $F_S$ can be computed as
 \begin{equation}
-F_S=F_G+F_N
+F_S=F_G+F_N.
 \end{equation}
 The lateral force $F_{lat}$ can therefore be computed as
 \begin{equation}
-F_{lat}=F_S-F_P
+F_{lat}=F_S-F_P.
 \end{equation}
 The centripetal force $F_C$ a skier is exposed while turning can be written as
 \begin{equation}
@@ -282,17 +281,17 @@ F_C=\frac{m}{R_{SC}} {\norm{\dot{r}}}^2 \frac{F_{lat}}{\norm{F_{lat}}} \times
 \begin{cases}
   (+1) & \text{before crossing the fall line} \\
   (-1) & \text{after crossing the fall line}
-  \end{cases}
+  \end{cases},
 \end{equation}
 where $m$ is the mass of the skier and $R_{SC}$ the sidecut radius of the skis. $F_C$ is parallel to $F_{lat}$ before the skier crosses the fall line and antiparallel to $F_{lat}$ after having crossed the fall line.
 
 Before defining the kinetic friction of skis on snow, a definition of effective force should be given. The effective force is the force that needs to be compensated by the snow. Its formulation depends on whether the skier is performing a turn or is descending on a straight line. In the following, when the definition of a force changes depending on whether the skier is turning, the index is written lowercase in the case of a straight line and uppercase in the case of a turn. So $F_{eff}$ is the effective force acting on a skier that is descending on a straight line and is defined as
 \begin{equation}
-F_{eff}=F_{lat}-F_N
+F_{eff}=F_{lat}-F_N.
 \end{equation}
 If the skier is performing a carved turns then the effective force $F_{EFF}$ can be written as
 \begin{equation}
-F_{EFF}=F_{lat}-F_C-F_N
+F_{EFF}=F_{lat}-F_C-F_N.
 \end{equation}
 Figure \ref{effective_force_pic} shows the effective force ($F_{eff}$ and $F_{EFF}$).
 
@@ -306,39 +305,39 @@ Figure \ref{effective_force_pic} shows the effective force ($F_{eff}$ and $F_{EF
 The kinetic friction force $F_{ground}$ can be expressed in terms of the skier's effective force as
 
 \begin{equation}
-F_{ground}=-\mu \norm{F_{eff}}e_{\dot{r}}
+F_{ground}=-\mu \norm{F_{eff}}e_{\dot{r}},
 \end{equation}
 when descending on a straight line. $\mu$ is the kinetic friction coefficient of the skis on the snow. In case of a turn
 
 \begin{equation}
-F_{GROUND}=-\mu \norm{F_{EFF}}e_{\dot{r}}
+F_{GROUND}=-\mu \norm{F_{EFF}}e_{\dot{r}}.
 \end{equation}
 
 The air drag force $F_{air}$ is antiparallel to the direction of motion $e_{\dot{r}}$ and is defined as
 
 \begin{equation}
-F_{air}=-\frac{1}{2}C_d \rho A \norm{\dot{r}}^2 e_{\dot{r}}
+F_{air}=-\frac{1}{2}C_d \rho A \norm{\dot{r}}^2 e_{\dot{r}},
 \end{equation}
 where $C_d$ is the drag coefficient, $\rho$ the air density and $A$ the projected frontal area of the skier perpendicular to the direction of motion.
 
 Finally, the net force $F_{net}$ accelerating the skier can be defined as
 
 \begin{equation}
-F_{net}=F_P + F_{air} + F_{ground}
+F_{net}=F_P + F_{air} + F_{ground},
 \end{equation}
 if the skier is not turning. Otherwise the force is defined as
 
 \begin{equation}\label{physical_resultant}
-F_{NET}=F_P + F_{AIR} + F_{GROUND} + F_C
+F_{NET}=F_P + F_{AIR} + F_{GROUND} + F_C.
 \end{equation}
 
 \section{Limitations}
-The model proposed describes the motion of an expert skier that skies performing perfect carved turns and the turning radio is taken constant and equals to the sidecut radius of the skis. Not experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not consider that skiers could stop while descending a slope.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
+The model proposed describes the motion of an expert skier that skies performing perfect carved turns and the turning radio is taken constant and equals to the sidecut radius of the skis. Non-experienced skiers and other snow-sport athletes are not considered. An important limitation of the model is that it does not consider that skiers could stop while descending a slope.  Moreover skiers are not allowed to jump nor to exit the ski slope. If a skier collides with an edge of the slope it is reflected back with an angle equals to the angle at which he or she has collided.
 
 \section{Differences from the original model}
 The main change introduced in the original model was modeling also non-experienced skiers. Beginner and intermediate skiers perform skidded turns. In a skidded turn the direction of motion is parallel to the skis, however there is an additional component of the motion directed to the side of the turn due to a slippage of the skis on the snow. This results in a significant loss in speed due to the ``plowing'' action of the skis on the snow which generates a high frictional resistance. To simulate skidded turns, only a fraction of the force $F_P$, the component of the gravitational force parallel to the direction of motion, was considered to accelerate the skiers. In fact, a fraction of this force is loss in the slippage and do not produce an increase of the speed. Therefore, for non-experienced skiers the net force while turning (defined in \ref{physical_resultant}), $F_{NET}$, should be redefined as
 \begin{equation}
-F_{NET}=(1-\eta) F_P + F_{AIR} + F_{GROUND} + F_C
+F_{NET}=(1-\eta) F_P + F_{AIR} + F_{GROUND} + F_C,
 \end{equation}
 where $\eta$ takes value between 0 and 1 and is a coefficient describing the entity of the slippage in the turns. For expert skiers it is set equal to 1.
 
@@ -359,12 +358,12 @@ Hereafter the new mechanism for the waypoints selection is explained. Let $a$ be
 \alpha=\begin{cases}
   \arccos(e_{aR} \cdot e_{aL}) & \text{if } (e_{aR} \times e_{aL})\cdot n \ge 0 \\
   2\pi-\arccos(e_{aR} \cdot e_{aL}) & \text {if } (e_{aR} \times e_{aL})\cdot n < 0
-\end{cases}
+\end{cases}.
 \end{equation}
 where $n$ is the normal of the plane containing $e_{aR}$ and $e_{aL}$. The skier $a$ chooses the new waypoint with uniform distribution on a fraction of the angle $\alpha$. More precisely, let $p$ be the fraction of angle that should be considered, then the new waypoint $w_a$ is chosen as
 
 \begin{equation}\label{new_waypoint}
-w_a=r_a+\rho F\left(\frac{e_{aR}+e_{aL}}{\norm{e_{aR}+e_{aL}}},\mathcal{U}\left(-\frac{p \alpha}{2},\frac{p \alpha}{2}\right)\right)
+w_a=r_a+\rho F\left(\frac{e_{aR}+e_{aL}}{\norm{e_{aR}+e_{aL}}},\mathcal{U}\left(-\frac{p \alpha}{2},\frac{p \alpha}{2}\right)\right),
 \end{equation}
 where $\rho$ is the distance at which waypoint are chosen, $F\left(v,\beta\right)$ rotates the vector $v$ of an angle $\beta$ and $\mathcal{U}(a,b)$ returns a random number with uniform distribution on $(a,b)$ (see Fig.\ref{new_waypoint_pic}).
 
@@ -388,7 +387,7 @@ To model the influences of skier's speed and shape of the slope it is possible t
 
 Point \ref{depending_velocity} can be satisfied by making the parameter $p$ linearly depend on skier's speed $v$. Moreover it is required that when the speed $v$ is close to $0$ the width of the angle should be also close to $0$ and when $v$ is close to a high value of speed $v_{high}$ the angle should have maximum width. Therefore, $p$ can be set to
 \begin{equation}\label{delta_vel}
-p= \frac{v}{v_{high}}
+p= \frac{v}{v_{high}}.
 \end{equation}
 
 The requirement \ref{frequency} is already met by the mechanism described above. In fact, since a new waypoint is chosen each time the skier has traveled more than $D$ meters, when a skier is faster he or she chooses waypoints more frequently.
@@ -399,25 +398,25 @@ To fulfill the third requirement an additional factor depending on the slope sho
 p=\begin{cases}
    \frac{v}{v_{high}}\frac{s}{s_{lim}} & \text{if } s < s_{lim} \\
    \frac{v}{v_{high}} & \text{otherwise}
-\end{cases}
+\end{cases}.
 \end{equation}
 If, despite this, skiers will come to a complete stop (maybe due to a counter slope), they will start walking at constant speed.
 
 Finally, to satisfy point \ref{avoid_impact} manipulating $p$ will not be enough. The minimum turning radius of skiers gives a bound to their ability of avoiding a collision or to hit the edges of the ski slope. Assuming that a skier do not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
 
 \chapter{Implementation}\label{implementation}
-The model was implemented using C++ and GRASS GIS. GRASS GIS is a Geographic Information System (GIS) open source software used for geospatial data management and analysis. It was chosen to perform the geospatial computation needed by the model.
+The model was implemented using C++ and GRASS GIS. GRASS GIS is a Geographic Information System (GIS) open-source software used for geospatial data management and analysis. It was chosen to perform the geospatial computation needed by the model.
 
 \section{Technology choice}
 Different technologies were explored to implement the GIS Backend needed by the model. PostGIS, QGIS, GDAL/OGR and GRASS GIS were the main technologies considered.
 
-PostGIS is an open source spatial database extender for PostgreSQL database. It gives support for geographic objects manipulation allowing spatial queries to be run in SQL. The critical point using PostGIS is the absence of a dedicated API for any language. It requires to use a PostgreSQL adapter (such as psycopg for python) and to build dynamically the queries in the chosen language. Moreover the raster data support is still immature.
+PostGIS is an open-source spatial database extender for PostgreSQL database. It provides support for geographic objects manipulation allowing spatial queries to be run in SQL. The critical point using PostGIS is the absence of a dedicated API for any language. It requires to use a PostgreSQL adapter (such as psycopg for python) and to build dynamically the queries in the chosen language. Moreover the raster data support is still immature.
 
-Quantum GIS Desktop, also known as QGIS, is an open source GIS desktop application. QGIS supports both vector and raster formats. It have a module, PyQGIS, that supports scripting using the Python language. However, the functionalities implemented are more focused on spatial data visualization and do not give enough support for the analysis operations.
+Quantum GIS Desktop, also known as QGIS, is an open-source GIS desktop application. QGIS supports both vector and raster formats. It has a module, PyQGIS, that supports scripting using the Python language. However, the functionalities implemented are more focused on spatial data visualization and do not give enough support for the analysis operations.
 
-GDAL, Geospatial Data Abstraction Library, is an open source library for geospatial data translation and processing. The related library OGR Simple Feature Library provides a similar capability for simple vector data processing. GDAL exposes API for C,C++ and Python while the more widely used API for OGR is the one for C++. OGR provides also slightly less complete API for C and Python, although they are not really well documented. The main issue using GDAL/OGR is the lack of support for the analysis of vector data: OGR offers useful API to read and write vector data, but analysis such as point linestring distance calculation are not available.
+GDAL, Geospatial Data Abstraction Library, is an open-source library for geospatial data translation and processing. The related library OGR Simple Feature Library provides a similar capability for simple vector data processing. GDAL exposes API for C,C++ and Python while the more widely used API for OGR is the one for C++. OGR provides also slightly less complete API for C and Python, although they are not really well documented. The main issue using GDAL/OGR is the lack of support for the analysis of vector data: OGR offers useful API to read and write vector data, but analysis such as point linestring distance calculation are not available.
 
-GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support System) is an open source GIS software that gives support for geospatial data management and analysis. To understand how GRASS API works it is necessary to look at the GRASS software structure (see Fig.\ref{grass_structure}). GRASS has a large GIS library, referred to as GRASS GIS Library, at the basis of the software stack. It is divided in two main library: the Raster File Processing library and the Vector File Processing library. It contains also many others library of less importance. The GRASS GIS Library is quite large and implements many basic GIS operation both for raster and vector format. The spatial data are stored in the GRASS map storage with the GRASS specific format. On the top of the GRASS GIS Library are built many modules for raster and vector processing. The modules perform analysis at a higher level, they are executables and can be used directly from the GRASS GUI or from the command line.
+GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support System) is an open-source GIS software that gives support for geospatial data management and analysis. To understand how GRASS API works it is necessary to look at the GRASS software structure (see Fig.\ref{grass_structure}). GRASS has a large GIS library, referred to as GRASS GIS Library, at the basis of the software stack. It is divided in two main library: the Raster File Processing library and the Vector File Processing library. It contains also many others library of less importance. The GRASS GIS Library is quite large and implements many basic GIS operation both for raster and vector format. The spatial data are stored in the GRASS map storage with the GRASS specific format. On the top of the GRASS GIS Library are built many modules for raster and vector processing. The modules perform analysis at a higher level, they are executables and can be used directly from the GRASS GUI or from the command line.
 
 \begin{figure}
   \begin{center}
@@ -460,7 +459,7 @@ The measurements for the DTM were done in seasons without snow. As a consequence
 
 The first strategy uses a simple model to simulate the distribution of the snow. The model considers two limit cases to describe the profile of the snow. Given a surface $y(x)$ and a snowfall of $h$ meters, the first case describes a new profile were the snow is supposed to adhere perfectly to the terrain: $y_S(x)=y(x)+h$. The second case considers the snow to behave like a liquid and creates a new profile $y_L(x)$ where the new precipitation accumulates in the valleys, making the profile constant, and leaves $y_L(x)=y(x)$ on the ridges. Neither the first nor the second case can be considered realistic, however it can be thought that the real behavior of the snow can be described as an average between the two cases. So the actual profile after the precipitation can be described as
 \begin{equation}
-Y(x)=(1-l)y_S(x)+ly_L
+Y(x)=(1-l)y_S(x)+ly_L,
 \end{equation}
 where $l$ is a parameter describing how much the snow has a liquid-like behavior. By the point of view of the implementation, the critical point is to compute the profile $y_L$. For this purpose some GRASS modules were explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}. This module was used to compute the profile $y_L$.
 
@@ -534,7 +533,7 @@ The parameters regulating the social forces were set to have forces with equival
 
 \begin{table}
   \centering
-  \begin{tabular}{ l | c | c }
+  \begin{tabular}{ | l | c | c | }
     \hline
     Parameter & Symbol & Value \\
     \hline
@@ -555,7 +554,7 @@ The initialization of the parameters regulating the physical forces was based on
 
 \begin{table}
   \centering
-  \begin{tabular}{ l | c | c }
+  \begin{tabular}{ | l | c | c |}
     \hline
     Parameter & Symbol & Value \\
     \hline
@@ -590,7 +589,7 @@ SkiLogger was released for beta testing starting from February 2013. At this mom
 
 The data collected by the application needs to be filtered: the gps does not always give an accurate position and the application logs every moment including when using the ski lifts. Automated procedures has been developed to individuate and filter the single downhill tracks. As a first elaboration the speed of each point recorded has been computed. In order to minimize the effects of oscillation in the gps measurements, for the recorded position $x_i$ at the time $t_i$, the speed was computed considering the previous and following position as follow
 \begin{equation}
-v_i=\frac{\norm{x_i-x_{i-1}}+\norm{x_{i+1}-x_i}}{t_{i+1}-t_{i-1}}
+v_i=\frac{\norm{x_i-x_{i-1}}+\norm{x_{i+1}-x_i}}{t_{i+1}-t_{i-1}}.
 \end{equation}
 
 The second step processing the data is to filter the position tracked when skiers are on the ski lifts. For this purpose, a sliding window that considers sequences of ten points at a time was used. A sequence of point is considered valid if the slope between the first and the last point is downhill and it is greater than a minimum threshold or if the skier keeps a speed greater than a fixed minimum speed. The idea is to exclude sequences of point tracking movements in flat areas or moving uphill, avoiding at the same time to eliminate those sequences tracking movement in area of ski slopes that are counter slope and where skiers should usually keep a minimum speed to avoid stopping.
@@ -599,7 +598,7 @@ Finally, the last step in the process of cleaning the data is to isolate the sin
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=0.9\textwidth]{images/data_tognola.eps}
+    \includegraphics[width=\textwidth]{images/data_tognola.eps}
     \caption{Real skiers data logged with the mobile application SkiLogger on the ski slope ``Uno di Tognola'' in San Martino di Castrozza.}\label{data_tognola}
   \end{center}
 \end{figure}
@@ -680,7 +679,7 @@ To investigate the relation between simulate and real speeds, the spatial distri
 
 \begin{figure}
   \centering
-    \includegraphics[width=0.8\textwidth]{images/map_error.eps}
+    \includegraphics[width=\textwidth]{images/map_error.eps}
     \caption{Map of the errors between the real and the simulated speed on the tracks recorded on the ski slope ``Uno di Tognola''.}\label{map_error}
 \end{figure}
 
@@ -718,8 +717,7 @@ The other skiers were modeled as non-experienced skiers, with the skidding facto
     \caption{Trajectories of a simulated ski lesson on the ski slope ``Rododendro'' of San Martino di Catrozza. The red line is the instructor trajectory.}\label{lesson}
 \end{figure}
 
-\chapter*{Conclusions and future works}
-\addcontentsline{toc}{chapter}{Conclusions and future works}
+\chapter{Conclusions and future work}
 A particle-based model to simulate the riding behavior of skiers descending ski slopes has been implemented. The model was originally proposed by Holleczek and Troster \cite{hol2012}, the following new features were introduced:
 \begin{itemize}
 \item Non-experienced skiers were included in the model. Calibrating a new introduced parameter, the skidding parameter $\eta$, intermediate and beginner skiers can be simulated.
