@@ -418,14 +418,14 @@ The simulation can include a more advance model of the obstacle repulsion. The r
 When skiing in groups it may be appropriate to make the skiers trajectories influencing each other. During ski lessons for example, skiers trajectories can be forced to emulate the instructor trajectory. This approach is investigated in more detail in section \ref{ski_lessons}.
 
 \chapter{Implementation}\label{implementation}
-The model was implemented using C++ and GRASS GIS. GRASS GIS is a Geographic Information System (GIS) open-source software used for geospatial data management and analysis. It was chosen to perform the geospatial computation needed by the model.
+The model was implemented using C++ and GRASS GIS. GRASS is a Geographic Information System (GIS) open-source software used for geospatial data management and analysis. It was chosen to perform the geospatial computation needed by the model.
 
-\section{Technology choice}
-Different technologies were explored to implement the GIS Backend needed by the model. PostGIS, QGIS, GDAL/OGR and GRASS GIS were the main technologies considered.
+\section{Technologies used}
+Different technologies were explored and used to implement the GIS platform used by the model. PostGIS, QGIS, GDAL/OGR and GRASS GIS were the main technologies considered.
 
 PostGIS is an open-source spatial database extender for PostgreSQL database. It provides support for geographic objects manipulation allowing spatial queries to be run in SQL. The critical point using PostGIS is the absence of a dedicated API for any language. It requires to use a PostgreSQL adapter (such as psycopg for python) and to build dynamically the queries in the chosen language. Moreover the raster data support is still immature.
 
-Quantum GIS Desktop, also known as QGIS, is an open-source GIS desktop application. QGIS supports both vector and raster formats. It has a module, PyQGIS, that supports scripting using the Python language. However, the functionalities implemented are more focused on spatial data visualization and do not give enough support for the analysis operations.
+Quantum GIS Desktop, also known as QGIS, is an open-source GIS desktop application. QGIS supports both vector and raster formats. It has a module, PyQGIS, that supports scripting using the Python language. However, the functionalities implemented are more focused on spatial data visualization and do not give enough support on the analysis operations.
 
 GDAL, Geospatial Data Abstraction Library, is an open-source library for geospatial data translation and processing. The related library OGR Simple Feature Library provides a similar capability for simple vector data processing. GDAL exposes API for C,C++ and Python while the more widely used API for OGR is the one for C++. OGR provides also slightly less complete API for C and Python, although they are not really well documented. The main issue using GDAL/OGR is the lack of support for the analysis of vector data: OGR offers useful API to read and write vector data, but analysis such as point linestring distance calculation are not available.
 
@@ -438,12 +438,17 @@ GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support S
   \end{center}
 \end{figure}
 
-GRASS allows two basic levels of programming. The most simple approach is to use script programming to call the high-level GRASS modules. A more advanced approach is to access the low-level functionalities of the GRASS GIS library trough the C-API exposed. Since grass modules are executables, the first approach requires to spawn a new process each time a spatial computation is needed. For the implementation of the model presented in \ref{model} this is not feasible. Even if the second approach forces to use GIS operations at a lower lever it has many advantages: it gives support for database routines (GRASS file management), for projections, for raster and  vector data management and it guarantees good performances \cite{net2008}.
+GRASS allows two basic levels of programming. The first approach is to use script programming to call the high-level GRASS modules. A more advanced approach is to access the low-level functionalities trough the C-API exposed. Since grass modules are executables, the first approach requires to spawn a new process each time a spatial computation is needed. For the implementation of the model presented in chapter \ref{model} this is not feasible. Even if the second approach forces to use GIS operations at a lower lever it has many advantages: it gives support for database routines (GRASS file management), for projections, for raster and  vector data management and it guarantees good performances \cite{net2008}.
 
-GRASS GIS was chosen to implement the GIS Backend. Since the API is written in ANSI C, writing the code in C or in C++ has the advantage of accessing the API in a very simple manner. Moreover both C and C++ guarantee good performances and are often chosen to implement this kind of simulation. C++ was preferred to C because it is object oriented. An object oriented design allows to better represent the concepts presented in the model, reducing the complexity and making the code structure clearer. Moreover it keeps the code structure more modular and flexible.
+GRASS GIS was chosen to implement the GIS Backend. Since the API is written in ANSI C, writing the code in C or in C++ has the advantage of accessing the API in a very simple manner. Moreover both C and C++ guarantee good performances and are often chosen to implement this kind of simulation. C++ was preferred to C because having an object oriented allows to better represent the models concepts, reducing the complexity and making the code structure clearer and keeping the code structure modular and flexible.
 
 \section{Software structure}
-The software structure was designed to be the most flexible as possible. The main entities modeled inside the software are the slope, the skiers and the forces. In Figure \ref{class_diagram} the class diagram of the software is described. The class Slope models the ski slope, it has a set of skiers, the skiers that are descending the slope, a set of physical forces, the physical forces that act on the slope and a set of social forces, the social forces skiers are subjected to. The Skier class models a skier: it has a position, a velocity, an acceleration and a status describing if he is turning. The forces have been modeled with two different classes: the SocialForce class and the PhysicalForce class are abstract classes that act as base class respectively for all the social forces and for all the physical forces. Although the interface declared by this two classes is the same, they were not merged together because the two type of forces, social and physical, are conceptually different and in future development it is possible that changes in the model will require to have separated interfaces.
+The main entities modeled are the ski slope, the skiers and the forces that drive them. In Figure \ref{class_diagram} the software's class diagram is described:
+\begin{enumerate}
+\item Class Slope that models the ski slope, it has a set of skiers, a set of physical forces that act on the slope and a set of social forces that skiers are subjected to.
+\item Skier class models the skier's behavior: it has a position, a velocity, an acceleration and a status describing if they are turning.
+\item Forces skiers are subjected to have been modeled using two different classes: SocialForce class and the PhysicalForce class are abstract classes that act as base class respectively for all the social forces and for all the physical forces. Although the interface declared by this two classes is the same, they were not merged together because the social and physical forces are conceptually different making easier for future development of the model to changes them using separated interfaces.
+\end{enumerate}
 
 \begin{figure}[!h]
   \begin{center}
@@ -452,12 +457,12 @@ The software structure was designed to be the most flexible as possible. The mai
   \end{center}
 \end{figure}
 
-The simulation has to perform some specific GIS computation. The implementation realized wanted to avoid dependencies between the code related to the simulation and the code written to implement GIS specific operations. In other words the implementation of the simulation should be independent by the technology chosen to implement the GIS Backend. For this reason, an abstract class called GisBackend was used. This class declares the interface that a GIS backend used to run the simulation must implement. This interface includes methods to get elevation, slope and aspect for given coordinates, methods to get the distance of a point from the edges of the slope, methods to give random start points at the top of the ski slope, to determine if a given point is inside the ski slope and a method to reflect a line colliding on a slope edge.
+The simulation has to perform some specific spatial computation. The implementation realized wanted to avoid dependencies between the code related to the simulation and the code written to implement GIS specific operations. In other words the implementation of the model should be independent by the technology chosen to implement the GIS Backend. For this reason, an abstract class called GisBackend was used. The class declares the interface that a GIS backend used to run the simulation must implement. This interface includes methods to get elevation, slope and aspect for given coordinates, methods to get the distance of a point from the edges of the slope, methods to give random starting points at the top of the ski slope, to determine if a given point is inside the ski slope and a method to reflect a line colliding on a slope edge.
 
-The class GrassBackend implements the interface GisBackend and is the class used in the code when spatial computations are needed. The class GrassBackend performs the operations needed using the GRASS GIS Library. It requires to have available a DEM (Digital Elevation Model) raster map for the elevation and the slope and aspect computation, a vector map with the polygon of the ski slope to determine if a point is inside the slope, a vector map with the lines of the right and left edges of the slope to find the distances from them and finally a vector map with the polygon of the start area and stop area to decide where skiers should be started and stopped.
+The class GrassBackend implements the interface GisBackend and is the class used in the code when spatial computations are needed. The class GrassBackend uses the GRASS GIS Library. It checks to have available a DEM (Digital Elevation Model) raster map for the elevation, the slope and the aspect computation, a polygon vector map describing the ski slope to determine if a point is inside the slope, a line vector map describing the right and the left edges of the slope to find the distances from them and finally a vector map with the polygon of the start area and stop area to decide where skiers should be started and stopped.
 
 \section{Input data}
-The input data required by the simulation to run are the data needed by the GrassBackend. It requires the vector map with the polygon of the ski slope for which the model should be run. The ski slope (see Fig.\ref{uno_tognola_3d} for an example) is extracted from a vector map containing the polygons of slopes of the skiing resort in Trentino. This data are available inside the SicurSkiWeb project and were derived starting from orthophotos and tuned with measurements done in place. From the polygon of the ski slope left and right edge, start and stop areas are derived.
+The input data required by the simulation to run are the data needed by the GrassBackend. It requires the vector map with the polygon of the ski slope for which the model should be run. The ski slope (see Fig.\ref{uno_tognola_3d} for an example) is extracted from a vector map containing all polygons of the ski slopes of Trentino's ski resort. This data come from the SicurSkiWeb database and were derived starting from orthophotos and adjusted with field measurements. From the polygon of the ski slope the left and right edges, the start and stop areas are derived.
 
 \begin{figure}[!h]
   \begin{center}
@@ -466,17 +471,19 @@ The input data required by the simulation to run are the data needed by the Gras
   \end{center}
 \end{figure}
 
-The simulation requires a Digital Elevation Model. For this purpose a Digital Terrain Model (DTM) of the area of Trentino was used. The DTM was obtained using the LIDAR technology, a remote sensing sensing technology that uses laser light to measures distances. The measurements were done in the years 2006 and 2007. It is at a resolution of 1x1m except for areas at high elevation where resolution is of $2\times 2m$.
+As second set of inputs, the simulation model requires some features extracted from a Digital Elevation Model. In this case we used the Digital Terrain Model (DTM) of the Autonomous Province of Trento was used. The DTM was computed using the LIDAR flight data of 2006 and 2007, it has a spatial resolution that variates between 1 meters and 2 meters, depending on the location.
 
-The measurements for the DTM were done in seasons without snow. As a consequence the DTM on which real skiers move is different from the DTM obtained with the Lidar. Two strategy was thought to simulate the effect of the snow on the DTM.
+The measurements for the DTM were taken during the summers season without the presence of snow. As a consequence the surface on which real skiers move is different from the DTM obtained from the Lidar data.
 
-The first strategy uses a simple model to simulate the distribution of the snow. The model considers two limit cases to describe the profile of the snow. Given a surface $y(x)$ and a snowfall of $h$ meters, the first case describes a new profile were the snow is supposed to adhere perfectly to the terrain: $y_S(x)=y(x)+h$. The second case considers the snow to behave like a liquid and creates a new profile $y_L(x)$ where the new precipitation accumulates in the valleys, making the profile constant, and leaves $y_L(x)=y(x)$ on the ridges. Neither the first nor the second case can be considered realistic, however it can be thought that the real behavior of the snow can be described as an average between the two cases. So the actual profile after the precipitation can be described as
+Two strategy was thought to simulate the effect of the snow on the DTM:
+\begin{enumerate}
+\item A simple model was implemented to simulate the distribution of the snow. The model considers two limit cases to describe the profile of the snow. Given a surface $y(x)$ and a snowfall of $h$ meters, the first case describes a new profile were the snow is supposed to adhere perfectly to the terrain: $y_S(x)=y(x)+h$. The second case considers the snow to behave like a liquid and creates a new profile $y_L(x)$ where precipitations accumulate in the valleys, making the profile constant, and leaves $y_L(x)=y(x)$ on the ridges. Neither the first nor the second case can be considered realistic, however it can be thought that the real behavior of the snow can be described as an average between the two cases. The actual profile after the precipitation can be described as
 \begin{equation}
 Y(x)=(1-l)y_S(x)+ly_L,
 \end{equation}
-where $l$ is a parameter describing how much the snow has a liquid-like behavior. By the point of view of the implementation, the critical point is to compute the profile $y_L$. For this purpose some GRASS modules were explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}. This module was used to compute the profile $y_L$.
-
-The second strategy does not aim at building a realistic model for the snow precipitation but starts from the consideration that there are three main factors that determine the distribution of the snow on a ski slope: the snow precipitation, the snow produced by the snow cannons and the actions of the snow groomings. All this factors tend to smooth the original surface. To emulate this action the surface of the DTM was approximated with a smoothed surface. Starting from the original DTM raster map a vector map was produced where each original value of elevation was represented by a point. Then the GRASS module v.surf.rst was used to interpolate this points into a new elevation map using regularized spline with tension \cite{mit2005}.
+where $l$ is a parameter describing how much snow has liquid-like behavior. From the point of view of the implementation, the critical point is to compute the profile $y_L$. For this purpose some GRASS modules were explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}, used to compute the profile $y_L$.
+\item The second strategy  starts from the consideration that there are three main factors that determine the distribution of the snow on a ski slope: the snow precipitation, the snow produced by the snow cannons and the actions of the snow groomings. All this factors tend to smooth the original surface. To emulate this action the surface of the DTM was approximated with a smoothed surface. Starting from the original DTM raster map a vector map was produced where each original value of elevation was represented by a point. Then the GRASS module v.surf.rst was used to interpolate this points into a new elevation map using regularized spline with tension \cite{mit2005}.
+\end{enumerate}
 
 \begin{figure}[!h]
   \centering
@@ -484,12 +491,12 @@ The second strategy does not aim at building a realistic model for the snow prec
     \caption{Profile of the DTM compared to profile of the DTM smoothed and of the DTM covered with simulated snow.}\label{profile_dtm}
 \end{figure}
 
-Figure \ref{profile_dtm} shows the profiles of the original dtm, of the dtm obtained from the first strategy and of the dtm obtained from the second for a particularly critical point on a ski slope. The best result is given by the second strategy. The problem following the first strategy is the imprecision of the results from the module r.sim.water which does not return a feasible profile for a liquid-like behavior. This can be due to a misconfiguration of the parameters of the module or maybe to a too demanding level of precision. Finally, the second strategy was chosen.
+Figure \ref{profile_dtm} compares the profiles of the original dtm, of the dtm obtained from the first strategy and of the one obtained from the second strategy for a particularly critical point on a ski slope. Following the first strategy, the results of the module r.sim.water did not return a feasible profile for a liquid-like behavior. This can be linked to a misconfiguration of the module parameters or to very high level of precision. The best result was given by the second strategy, therefore it was the chosen one for this purpose.
 
-Starting from the smoothed DTM, slope raster map and aspect raster map were computed. The GRASS module r.slope.aspect was used. The slope raster map contains the slope, stated in degree of inclination from the horizontal. The slope of a cell is the maximum rate of change in value from that cell to its neighbors. Conceptually, computing the slope is equivalent to fits a plane to the z-value of a 3x3 neighborhood around the center cell. The slope value of this plane is computed using the average maximum technique \cite{bur2009}. The direction the plan faces is the aspect.
+Starting from the smoothed DTM, slope raster map and aspect raster map were computed. To compute slope raster map and aspect raster map the GRASS module r.slope.aspect was used. The slope map contains the slope of every single raster cell, defined as the degrees of inclination from the horizontal. The slope of a cell is the maximum rate of change in value from that cell to its neighbors. Conceptually, computing the slope is equivalent to fits a plane to the z-value of a 3x3 neighborhood around the center cell. The slope value of this plane is computed using the average maximum technique \cite{bur2009}. The orientation of the maximum slope direction toward the east defines the aspect.
 
 \section{Output data}\label{output_data}
-The output produced by the simulation is the status of each skier at each integration step of the simulation. The information logged at a time $t$ for a skier $a$ are the position $r_a$ and the velocity $\dot{r}_a$.
+The output produced by the simulation model is the status (position and speed) of each skier at each integration step of the simulation. The information logged at a time $t$ for a skier $a$ are the position $r_a$ and the velocity $\dot{r}_a$.
 
 \begin{figure}
         \centering
@@ -509,7 +516,7 @@ The output produced by the simulation is the status of each skier at each integr
         \caption{Average simulated speed map (a) and skiers density map (b) for the ski slope ``Rododendro''.}\label{rododendro}
 \end{figure}
 
-Starting from this data two main analysis have been performed: speed average and average density of skiers computation. To analyze the speed of skiers along the ski slope a raster map of average speed has been produced. The map is obtained interpolating the speed values simulated by the simulation (see Fig.\ref{uno_tognola_vel} and Fig.\ref{rododendro_vel}). The interpolation was done using the GRASS module v.surf.idw. The GRASS module v.kernel was used to compute the density of skiers on the slope. The raster density map is computed using a moving kernel with gaussian distribution (see Fig.\ref{uno_tognola_den} and Fig.\ref{rododendro_den}).
+Starting from this data the skiers speed average and the skiers density on the considered ski slopes were computed. Interpolating the speed values obtained by the simulation (see Fig.\ref{uno_tognola_vel} and Fig.\ref{rododendro_vel}) a raster map of the skiers speed is obtained. This map can be then used to analyze the skiers speed on every location of the ski slope surface. The interpolation was done using the GRASS module v.surf.idw. The GRASS module v.kernel was used to compute the density of skiers on the slope. The raster density map is computed using a moving kernel with gaussian distribution (see Fig.\ref{uno_tognola_den} and Fig.\ref{rododendro_den}).
 
 \begin{figure}
         \centering
@@ -534,13 +541,13 @@ The parameters of the model are of three types: parameters describing the ski sl
 
 The model assumes that skiers arrive at the beginning of ski slope at a constant rate. Let $\lambda$ be the persons per hour descending a ski slope, then the time between the start of two consecutive skiers is $T=\mathcal{U}\left(2\frac{3600}{\lambda}\right)$, where $\mathcal{U}(a)$ is the uniform distribution between $0$ and $a$. For the ski slope ``Uno di Tognola'' an arrival rate of $\lambda=200 persons/h$ was chosen.
 
-As in \cite{hol2012} and in \cite{hel2008}, the repulsive potentials defining the social forces are exponential defined as
+As in \cite{hol2012} and in \cite{hel2008}, the repulsive potentials defining the social forces are exponential and defined as
 \begin{align}
 U(\norm{r_{aL}})&=U_0 \exp(-\norm{r_{aL}}/R_L) \\
 U(\norm{r_{aR}})&=U_0 \exp(-\norm{r_{aR}}/R_R) \\
 V(s)&=V_0 \exp(-s/R_A)
 \end{align}
-where $R_L$, $R_R$ and $R_A$ denote the ranges of the social repulsions, and $U_0$ and $V_0$ are scaling constants that regulate the interaction strength between skiers and the respective object.
+where $R_L$, $R_R$ and $R_A$ describe the ranges of the social repulsions, and $U_0$ and $V_0$ are scaling constants that regulate the interaction strength between skiers and the respective object.
 
 The parameters regulating the social forces were set to have forces with equivalent strength and realistic interaction. For the destination force was set $A_0=1$, for the repulsion forces $U_0=10$, $V_0=8$, $R_L=R_R=10$ and $R_A=8$. These choices have the practical implication that the magnitude of the destination force is always equals to $1$ and the repulsion forces tend to $1$ when the skier approximates the edges or other skiers. For non-experienced skiers the strength and the range of edge repulsion can be increased because usually they tend to keep more distance from the edges than experienced skiers.
 
@@ -587,7 +594,7 @@ The initialization of the parameters regulating the physical forces was based on
 \end{table}
 
 \section{Optimization}
-An analysis of the performances of the software was performed in order to improve the computation time. The section of the software more critical were those sections accessing the files containing the spatial data. These operations, performed by the GrassBackend, were needed to access the data contained in the GRASS map storage and are very time consuming. To speed up the calls to the GrassBackend a caching mechanism was implemented. For the queries requesting raster map values, once a cell value has been fetched it is cached in memory, so that the next queries will access the data quicker. The implementation of the cache was done using the map class available inside the C++ standard library. The map class is an implementation of an associative containers that was used to efficiently store and retrieve values (the raster map values) using keys (the combination of rows and columns). The speed-up reached thanks to the caching mechanism can be seen in Figure \ref{speed-up_cache}.
+An analysis of the performances of the software was performed in order to improve the computation time. The section of the software more critical were those sections accessing the files containing the spatial data. These operations, performed by the GrassBackend, were needed to access the data saved in the GRASS map storage and are very time consuming. To speed up the calls to the GrassBackend a caching mechanism was implemented. For the queries requesting raster map values, once a cell value has been fetched it is cached in memory, so that the next queries will access the data quicker. The implementation of the cache was done using the map class available inside the C++ standard library. The map class is an implementation of an associative containers that was used to efficiently store and retrieve values (the raster map values) using keys (the combination of rows and columns). The speed-up reached thanks to the caching mechanism can be seen in Figure \ref{speed-up_cache}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -622,7 +629,7 @@ Finally, the last step preprocessing the data is to isolate the single downhill 
 \item Once the start of a track is found all the following sequences of forty points that are within a time range and that represent a downhill movement are considered to be part of this start track. This last step individuates the single tracks and eliminates the points that are noise due to the inaccuracy of the gps.
 \end{enumerate}
 
-Figure \ref{data_tognola} shows an example of the data recorded with the tracks highlighted. In some sections of the slope gps inaccuracies can be noticed. Sometimes discrepancies can  also be due to inaccuracies in the trail of the ski slope.
+Figure \ref{data_tognola} shows an example of the data recorded with the tracks highlighted. In some sections of the slope gps inaccuracies can be noticed. Sometimes discrepancies can also be due to inaccuracies in the trail of the ski slope.
 
 For the season 2012/2013 a total of 178502 meters of descent has been tracked divided in 115 separated tracks. The average length of a track is of 1552 meters. 100 tracks are longer than 500 meters (Table \ref{descendts}).
 
