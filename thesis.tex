@@ -46,7 +46,7 @@
      \vspace{10pt}
      \begin{figure}[htbp]
        \begin{center}
-         \includegraphics[width=3cm]{images/sigillo_unitn.eps}
+         \includegraphics[width=3cm]{images/unitn.eps}
        \end{center}
      \end{figure}
 Degree Course in Computer Science\\
@@ -63,8 +63,8 @@ Final Thesis\\
 \vspace{3cm}
 \end{center}
 Supervisor: \\ \textbf{Prof. Alberto Montresor} \\
-Supervisor:\hspace{7.76cm}Graduant:   \\
-\textbf{Dr. Cesare Furlanello}\hspace{4.9cm}\textbf{Matteo Poletti}
+Co-supervisor:\hspace{8.15cm}Graduant:   \\
+\textbf{Dr. Cesare Furlanello}\hspace{6.3cm}\textbf{Matteo Poletti}
 \vspace{1cm}
 \begin{center}
 Accademic Year 2012-2013
@@ -111,7 +111,7 @@ This thesis work was developed in the MPBA unit of the Bruno Kessler Foundation.
 \chapter{Introduction}
 Alpine skiing is a winter sport widely practiced in the Alps and it is a key resource for the tourism sector. Each year more than 80.000.000 single ski lifts passages are counted in Trentino's ski resorts where the ski accidents risk ratio on single passages is about 1:10.000.
 
-SicurSkiWeb is a project of the Bruno Kessler Foundation and Polizia di Stato aiming to monitoring and improving safety on ski slopes, in collaboration with the Trentino Skiing Resorts Managers Association and the Trentino Ski Instructor Association. The main output of the project is a GeoICT platform for the collection and the analysis of all data collected during the rescue interventions by ski patrols. Up to today the platform geodatabase includes records for 2571 interventions: the 70\% of accidents involves skiers while 20\% are snowboarder; moreover 80\% of the interventions are due to accidental causes while 11\% are caused for collisions with other persons, and 4\% are due to illnesses.
+SicurSkiWeb is a project of the Bruno Kessler Foundation and Polizia di Stato aiming to monitor and improving safety on ski slopes, in collaboration with the Trentino Skiing Resorts Managers Association and the Trentino Ski Instructor Association. The main output of the project is a GeoICT platform for the collection and the analysis of all data collected during the rescue interventions by ski patrols. Up to today the platform geodatabase includes records for 2571 interventions: the 70\% of accidents involves skiers while 20\% are snowboarder; moreover 80\% of the interventions are due to accidental causes while 11\% are caused for collisions with other persons, and 4\% are due to illnesses.
 
 The GeoITC infrastructure is composed of three modules:
 \begin{enumerate}
@@ -119,11 +119,11 @@ The GeoITC infrastructure is composed of three modules:
 \item A WebGIS platform to manage or visualize field data and to constantly monitor the evolution of the risk on the slopes.
 \item A set of analysis tools for understanding, studying and mapping the risk of accidents and its relationship with environmental and social factors.
 \end{enumerate}
-This thesis work aims at providing an analysis framework to describe the behavior of skiers while performing their descents on ski slopes. The output of this analysis will be used as a useful component of the analysis module of SicurSkiWeb platform, in particular for speed and traffic density estimates.
+This thesis work aims to provide an analysis framework to describe the behavior of skiers while performing their descents on ski slopes. The output of this analysis will be used as a useful component of the analysis module of SicurSkiWeb platform, in particular for speed and traffic density estimates.
 
 Traffic simulations have been widely used to predict motions of objects such as vehicles and pedestrians using models from statistical physic. Holleczek and Troster proposed to this methodology to predict skiing traffic. Following their approach, skiing dynamics has been simulated using a particle-based model.
 
-The problem faced in this thesis work involves some patterns that can be recognize also in other kind of problems. In sports, a player behavior is influenced by the other players behavior. Dynamics of the players on the field has been investigated for sports as basketball \cite{bo2010}, tennis \cite{pa2005} and squash \cite{mc2006}. Team sports and specifically rugby interpersonal dynamics has been investigated as multiagent system \cite{qu2009}. Multiagent system are often simulated also in videogames. However, this kind of simulations do not aim at simulating real agents but try to reproduce credible scenarios. Nevertheless, the physics implemented by skiing simulator videogames is closely related to the one implemented in this thesis.
+The problem faced in this thesis work involves some patterns that can be recognize also modeling other kind of systems. In sports, the behavior of agents, the players, are influenced and determined by the other players actions. Dynamics of the players on the field has already been investigated for sports as basketball \cite{bo2010}, tennis \cite{pa2005} and squash \cite{mc2006}. For team sports and specifically rugby, a model of interpersonal dynamics in terms of multiagent system was proposed \cite{qu2009}. Multiagent system are often simulated also in videogames. However, this kind of simulations do not aim to simulate real agents but try to reproduce credible scenarios using heuristics and predetermined sets of rules. Nevertheless, the physics implemented by skiing simulator videogames is closely related to the one implemented in this thesis.
 
 A key role building this kind of model is played by the availability of empirical data, useful to calibrate the parameters and investigate the agents behavior. For this purpose, wearable sensors offer important possibilities for the capturing of motions. Pressure sensors and gyroscope were already successfully employed to track snowboarder activities \cite{hol2010}, a similar workflow can be followed for skiers.
 
@@ -413,7 +413,7 @@ If, despite this, skiers will come to a complete stop (maybe due to a counter sl
 Finally, to satisfy point \ref{avoid_impact} manipulating $p$ will not be enough. The minimum turning radius of skiers gives a bound to their ability of avoiding a collision or to hit the edges of the ski slope. Assuming that a skier does not choose a direction that will make them exit the ski slope, those angles indicating a direction along which the slope edge is reached in less than $R_{SC}$ meters are not considered in the selection of the waypoint.
 
 \subsection{Other possible extensions}
-The simulation can include a more advance model of the obstacle repulsion. The repulsion from physical obstacle can be easily implemented when the GIS database provides the information needed (e.g. the position of the piles of the ski lift). In addition to this, other kind of obstacles can be included in the model to represent areas of the slope considered dangerous by the skiers. For example obstacles can simulate sheets of ice (that can change position depending on the time of the day) or areas with high slope (depending on skiers' skill). This extension was not implemented in this thesis.
+The simulation can include a more advance model of the obstacle repulsion. The repulsion from physical obstacle can be easily implemented when the GIS database will provide the information needed (e.g. the position of the piles of the ski lift). In addition to this, other kind of obstacles can be included in the model to represent areas of the slope considered dangerous by the skiers. For example obstacles can simulate sheets of ice (that can change position depending on the time of the day) or areas with high slope (depending on skiers' skill). This extension was not implemented in this thesis.
 
 When skiing in groups it may be appropriate to make the skiers trajectories influencing each other. During ski lessons for example, skiers trajectories can be forced to emulate the instructor trajectory. This approach is investigated in more detail in section \ref{ski_lessons}.
 
@@ -421,11 +421,11 @@ When skiing in groups it may be appropriate to make the skiers trajectories infl
 The model was implemented using C++ and GRASS GIS. GRASS is a Geographic Information System (GIS) open-source software used for geospatial data management and analysis. It was chosen to perform the geospatial computation needed by the model.
 
 \section{Technologies used}
-Different technologies were explored and used to implement the GIS platform used by the model. PostGIS, QGIS, GDAL/OGR and GRASS GIS were the main technologies considered.
+Different technologies were explored and used to implement the GIS platform of the model. PostGIS, QGIS, GDAL/OGR and GRASS GIS were the main technologies considered.
 
 PostGIS is an open-source spatial database extender for PostgreSQL database. It provides support for geographic objects manipulation allowing spatial queries to be run in SQL. The critical point using PostGIS is the absence of a dedicated API for any language. It requires to use a PostgreSQL adapter (such as psycopg for python) and to build dynamically the queries in the chosen language. Moreover the raster data support is still immature.
 
-Quantum GIS Desktop, also known as QGIS, is an open-source GIS desktop application. QGIS supports both vector and raster formats. It has a module, PyQGIS, that supports scripting using the Python language. However, the functionalities implemented are more focused on spatial data visualization and do not give enough support on the analysis operations.
+Quantum GIS Desktop, also known as QGIS, is an open-source GIS desktop application. QGIS supports both vector and raster formats. It has a module, PyQGIS, that supports scripting using the Python language. However, the functionalities implemented are more focused on spatial data visualization and do not give enough support for the analysis operations.
 
 GDAL, Geospatial Data Abstraction Library, is an open-source library for geospatial data translation and processing. The related library OGR Simple Feature Library provides a similar capability for simple vector data processing. GDAL exposes API for C,C++ and Python while the more widely used API for OGR is the one for C++. OGR provides also slightly less complete API for C and Python, although they are not really well documented. The main issue using GDAL/OGR is the lack of support for the analysis of vector data: OGR offers useful API to read and write vector data, but analysis such as point linestring distance calculation are not available.
 
@@ -438,16 +438,16 @@ GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support S
   \end{center}
 \end{figure}
 
-GRASS allows two basic levels of programming. The first approach is to use script programming to call the high-level GRASS modules. A more advanced approach is to access the low-level functionalities trough the C-API exposed. Since grass modules are executables, the first approach requires to spawn a new process each time a spatial computation is needed. For the implementation of the model presented in chapter \ref{model} this is not feasible. Even if the second approach forces to use GIS operations at a lower lever it has many advantages: it gives support for database routines (GRASS file management), for projections, for raster and  vector data management and it guarantees good performances \cite{net2008}.
+GRASS allows two basic levels of programming. The first approach is to use script programming to call the high-level GRASS modules. A more advanced approach is to access the low-level functionalities trough the C-API exposed. Since grass modules are executables, the first approach requires to spawn a new process each time a spatial computation is needed. For the implementation of the model presented in chapter \ref{model} this is not feasible. Even if the second approach forces to use spatial operations at a lower lever it has many advantages: it gives support for database routines (GRASS file management), for projections, for raster and  vector data management and it guarantees good performances \cite{net2008}.
 
 GRASS GIS was chosen to implement the GIS Backend. Since the API is written in ANSI C, writing the code in C or in C++ has the advantage of accessing the API in a very simple manner. Moreover both C and C++ guarantee good performances and are often chosen to implement this kind of simulation. C++ was preferred to C because having an object oriented allows to better represent the models concepts, reducing the complexity and making the code structure clearer and keeping the code structure modular and flexible.
 
 \section{Software structure}
 The main entities modeled are the ski slope, the skiers and the forces that drive them. In Figure \ref{class_diagram} the software's class diagram is described:
 \begin{enumerate}
-\item Class Slope that models the ski slope, it has a set of skiers, a set of physical forces that act on the slope and a set of social forces that skiers are subjected to.
+\item Class Slope models the ski slope, it has a set of skiers, a set of physical forces that act on the slope and a set of social forces that skiers are subjected to.
 \item Skier class models the skier's behavior: it has a position, a velocity, an acceleration and a status describing if they are turning.
-\item Forces skiers are subjected to have been modeled using two different classes: SocialForce class and the PhysicalForce class are abstract classes that act as base class respectively for all the social forces and for all the physical forces. Although the interface declared by this two classes is the same, they were not merged together because the social and physical forces are conceptually different making easier for future development of the model to changes them using separated interfaces.
+\item Forces skiers are subjected to have been modeled using two different classes: SocialForce class and the PhysicalForce class are abstract classes that act as base class respectively for all the social forces and for all the physical forces. Although the interface declared by this two classes is the same, they were not merged together because the social and physical forces are conceptually different, making easier for future development of the model to change them using separated interfaces.
 \end{enumerate}
 
 \begin{figure}[!h]
@@ -457,7 +457,7 @@ The main entities modeled are the ski slope, the skiers and the forces that driv
   \end{center}
 \end{figure}
 
-The simulation has to perform some specific spatial computation. The implementation realized wanted to avoid dependencies between the code related to the simulation and the code written to implement GIS specific operations. In other words the implementation of the model should be independent by the technology chosen to implement the GIS Backend. For this reason, an abstract class called GisBackend was used. The class declares the interface that a GIS backend used to run the simulation must implement. This interface includes methods to get elevation, slope and aspect for given coordinates, methods to get the distance of a point from the edges of the slope, methods to give random starting points at the top of the ski slope, to determine if a given point is inside the ski slope and a method to reflect a line colliding on a slope edge.
+The simulation has to perform some specific spatial computations. The implementation realized wanted to avoid dependencies between the code related to the simulation and the code written to implement GIS specific operations. In other words the implementation of the model should be independent by the technology chosen to implement the GIS Backend. For this reason, an abstract class called GisBackend was used. The class declares the interface that the GIS backend used to run the simulation must implement. This interface includes methods to get elevation, slope and aspect for given coordinates, methods to get the distance of a point from the edges of the slope, methods to give random starting points at the top of the ski slope, to determine if a given point is inside the ski slope and a method to reflect a line colliding on a slope edge.
 
 The class GrassBackend implements the interface GisBackend and is the class used in the code when spatial computations are needed. The class GrassBackend uses the GRASS GIS Library. It checks to have available a DEM (Digital Elevation Model) raster map for the elevation, the slope and the aspect computation, a polygon vector map describing the ski slope to determine if a point is inside the slope, a line vector map describing the right and the left edges of the slope to find the distances from them and finally a vector map with the polygon of the start area and stop area to decide where skiers should be started and stopped.
 
@@ -471,7 +471,7 @@ The input data required by the simulation to run are the data needed by the Gras
   \end{center}
 \end{figure}
 
-As second set of inputs, the simulation model requires some features extracted from a Digital Elevation Model. In this case we used the Digital Terrain Model (DTM) of the Autonomous Province of Trento was used. The DTM was computed using the LIDAR flight data of 2006 and 2007, it has a spatial resolution that variates between 1 meters and 2 meters, depending on the location.
+As second set of inputs, the simulation model requires some features extracted from a Digital Elevation Model. In this case the Digital Terrain Model (DTM) of the Autonomous Province of Trento was used. The DTM was computed using the LIDAR flight data of 2006 and 2007, it has a spatial resolution that variates between 1 meters and 2 meters, depending on the location.
 
 The measurements for the DTM were taken during the summers season without the presence of snow. As a consequence the surface on which real skiers move is different from the DTM obtained from the Lidar data.
 
@@ -481,8 +481,8 @@ Two strategy was thought to simulate the effect of the snow on the DTM:
 \begin{equation}
 Y(x)=(1-l)y_S(x)+ly_L,
 \end{equation}
-where $l$ is a parameter describing how much snow has liquid-like behavior. From the point of view of the implementation, the critical point is to compute the profile $y_L$. For this purpose some GRASS modules were explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}, used to compute the profile $y_L$.
-\item The second strategy  starts from the consideration that there are three main factors that determine the distribution of the snow on a ski slope: the snow precipitation, the snow produced by the snow cannons and the actions of the snow groomings. All this factors tend to smooth the original surface. To emulate this action the surface of the DTM was approximated with a smoothed surface. Starting from the original DTM raster map a vector map was produced where each original value of elevation was represented by a point. Then the GRASS module v.surf.rst was used to interpolate this points into a new elevation map using regularized spline with tension \cite{mit2005}.
+where $l$ is a parameter describing how much snow has a liquid-like behavior. From the point of view of the implementation, the critical point is to compute the profile $y_L$. For this purpose some GRASS modules were explored: r.watershed, r.terraflow, r.sim.water. The first two were excluded as they compute the flow accumulation rather than the water accumulation. The third modules, r.sim.water, is an overland flow hydrologic simulation based on path sampling method \cite{mit2004}, used to compute the profile $y_L$.
+\item The second strategy  starts from the consideration that there are three main factors determining the distribution of the snow on a ski slope: the snow precipitation, the snow produced by the snow cannons and the actions of the snow groomings. All this factors tend to smooth the original surface. To emulate this action the surface of the DTM was approximated with a smoothed surface. Starting from the original DTM raster map a vector map was produced where each original value of elevation was represented by a point. Then the GRASS module v.surf.rst was used to interpolate this points into a new elevation map using regularized spline with tension \cite{mit2005}.
 \end{enumerate}
 
 \begin{figure}[!h]
@@ -491,7 +491,7 @@ where $l$ is a parameter describing how much snow has liquid-like behavior. From
     \caption{Profile of the DTM compared to profile of the DTM smoothed and of the DTM covered with simulated snow.}\label{profile_dtm}
 \end{figure}
 
-Figure \ref{profile_dtm} compares the profiles of the original dtm, of the dtm obtained from the first strategy and of the one obtained from the second strategy for a particularly critical point on a ski slope. Following the first strategy, the results of the module r.sim.water did not return a feasible profile for a liquid-like behavior. This can be linked to a misconfiguration of the module parameters or to very high level of precision. The best result was given by the second strategy, therefore it was the chosen one for this purpose.
+Figure \ref{profile_dtm} compares the profiles of the original dtm, of the dtm obtained from the first strategy and of the one obtained from the second strategy for a particularly critical point on a ski slope. Following the first strategy, the results of the module r.sim.water did not return a feasible profile for a liquid-like behavior. This can be linked to a misconfiguration of the module parameters or to very high level of precision demanded. The best result was given by the second strategy, therefore it was the chosen one for this purpose.
 
 Starting from the smoothed DTM, slope raster map and aspect raster map were computed. To compute slope raster map and aspect raster map the GRASS module r.slope.aspect was used. The slope map contains the slope of every single raster cell, defined as the degrees of inclination from the horizontal. The slope of a cell is the maximum rate of change in value from that cell to its neighbors. Conceptually, computing the slope is equivalent to fits a plane to the z-value of a 3x3 neighborhood around the center cell. The slope value of this plane is computed using the average maximum technique \cite{bur2009}. The orientation of the maximum slope direction toward the east defines the aspect.
 
@@ -549,7 +549,7 @@ V(s)&=V_0 \exp(-s/R_A)
 \end{align}
 where $R_L$, $R_R$ and $R_A$ describe the ranges of the social repulsions, and $U_0$ and $V_0$ are scaling constants that regulate the interaction strength between skiers and the respective object.
 
-The parameters regulating the social forces were set to have forces with equivalent strength and realistic interaction. For the destination force was set $A_0=1$, for the repulsion forces $U_0=10$, $V_0=8$, $R_L=R_R=10$ and $R_A=8$. These choices have the practical implication that the magnitude of the destination force is always equals to $1$ and the repulsion forces tend to $1$ when the skier approximates the edges or other skiers. For non-experienced skiers the strength and the range of edge repulsion can be increased because usually they tend to keep more distance from the edges than experienced skiers.
+The parameters regulating the social forces were set to have forces with equivalent strength and realistic interaction. For the destination force was set $A_0=1$, for the repulsion forces $U_0=10$, $V_0=8$, $R_L=R_R=10$ and $R_A=8$. These choices have the practical implication that the magnitude of the destination force is always equals to $1$ and the repulsion forces tend to $1$ when the skier approximates the edges or other skiers. For non-experienced skiers the strength and the range of edge repulsion can be increased to model their attitude to keep a higher distance from the edges than experienced skiers.
 
  The angle of view is set to $2\varphi=180\degree$. As presented in chapter \ref{model}, skiers adjust their direction performing turns when the angle between their direction of motion and the desired direction exceed the angle $\delta$ (see Fig.\ref{start_turn_pic}). This angle was set to $\delta=10\degree$. The values selected for the social parameters are summarized in table \ref{social_parameters_table}.
 
@@ -683,7 +683,7 @@ The main issue with the data collected is that they are not statistically releva
   \label{slopes}
 \end{table}
 
-The data collected does not allow to do a realistic tuning of the parameters and to validate the model for ski slopes in Trentino. However a initial test of the data simulated by the model has been performed using the data collected.
+The data collected does not allow to do a robust tuning of the parameters and to validate the model for ski slopes in Trentino. However a initial test of the data simulated by the model has been performed using the data collected.
 
 \section{Simulated vs. real data}
 \begin{figure}[!h]
@@ -701,7 +701,7 @@ This part of the analysis focuses on the difference between the speed estimated 
   \end{center}
 \end{figure}
 
-To investigate the relation between simulate and real speeds, the spatial distribution of the error between them was considered. For each track recorded on the ski slope, the error between real and simulated values was computed as $e=v_R-v_S$, where $v_R$ is the real speed recorded and $v_S$ the speed simulated by the model. Figure \ref{map_error} show the map of the error made for each point of the tracks. The point in the map were the skiers error is higher is were the skiers stopped. It can be seen that the error produced by the stops reverberates on the path sections following them.
+To investigate the relation between simulate and real speeds, the spatial distribution of the error between them was considered. For each track recorded on the ski slope, the error between real and simulated values was computed as $e=v_R-v_S$, where $v_R$ is the real speed recorded and $v_S$ the speed simulated by the model. Figure \ref{map_error} shows the map of the error made for each point of the tracks. The points in the map where the speed error is higher are where skiers stopped. It can be seen that the error produced by stops reverberates on the path sections following them.
 
 \begin{figure}[!h]
   \centering
@@ -709,7 +709,7 @@ To investigate the relation between simulate and real speeds, the spatial distri
     \caption{Map of the errors between the real and the simulated speed on the tracks recorded on the ski slope ``Uno di Tognola''.}\label{map_error}
 \end{figure}
 
-To compare the speed values without the influence produced by the errors due to the stops, a new simulation was run where the simulated skiers were forced to stop according to the stops made by the skier 35 in the track 116. A new map of simulated speed was interpolated, Figure \ref{sm_stops_track116} shows the new comparison for the track 116. In the first part of the track the simulation shows a good correspondence with the real data. In the last two runs the simulation overestimates the speed. Overall, the average error decreased from 5.56 m/s to 2.52 m/s.
+To compare the speed values without the additional error due to stops, a new simulation was run where the simulated skiers were forced to stop according to the stops made by the skier 35 in the track 116. A new map of simulated speed was interpolated, Figure \ref{sm_stops_track116} shows the new comparison for the track 116. In the first part of the track the simulation shows a good correspondence with the real data. In the last two runs the simulation overestimates the speed. Overall, the average error decreased from 5.56 m/s to 2.52 m/s.
 
 \begin{figure}[!h]
         \centering
@@ -746,24 +746,24 @@ The other skiers were modeled as non-experienced skiers, with the skidding facto
 \chapter{Conclusions and future work}\label{conclusions}
 A particle-based model to simulate the riding behavior of skiers descending ski slopes was implemented. The model was originally proposed by Holleczek and Troster \cite{hol2012}, the following new features were introduced:
 \begin{itemize}
-\item Non-experienced skiers were included in the model. Calibrating a new introduced parameter, the skidding parameter $\eta$, intermediate and beginner skiers can be simulated.
-\item The waypoints selection has been made dynamical, the new strategy implemented allows each skier to choose waypoints during the descent, based on their position, on the shape of the trail, on the slope of the terrain and on the skier speed.
+\item Non-experienced skiers were included in the model. By calibrating a newly introduced parameter, the skidding parameter $\eta$, intermediate and beginner skiers can be simulated.
+\item The waypoints selection has been made dynamical, the new strategy implemented allows each skier to choose waypoints during the descent, based on their position, the shape of the trail, the slope of the terrain and the skier speed.
 \end{itemize}
 Additionally an adaptation of the model has been implemented to simulate ski lessons. In these simulations a variable number of skiers follow the instructor trying to reproduce his or her trajectory.
 
-An Open Source GRASS module has been released. The module implements the model described using C++ and the GRASS GIS Library. The module is an executable that can be run in a GRASS environment. The code can be found at \url{http://github.com/pollo/skiing_traffic}.
+An Open Source GRASS module has been released. This module implements the model described using C++ and the GRASS GIS Library. The module is an executable that can be run in a GRASS environment. The code can be found at \url{http://github.com/pollo/skiing_traffic}.
 
-The simulations were used to compute indicators about the skiing traffic on the slopes. In particular, the average speed and density of skiers have been investigated. Two outputs were produced: a raster map reporting for each pixel of the ski slope the average speed of the simulated skiers in this position; a raster map indicating for each pixel the density of the skiers in this area of the slope.
+The simulations were used to compute indicators about the skiing traffic on the slopes. In particular, the average speed and density of skiers have been investigated. Two raster maps were produced: one reporting the average speed of the simulated skiers for each pixel of the map and another one indicating the density of the skiers in every location of the ski slope.
 
-The model has been tested on real data collected by the mobile application SkiLogger. For the ski slope ``Uno di Tognola'' in San Martino di Castrozza, 8 recorded tracks were available. A comparison between the simulated and the recorded speed showed an average error for single track that ranges between 4.28 m/s and 6.44 m/s, while recorded speeds range from 0 to 30 m/s. Introducing a new parameters forcing simulated skiers to stop in some predetermined areas, the average error for a specific track was decreased from 5.56 m/s to 2.52 m/s.
+The model has been tested on real data collected by the mobile application SkiLogger. For the ski slope ``Uno di Tognola'' in San Martino di Castrozza, 8 recorded tracks were available. A comparison between the simulated and the recorded speed showed an average error for single track that ranged between 4.28 m/s and 6.44 m/s, while recorded speeds ranged from 0 to 30 m/s. By introducing a new parameter that forced simulated skiers to stop in some predetermined areas, the average error for a specific track was decreased from 5.56 m/s to 2.52 m/s.
 
-For the next ski season a new version of the SkiLogger application will be released offering new features to the skiers. Once a critical mass of data will be collected, a complete calibration and validation of the model for the Trentino ski slopes will be made. Moreover, the possibility of collecting more empirical data exploiting the potentiality of wearable-sensors will be investigated.
+For the next ski season a new version of the SkiLogger application will be released offering new features to the skiers. Once a critical mass of data will be collected, a complete calibration and validation of the model for the Trentino ski slopes will be made. Moreover, the possibility of collecting more empirical data exploiting the potential of wearable-sensors will be investigated.
 
-In future developments the repulsion from obstacles will be included in the simulation, acquiring in the GIS database information about the physical obstacles on the ski slopes. Moreover, depending on the skiers ability, some areas of the ski slopes will be considered as obstacles to make the skiers avoiding trajectories perceived as dangerous (for example sheets of ice or high slope areas).
+In future developments the repulsion from obstacles will be included in the simulation, by acquiring information about the physical obstacles on the ski slopes. Moreover, depending on the skiers ability, some areas of the ski slopes will be considered obstacles to make the skiers avoid trajectories perceived as dangerous (for example sheets of ice or high slope areas).
 
-So far, there are not studies validating the prediction of skiers density on the ski slope made by this kind of simulations. If a big quantity of data will be recorded in the next season, also a validation of this part of the model will be performed. Alternatively, a different approach can be followed using video records of some selected ski slopes from which extract the skiers trajectories with computer vision algorithms \cite{sc2010}.
+So far, there are no studies validating the prediction of skiers density on the ski slope made by this kind of simulations. If a large amount of data will be recorded in the next season, a validation of this part of the model will be performed. Alternatively, a different approach can be followed using video records of some selected ski slopes from which computer vision algorithms can extract the skiers trajectories \cite{sc2010}.
 
-To predict in a more precise way the skiers density new aspects related to the skiers behavior will be investigated. So far, the model do not differentiate between different skiers attitudes. While riding downhill, the skiers choice of the trajectory is influenced by the perceptions they get by the environment. These are not limited to other skiers and edges repulsion and deal also with the personal attitude of the skier. For example a prudent skier will predict more carefully the possible trajectories of other skiers, will examine the condition of the slope and of the snow to choose the less risky trajectory possible. On the opposite side, a more daring skier will choose a more challenging trajectory that gives him the possibility of testing his or her skills. Another aspect to investigate will be the behavior and the dynamics of skiers moving in groups. In the future, collecting more empirical data, will be possible investigate the foundation of these conjectures.
+To predict in a more precise way the skiers density, new aspects related to the skiers behavior will be investigated. So far, the model does not differentiate between different skiers attitudes. While riding downhill, the skiers choice of the trajectory is influenced by the perceptions they get from the environment. These are not limited to other skiers and edges repulsion but also deal with the personal attitude of the skier. For example a cautious skier will predict more carefully the possible trajectories of other skiers, will examine the condition of the slope and of the snow to choose the less risky trajectory possible. On the other hand, a more daring skier will choose a more challenging trajectory that gives him the possibility to test his or her skills. Lastly the behavior and the dynamics of skiers moving in groups will be explored. In the future, the collection of more empirical data will enable the investigation of the foundations of these conjectures.
 
 \bibliography{thesis}
 
