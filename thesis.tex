@@ -6,31 +6,19 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 
+
 \makeatletter
 \newcommand\ackname{Acknowledgements}
-\if@titlepage
-  \newenvironment{acknowledgements}{%
-      \titlepage
-      \null\vfil
-      \@beginparpenalty\@lowpenalty
-      \begin{center}%
-        \bfseries \ackname
-        \@endparpenalty\@M
-      \end{center}}%
-     {\par\vfil\null\endtitlepage}
-\else
-  \newenvironment{acknowledgements}{%
-      \if@twocolumn
-        \section*{\abstractname}%
-      \else
-        \small
-        \begin{center}%
-          {\bfseries \ackname\vspace{-.5em}\vspace{\z@}}%
-        \end{center}%
-        \quotation
-      \fi}
-      {\if@twocolumn\else\endquotation\fi}
-\fi
+\newenvironment{acknowledgements}{
+  \newpage
+  \thispagestyle{empty}
+  \null\vfil
+  \@beginparpenalty\@lowpenalty
+  \begin{center}
+    \bfseries \ackname
+    \@endparpenalty\@M
+  \end{center}}
+{\par\vfil\null\endtitlepage}
 \makeatother
 
 \newcommand{\norm}[1]{\lVert#1\rVert}
@@ -101,6 +89,8 @@ The model has been tested by using a set of real data collected in February and 
 
 Chapter \ref{model} describes the model and defines the physical and social forces. Chapter \ref{implementation} presents the technologies employed and gives details related to the model implementation and the parameters selection. Chapter \ref{steps_validate} presents the data collected and the comparisons with the simulated data. A summary of results and a concluding remark are given in Chapter \ref{conclusions}.
 
+\newpage
+\mbox{}
 \begin{acknowledgements}
 This thesis work was developed in the MPBA unit of the Bruno Kessler Foundation. I would like to thank Prof. Alberto Montresor, who has supervised me during this work. This thesis would not have been possible without the help and support of all the MPBA unit, in particular I would like to thank Cesare Furlanello, for having guided and advised me during this period, and Riccardo De Filippi, who helped me in writing the thesis. A big thank goes to Andrea Gobbi, for his patience, his competence and for the many useful discussions we had during these months. I would like to thank also Prof. Nicola Pugno, for his suggestions concerning the physical model. Finally, I thank my family for supporting me throughout all my studies.
 \end{acknowledgements}
@@ -123,9 +113,9 @@ This thesis work aims to provide an analysis framework to describe the behavior 
 
 Traffic simulations have been widely used to predict motions of objects such as vehicles and pedestrians using models from statistical physic. Holleczek and Troster proposed this methodology to predict skiing traffic. Following their approach, skiing dynamics has been simulated using a particle-based model.
 
-The problem faced in this thesis work involves patterns that can be recognize also modeling other kind of systems. In sports, the behavior of a player is influenced and determined by the other players actions, by their distribution on the field and by the phase of the game. The players behaviors depends also on their role and their interpretation of the game. Dynamics of the players on the field has already been investigated for sports as basketball \cite{bo2010}, tennis \cite{pa2005} and squash \cite{mc2006}. For team sports and specifically rugby, a model of interpersonal dynamics in terms of multiagent system was proposed \cite{qu2009}. Multiagent system are often simulated also in videogames. However, this kind of simulations do not aim to simulate real agents but try to reproduce credible scenarios allowing to use heuristics and predetermined sets of rules derived by specific knowledge of the domain. Nevertheless, the physics implemented by skiing simulator videogames is closely related to the one implemented in this thesis.
+The problem faced in this thesis work involves patterns that can be recognize also modeling other kind of systems. In sports, the behavior of a player is influenced and determined by the other players actions, by their distribution on the field and by the phase of the game. The players behavior depends also on their role and their interpretation of the game. Dynamics of the players on the field has already been investigated for sports as basketball \cite{bo2010}, tennis \cite{pa2005} and squash \cite{mc2006}. For team sports and specifically rugby, a model of interpersonal dynamics in terms of multiagent system was proposed \cite{qu2009}. Multiagent system are often simulated also in videogames. However, this kind of simulations do not aim to simulate real agents but try to reproduce credible scenarios allowing to use heuristics and predetermined sets of rules derived by specific knowledge of the domain. Nevertheless, the physics implemented by skiing simulator videogames is closely related to the one implemented in this thesis.
 
-Empirical data plays a key role modeling this kind of system: they are essential to calibrate the model parameters and to investigate the agents behavior. In the collection of data, wearable sensors offer important possibilities for the capturing of motions. Pressure sensors and gyroscope were already successfully employed to track snowboarders activities \cite{hol2010}, a similar workflow can be followed for skiers.
+Empirical data have a key role modeling this kind of systems: they are essential to calibrate the model parameters and to investigate the agents behavior. In the collection of data, wearable sensors offer important possibilities for the capturing of motions. Pressure sensors and gyroscope were already successfully employed to track snowboarders activities \cite{hol2010}, a similar workflow can be followed for skiers.
 
 \chapter{The model}\label{model}
 The model implemented in this thesis can be classified as a two-dimensional microscopic-driven many-particle system with the constraint that skiers are exposed to gravity and centripetal forces. It was published by Holleczek and Troster \cite{hol2012}.
@@ -195,19 +185,19 @@ w(u,v)=\begin{cases}
   \end{cases}
 \end{equation}
 
-To summarize, social forces actiong on every skier $a$ are
+To summarize, social forces acting on every skier $a$ are
 \begin{align}\label{social_forces_tb}
 F_D(r_a)&=A_0 e_a(t),\\
 F_L(\dot{r_a},r_{aL})&=w(\dot{r_a},-r_{aL})F_L(r_{aL}),\\
 F_R(\dot{r_a},r_{aR})&=w(\dot{r_a},-r_{aR})F_R(r_{aR}),\\
-F_A(\dot{r_a},r_{ab})&=w(\dot{r_a},-r_{ab})F_A(r_{ab}),\\
+F_S(\dot{r_a},r_{ab})&=w(\dot{r_a},-r_{ab})F_S(r_{ab}),\\
 F_O(\dot{r_a},r_{ao})&=w(\dot{r_a},-r_{ao})F_O(r_{ao}).
 \end{align}
 
 The resultant social force $F^a_{social}$ is the superposition of all social forces that apply on skier $a$:
 
 \begin{equation}
-F^a_{social}=F_D(r_a)+F_L(\dot{r_a},r_{aL})+F_R(\dot{r_a},r_{aR})+\sum_{b\in S} F_A(\dot{r_a},r_{ab})+\sum_{o \in O} F_O(\dot{r_a},r_{ao}),\nonumber
+F^a_{social}=F_D(r_a)+F_L(\dot{r_a},r_{aL})+F_R(\dot{r_a},r_{aR})+\sum_{b\in S} F_S(\dot{r_a},r_{ab})+\sum_{o \in O} F_O(\dot{r_a},r_{ao}),\nonumber
 \end{equation}
 where $S$ is the set of skiers and $O$ the set of obstacles in the current time frame and visibility. Figure \ref{social_forces_diagram} shows a diagram of the social forces described above.
 
@@ -241,7 +231,7 @@ and the inclination angle $\gamma$ of the current trajectory $e_{\dot{r}}$ is
 \end{equation}
 where $\beta$ is the angle between $e_{\dot{r}}$ and the horizontal of the slope.
 
-To compute the force accelerating the skier the gravitational force, the friction forces and the centripetal forces should be investigated. As first the gravitational force $F_G$ is considered. It can be expressed as
+To compute the force accelerating the skier the gravitational force, the friction forces and the centripetal forces should be investigated. As first, the gravitational force $F_G$ is considered. It can be expressed as
 \begin{equation}
 F_G=mg\left[\begin{matrix}0\\0\\-1\end{matrix}\right],
 \end{equation}
@@ -561,9 +551,9 @@ The parameters regulating the social forces were set to have forces with equival
     \hline
     Strength of destination force & $A_0$ & 1 \\
     Strength of edge repulsion & $U_0$ & 10 \\
-    Strength of athlete repulsion & $V_0$ & 8 \\
+    Strength of skiers repulsion & $V_0$ & 8 \\
     Range of edge repulsion & $R_L=R_R$ & 10 \\
-    Range of athlete repulsion & $R_A$ & 8 \\
+    Range of skiers repulsion & $R_A$ & 8 \\
     Angle of view & $2\varphi$ & $180\degree$ \\
     Directional deviation & $\delta$ & $10\degree$ \\
     \hline
