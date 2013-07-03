@@ -420,7 +420,7 @@ Quantum GIS Desktop, also known as QGIS, is an open-source GIS desktop applicati
 
 GDAL, Geospatial Data Abstraction Library, is an open-source library for geospatial data translation and processing. The related library OGR Simple Feature Library provides a similar capability for simple vector data processing. GDAL exposes API for C,C++ and Python while the more widely used API for OGR is the one for C++. OGR provides also slightly less complete API for C and Python, although they are not really well documented. The main issue using GDAL/OGR is the lack of support for the analysis of vector data: OGR offers useful API to read and write vector data, but analysis such as point linestring distance calculation are not available.
 
-GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support System) is an open-source GIS software that gives support for geospatial data management and analysis. To understand how GRASS API works it is necessary to look at the GRASS software structure (see Fig.\ref{grass_structure}). GRASS has a large GIS library, referred to as GRASS GIS Library, at the basis of the software stack. It is divided in two main library: the Raster File Processing library and the Vector File Processing library. It contains also many others libraries of less importance. The GRASS GIS Library is quite large and implements many basic GIS operations both for raster and vector formats. The spatial data are stored in the GRASS map storage with the GRASS specific format. On the top of the GRASS GIS Library are built many modules for raster and vector processing. The modules perform analysis at a higher level, they are executables and can be used directly from the GRASS GUI or from the command line.
+GRASS GIS, commonly referred to as GRASS (Geographic Resource Analysis Support System) is an open-source GIS software that gives support for geospatial data management and analysis. To understand how GRASS API works it is necessary to look at the GRASS software structure (see Fig.\ref{grass_structure}). GRASS has a large GIS library, referred to as GRASS GIS Library, at the basis of the software stack. It is divided in two main libraries: the Raster File Processing library and the Vector File Processing library. It contains also many others libraries of less importance. The GRASS GIS Library is quite large and implements many basic GIS operations both for raster and vector formats. The spatial data are stored in the GRASS map storage with the GRASS specific format. On the top of the GRASS GIS Library are built many modules for raster and vector processing. The modules perform analysis at a higher level, they are executables and can be used directly from the GRASS GUI or from the command line.
 
 \begin{figure}
   \begin{center}
@@ -453,7 +453,7 @@ The simulation has to perform some specific spatial computations. The implementa
 The class GrassBackend implements the interface GisBackend and is the class used in the code when spatial computations are needed. The class GrassBackend uses the GRASS GIS Library. It checks to have available a DEM (Digital Elevation Model) raster map for the elevation, the slope and the aspect computation, a polygon vector map describing the ski slope to determine if a position is inside the slope, a line vector map describing the right and the left edges of the slope to find the distances from them and finally a vector map with the polygons of the start and stop areas to decide where skiers should be started and stopped.
 
 \section{Input data}
-The input data required by the simulation to run are the data needed by the GrassBackend. It requires the vector map with the polygon of the ski slope for which the model should be run. The ski slope (see Fig.\ref{uno_tognola_3d} for an example) is extracted from a vector map containing all polygons of the ski slopes of Trentino's ski resort. This data come from the SicurSkiWeb database and were derived starting from orthophotos and adjusted with field measurements. From the polygon of the ski slope the left and right edges, the start and stop areas are derived.
+The input data required by the simulation to run are the data needed by the GrassBackend. It requires the vector map with the polygon of the ski slope for which the model should be run. The ski slope (see Fig.\ref{uno_tognola_3d} for an example) is extracted from a vector map containing all polygons of the ski slopes of Trentino's ski resort. These data come from the SicurSkiWeb database and were derived starting from orthophotos and adjusted with field measurements. From the polygon of the ski slope the left and right edges, the start and stop areas are derived.
 
 \begin{figure}[!h]
   \begin{center}
@@ -507,7 +507,7 @@ The output produced by the simulation model is the status (position and speed) o
         \caption{Average simulated speed map (a) and skiers density map (b) for the ski slope ``Rododendro''.}\label{rododendro}
 \end{figure}
 
-Starting from this data the skiers speed average and the skiers density on the considered ski slopes were computed. Interpolating the speed values obtained by the simulation a raster map of the skiers speed is obtained (see Fig.\ref{uno_tognola_vel} and Fig.\ref{rododendro_vel}). This map can then be used to analyze the skiers speed on every location of the ski slope surface. The interpolation was done using the GRASS module v.surf.idw. The GRASS module v.kernel was used to compute the density of skiers on the slope. The raster density map is computed using a moving kernel with gaussian distribution (see Fig.\ref{uno_tognola_den} and Fig.\ref{rododendro_den}).
+Starting from these data the skiers speed average and the skiers density on the considered ski slopes were computed. Interpolating the speed values obtained by the simulation a raster map of the skiers speed is obtained (see Fig.\ref{uno_tognola_vel} and Fig.\ref{rododendro_vel}). This map can then be used to analyze the skiers speed on every location of the ski slope surface. The interpolation was done using the GRASS module v.surf.idw. The GRASS module v.kernel was used to compute the density of skiers on the slope. The raster density map is computed using a moving kernel with gaussian distribution (see Fig.\ref{uno_tognola_den} and Fig.\ref{rododendro_den}).
 
 \begin{figure}
         \centering
@@ -530,7 +530,7 @@ Starting from this data the skiers speed average and the skiers density on the c
 \section{Parameters Selection}
 The parameters of the model are of three types: parameters describing the ski slope, parameters regulating the social forces and parameters for the physical forces.
 
-The model assumes that skiers arrive at the beginning of ski slopes at a constant rate. Let $\lambda$ be the persons per hour descending a ski slope, then the time between the start of two consecutive skiers is $T=\mathcal{U}\left(2\frac{3600}{\lambda}\right)$, where $\mathcal{U}(a)$ is the uniform distribution between $0$ and $a$. For the ski slope ``Uno di Tognola'' an arrival rate of $\lambda=200$~persons/h was chosen.
+The model assumes that skiers arrive at the beginning of ski slopes at a constant rate. Let $\lambda$ be the persons per hour descending a ski slope, then the time between the start of two consecutive skiers is assumed to be $T=\mathcal{U}\left(2\frac{3600}{\lambda}\right)$, where $\mathcal{U}(a)$ is the uniform distribution between $0$ and $a$. For the ski slope ``Uno di Tognola'' an arrival rate of $\lambda=200$~persons/h was chosen.
 
 As in \cite{hol2012} and in \cite{hel2008}, the repulsive potentials defining the social forces are exponential and defined as
 \begin{align}
@@ -759,7 +759,7 @@ To predict in a more precise way the skiers density, new aspects related to the 
 \bibliography{thesis}
 
 \appendix
-\chapter{Simulations summary values varying parameters}
+\chapter{Summary of simulations values varying parameters}
 \markright{John Smith\hfill On page styles\hfill}
 \begin{table}[h]
   \centering
